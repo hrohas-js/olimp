@@ -1,0 +1,202 @@
+<script setup>
+import {useCatalogStore} from "@/store/CatalogStore";
+import {useAnnouncementStore} from "@/store/AnnouncementStore";
+import {computed, onMounted, ref} from "vue";
+import {useRouter} from "vue-router";
+import SearchHeader from "@/components/HeaderComponents/SearchHeader";
+
+const catalogStore = useCatalogStore();
+const announcementStore = useAnnouncementStore();
+const router = useRouter();
+
+const categories = computed(() => catalogStore.categories);
+const subCategories = computed(() => catalogStore.subCategories);
+const filters = computed(() => catalogStore.filters);
+const newItemCategories = computed(() => announcementStore.newItem.categories);
+
+onMounted(() => {
+  catalogStore.subCategories = [];
+  catalogStore.filters = [];
+  announcementStore.newItem.categories = [];
+});
+
+const getCategoriesTree = (slug, category, filter = null) => {
+  switch (slug) {
+    case 'category':
+      catalogStore.currentCategory = category.id;
+      catalogStore.getSubCategories();
+      if (announcementStore.newItem.categories.length === 1) {
+        announcementStore.newItem.categories[0] = {
+          id: category.id,
+          name: category.name
+        };
+      } else {
+        announcementStore.newItem.categories.push({
+          id: category.id,
+          name: category.name
+        });
+      }
+      break;
+    case 'subCategory':
+      catalogStore.getFilters(category.id);
+      if (announcementStore.newItem.categories.length === 2) {
+        announcementStore.newItem.categories[1] = {
+          id: category.id,
+          name: category.name
+        };
+      } else {
+        announcementStore.newItem.categories.push({
+          id: category.id,
+          name: category.name
+        });
+      }
+      break;
+    case 'filter':
+      if (announcementStore.newItem.categories.length === 4) {
+        announcementStore.newItem.categories[2] = {
+          id: filter.id,
+          name: filter.name
+        };
+        announcementStore.newItem.categories[3] = {
+          id: category.id,
+          name: category.name
+        };
+      } else {
+        announcementStore.newItem.categories.push({
+          id: filter.id,
+          name: filter.name
+        });
+        announcementStore.newItem.categories.push({
+          id: category.id,
+          name: category.name
+        });
+      }
+      console.log(announcementStore.newItem)
+      announcementStore.getParameters({
+        filter_id: filter.id,
+        filter_content_id: category.id
+      });
+      router.push('/postAdvertisements');
+      break;
+    default:
+      break;
+  }
+}
+</script>
+
+<template>
+  <section class="create wrapper textMontserrat">
+    <search-header/>
+    <div class="categoryName">
+      <h1 class="textMontserrat_bold">
+        Выберите категорию
+      </h1>
+    </div>
+    <main class="create__main">
+      <nav class="create__navigation border border_subBgOpacity">
+        <p class="textMontserrat_light">
+          Категории
+        </p>
+        <ul class="textMontserrat_regular">
+          <li
+              v-for="category in categories"
+              :key="category.id"
+              v-html="category.name"
+              :class="{'active': category.id === newItemCategories[0]}"
+              @click="getCategoriesTree('category', category)"
+          />
+        </ul>
+      </nav>
+      <transition name="fade">
+        <nav
+            v-if="subCategories.length > 0"
+            class="create__navigation border border_subBgOpacity borderLeftNone"
+        >
+          <p class="textMontserrat_light">
+            Подкатегории
+          </p>
+          <ul class="textMontserrat_regular">
+            <li
+                v-for="subCategory in subCategories"
+                :key="subCategory.id"
+                v-html="subCategory.name"
+                :class="{'active': subCategory.id === newItemCategories[1]}"
+                @click="getCategoriesTree('subCategory', subCategory)"
+            />
+          </ul>
+        </nav>
+      </transition>
+      <transition name="fade">
+        <nav
+            v-if="filters.length > 0"
+            class="create__navigation border border_subBgOpacity borderLeftNone"
+        >
+          <p class="textMontserrat_light">
+            Параметры
+          </p>
+          <div
+              v-for="filter in filters"
+              :key="filter.id"
+              class="filter-group"
+          >
+            <ul class="textMontserrat_regular">
+              <li
+                  v-for="param in filter.content"
+                  :key="param.id"
+                  :class="{'active': param.id === newItemCategories[3]}"
+                  @click="getCategoriesTree('filter', param, filter)"
+              >
+                {{param.name}}
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </transition>
+    </main>
+  </section>
+</template>
+
+<style scoped lang="scss">
+.textMontserrat {
+  &_bold {
+    font-size: rem(25);
+  }
+}
+.create {
+  &__main {
+    display: flex;
+    max-width: 70%;
+    margin: 0 auto;
+
+    @media (max-width: em(768,16)) {
+      max-width: 100%;
+    }
+  }
+  &__navigation {
+    flex: 0 0 33.333%;
+    p,li{
+      padding: rem(12) rem(10) rem(10);
+    }
+    li{
+      cursor: pointer;
+      &.active,
+      &:hover{
+        background: $color_blueLikeAvt;
+      }
+    }
+  }
+  .borderLeftNone{
+    border-left: none;
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

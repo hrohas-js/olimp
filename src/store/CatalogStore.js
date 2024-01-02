@@ -1,0 +1,115 @@
+import {defineStore} from "pinia";
+import {useMainStore} from "@/store/MainStore";
+import {CatalogApi} from "@/api/Catalog/CatalogApi";
+
+export const useCatalogStore = defineStore("catalogStore", {
+    state: () => ({
+        categories: [],
+        subCategories: [],
+        title : '',
+        showModalSubCategories: false,
+        currentCategory: localStorage.getItem('currentCategory') !== null ? parseInt(localStorage.getItem('currentCategory')) : 0,
+        filters: [],
+        catalog: [],
+        subCategoryID: 0,
+        filterID: 0,
+        filterContentID: 0,
+        search: ''
+    }),
+    getters: {
+        currentCategoryName: (state) => {
+            let res = '';
+            state.categories.forEach(elem => {
+                if (elem.id === state.currentCategory) res = elem.name;
+            });
+            return res;
+        },
+        filteredCatalog: (state) => {
+            let res = [];
+            if (state.currentCategory !== 0) {
+                res = state.catalog.filter(elem => {
+                    const cats = JSON.parse(elem.categories);
+                    return cats[0].id === state.currentCategory;
+                });
+            } else {
+                return state.catalog;
+            }
+            if (state.subCategoryID !== 0) {
+                res = res.filter(elem => {
+                    const cats = JSON.parse(elem.categories);
+                    return cats[1].id === state.subCategoryID;
+                });
+            }
+            if (state.filterID !== 0 && state.filterContentID !== 0) {
+                res = res.filter(elem => {
+                    const cats = JSON.parse(elem.categories);
+                    return cats[2].id === state.filterID && cats[3].id === state.filterContentID;
+                });
+            }
+            return res;
+        },
+        searchCatalog: (state) => {
+            if (state.search.length === 0) return state.catalog;
+            const srch = state.search.toLowerCase();
+            return state.catalog.filter(elem => elem.title.toLowerCase().indexOf(srch) !== -1);
+        }
+    },
+    actions: {
+        async getCategories() {
+            const mainStore = useMainStore();
+            try {
+                mainStore.loader = true;
+                const response = await CatalogApi.getCategories();
+                this.categories = response.result;
+            } catch (error) {
+                console.log(error)
+            } finally {
+                mainStore.loader = false;
+            }
+        },
+        async getSubCategories() {
+            const mainStore = useMainStore();
+            try {
+                mainStore.loader = true;
+                const response = await CatalogApi.getSubCategories(this.currentCategory);
+                this.subCategories = response.result;
+            } catch (error) {
+                console.log(error)
+            } finally {
+                mainStore.loader = false;
+            }
+        },
+        async getFilters(id) {
+            const mainStore = useMainStore();
+            this.filters = [];
+            try {
+                mainStore.loader = true;
+                const response = await CatalogApi.getFilters(id);
+                response.result.forEach(elem => {
+                    this.filters.push({
+                        id: elem.id,
+                        name: elem.name,
+                        catID: elem.sub_category_id,
+                        content: JSON.parse(elem.content)
+                    });
+                });
+            } catch (error) {
+                console.log(error)
+            } finally {
+                mainStore.loader = false;
+            }
+        },
+        async getAnnouncements() {
+            const mainStore = useMainStore();
+            try {
+                mainStore.loader = true;
+                const response = await CatalogApi.getAnnouncements();
+                this.catalog = response.result;
+            } catch (error) {
+                console.log(error)
+            } finally {
+                mainStore.loader = false;
+            }
+        },
+    }
+})

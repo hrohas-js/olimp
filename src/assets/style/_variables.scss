@@ -1,0 +1,25 @@
+@function prc($pxOne, $pxTwo) {
+  $result: ($pxOne / $pxTwo) * 100%;
+  @return $result;
+}
+
+@function rem($px) {
+  $result: ($px / 16) + rem;
+  @return $result;
+}
+
+@function em($px, $insize) {
+  $result: ($px / $insize) + em;
+  @return $result;
+}
+$color_bg: #F5F5F5;
+$color_bgLight: #FFF;
+$color_gray: #D9D9D9;
+$color_subBg: #2963A4;
+$color_subBgLight: rgba(41, 99, 164, 0.50);
+$color_subBgOpacity: rgba(41, 99, 164, 0.2901960784);
+$color_blueLikeAvt: #d9f3ff;
+$color_accent: #E9605A;
+$color_green: #31D723;
+$color_black: #000;
+$color_blackLight: rgba(0, 0, 0, 0.70);
