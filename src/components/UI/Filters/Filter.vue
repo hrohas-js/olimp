@@ -38,7 +38,7 @@ const filters = computed(() => catalogStore.filters)
       </p>
       <div class="content">
         <filter-item
-            :id="filter.id"
+            :id="filter"
             :filter-param="filter.content"
         />
       </div>

@@ -8,42 +8,42 @@ export const useCatalogStore = defineStore("catalogStore", {
         subCategories: [],
         title : '',
         showModalSubCategories: false,
-        currentCategory: localStorage.getItem('currentCategory') !== null ? parseInt(localStorage.getItem('currentCategory')) : 0,
+        currentCategory: localStorage.getItem('currentCategory') !== null ? parseInt(localStorage.getItem('currentCategory')) : {},
         filters: [],
         catalog: [],
-        subCategoryID: 0,
-        filterID: 0,
-        filterContentID: 0,
+        subCategoryID: {},
+        filterID: {},
+        filterContentID: {},
         search: ''
     }),
     getters: {
         currentCategoryName: (state) => {
             let res = '';
             state.categories.forEach(elem => {
-                if (elem.id === state.currentCategory) res = elem.name;
+                if (elem.id === state.currentCategory.id) res = elem.name;
             });
             return res;
         },
         filteredCatalog: (state) => {
             let res = [];
-            if (state.currentCategory !== 0) {
+            if (state.currentCategory.id !== 0) {
                 res = state.catalog.filter(elem => {
                     const cats = JSON.parse(elem.categories);
-                    return cats[0].id === state.currentCategory;
+                    return cats[0].id === state.currentCategory.id;
                 });
             } else {
                 return state.catalog;
             }
-            if (state.subCategoryID !== 0) {
+            if (state.subCategoryID.id !== 0) {
                 res = res.filter(elem => {
                     const cats = JSON.parse(elem.categories);
-                    return cats[1].id === state.subCategoryID;
+                    return cats[1].id === state.subCategoryID.id;
                 });
             }
-            if (state.filterID !== 0 && state.filterContentID !== 0) {
+            if (state.filterID.id !== 0 && state.filterContentID.id !== 0) {
                 res = res.filter(elem => {
                     const cats = JSON.parse(elem.categories);
-                    return cats[2].id === state.filterID && cats[3].id === state.filterContentID;
+                    return cats[2].id === state.filterID.id && cats[3].id === state.filterContentID.id;
                 });
             }
             return res;
@@ -71,7 +71,7 @@ export const useCatalogStore = defineStore("catalogStore", {
             const mainStore = useMainStore();
             try {
                 mainStore.loader = true;
-                const response = await CatalogApi.getSubCategories(this.currentCategory);
+                const response = await CatalogApi.getSubCategories(this.currentCategory.id);
                 this.subCategories = response.result;
             } catch (error) {
                 console.log(error)

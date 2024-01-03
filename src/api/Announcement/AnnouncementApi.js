@@ -57,4 +57,15 @@ export class AnnouncementApi extends BaseApi {
             }
         })
     }
+    static async getUserOfAnnouncement(data) {
+        return this.doRequest({
+            method: "POST",
+            url: "/requests/getUserOfAnnouncement",
+            data: data,
+            headers: {
+                Authorization: `Bearer ${this.token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+    }
 }

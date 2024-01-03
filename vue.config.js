@@ -7,5 +7,18 @@ module.exports = defineConfig({
         additionalData: `@import "@/assets/style/_variables.scss";`
       }
     }
+  },
+  configureWebpack: config => {
+    return {
+      devServer: {
+        proxy: {
+          '/api': {
+            target: 'https://kladr-api.ru',
+            //secure: false,
+            changeOrigin: true
+          }
+        }
+      }
+    }
   }
 })

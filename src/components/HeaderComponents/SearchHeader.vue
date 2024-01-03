@@ -2,17 +2,15 @@
 import NavigationCategories from "@/components/NavigationComponents/NavigationCategories";
 
 import {useRouter} from "vue-router";
+import {useRoute} from "vue-router";
 import {useMainStore} from "@/store/MainStore";
 import {computed} from "vue";
 
 const router = useRouter();
+const route = useRoute();
 const mainStore = useMainStore();
 
 const width = computed(() => mainStore.display_width);
-
-const goToMainPage = () => {
-  router.push('/')
-}
 </script>
 
 <template>
@@ -21,8 +19,7 @@ const goToMainPage = () => {
         v-if="width <= 1024"
         class="arrowBeak"
     >
-      <svg width="18px" height="20px" viewBox="0 0 18 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
-           xmlns:xlink="http://www.w3.org/1999/xlink">
+      <svg width="18px" height="20px" viewBox="0 0 18 20" xmlns="http://www.w3.org/2000/svg">
         <title>ic_back</title>
         <desc>Created with Sketch.</desc>
         <defs></defs>
@@ -43,26 +40,27 @@ const goToMainPage = () => {
         </g>
       </svg>
     </div>
-    <div
-        v-if="width > 1024"
-        class="logo textMontserrat"
-        @click="goToMainPage"
-    >
-      <div class="logo-bebas">
-        <img
-            src="@/assets/logo.jpg"
-            alt="logo"
-        />
+    <router-link to="/">
+      <div
+          v-if="width > 1024"
+          class="logo textMontserrat"
+      >
+        <div class="logo-bebas">
+          <img
+              src="@/assets/logo.jpg"
+              alt="logo"
+          />
+        </div>
+        <!--      <p class="textMontserrat_regular">
+                Центр творчества
+              </p>-->
       </div>
-<!--      <p class="textMontserrat_regular">
-        Центр творчества
-      </p>-->
-    </div>
+    </router-link>
     <div
-        class="searchFilter"
+         v-if="route.name !== 'CreateAnnouncement' || route.name !== 'PostAdvertisements'"
+         class="searchFilter"
     >
-      <navigation-categories
-      />
+      <navigation-categories />
     </div>
     <div
         v-if="width <= 768"
@@ -83,7 +81,6 @@ const goToMainPage = () => {
 <style scoped lang="scss">
 .search {
   display: flex;
-  //padding: rem(10) rem(37) rem(10) rem(53);
   padding: rem(10) 0;
   gap: rem(50);
   align-items: center;

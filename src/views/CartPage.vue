@@ -13,7 +13,7 @@ import {useRoute} from "vue-router";
 import {useMainStore} from "@/store/MainStore";
 import {useProductStore} from "@/store/ProductStore";
 import {useCatalogStore} from "@/store/CatalogStore";
-import {computed} from "vue";
+import {computed, watch, onUnmounted} from "vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -23,6 +23,7 @@ const catalogStore = useCatalogStore();
 
 const width = computed(() => mainStore.display_width);
 const someItem = computed(() => mainStore.someItem);
+
 const product = computed(() => {
   let prod = {};
   catalogStore.catalog.forEach(elem => {
@@ -32,8 +33,56 @@ const product = computed(() => {
   });
   return prod;
 });
-const gallery = computed(() => JSON.parse(product.value.gallery));
-const parameters = computed(() => JSON.parse(product.value.parameters));
+const gallery = computed(() => {
+  if (product.value.gallery) {
+    return JSON.parse(product.value.gallery);
+  } else {
+    return {};
+  }
+});
+const parameters = computed(() => {
+  if (product.value.parameters) {
+    return JSON.parse(product.value.parameters);
+  } else {
+    return {};
+  }
+});
+const callShow = computed(() => {
+  let flag = false;
+  if (product.value.communication) {
+    if (product.value.communication.indexOf('call') !== -1) {
+      flag = true;
+    }
+  }
+  return flag;
+});
+const messageShow = computed(() => {
+  let flag = false;
+  if (product.value.communication) {
+    if (product.value.communication.indexOf('message') !== -1) {
+      flag = true;
+    }
+  }
+  return flag;
+});
+
+watch(product, (value) => {
+  if (value.user_id.length > 0) {
+    productStore.getUserOfAnnouncement({
+      id: value.user_id
+    });
+  }
+});
+
+onUnmounted(() => {
+  productStore.author = '';
+  localStorage.removeItem('author');
+});
+
+const getLocation = () => {
+  productStore.fetchMap(product.value.location);
+  mainStore.popup = 'deal-location';
+}
 
 /*const goToProduct = (param = '') => {
   router.push('/cartPage')
@@ -128,11 +177,13 @@ const parameters = computed(() => JSON.parse(product.value.parameters));
                   size="big"
               />-->
               <main-button
+                  v-if="callShow"
                   button-text="Показать телефон"
                   color="green"
                   size="big"
               />
               <main-button
+                  v-if="messageShow"
                   button-text="Написать сообщение"
                   color="blue"
                   size="big"
@@ -173,7 +224,10 @@ const parameters = computed(() => JSON.parse(product.value.parameters));
                   Курская
                 </span>
               </div>-->
-              <div class="show-button">
+              <div
+                  class="show-button"
+                  @click="getLocation"
+              >
                 Показать на карте
               </div>
             </div>
@@ -264,7 +318,7 @@ const parameters = computed(() => JSON.parse(product.value.parameters));
 <!--              Фотоаппарат Canon EOS 600D-->
 <!--            </p>-->
             <p>
-              1000 ₽
+              {{ product.price }} ₽
             </p>
           </div>
           <div
@@ -324,11 +378,13 @@ const parameters = computed(() => JSON.parse(product.value.parameters));
                 size="big"
             />-->
             <main-button
+                v-if="callShow"
                 button-text="Показать телефон"
                 color="green"
                 size="big"
             />
             <main-button
+                v-if="messageShow"
                 button-text="Написать сообщение"
                 color="blue"
                 size="big"
@@ -369,7 +425,10 @@ const parameters = computed(() => JSON.parse(product.value.parameters));
                   Курская
                 </span>
               </div>-->
-              <div class="show-button">
+              <div
+                  class="show-button"
+                  @click="getLocation"
+              >
                 Показать на карте
               </div>
             </div>

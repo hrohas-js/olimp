@@ -23,6 +23,7 @@ const title = computed(() => announcementStore.newItem.title);
 const price = computed(() => announcementStore.newItem.price);
 const location = computed(() => announcementStore.newItem.location);
 const user = computed(() => profileStore.user);
+const communication = computed(() => announcementStore.newItem.communication);
 
 const createTrigger = ref(false);
 
@@ -69,6 +70,28 @@ const phoneValue = computed({
   }
 });
 
+const communicationValue = computed({
+  get() {
+    return announcementStore.newItem.communication;
+  },
+  set(value) {
+    announcementStore.newItem.communication = value;
+  }
+});
+
+const breadcrumbs = computed(() => {
+  let str = '';
+  announcementStore.newItem.categories.forEach((elem, index) => {
+    if (index !== 2) {
+      str += elem.name.replace(/<br\s*\/?>/gi, ' ');
+      if (index !== announcementStore.newItem.categories.length - 1) {
+        str += '>'
+      }
+    }
+  });
+  return str;
+});
+
 const chanceInput = (e) => {
   e.target.value = validateField('description', e.target.value).message;
 }
@@ -98,6 +121,10 @@ const create = (status) => {
     ElMessage.error('Локация обязательна для заполнения')
     flag = true;
   }
+  if (communication.value.length === 0) {
+    ElMessage.error('Выберете способ связи!')
+    flag = true;
+  }
   if (!flag) {
     announcementStore.createAnnouncement({
       title: title.value,
@@ -109,7 +136,8 @@ const create = (status) => {
       price: price.value,
       status: status,
       phone: announcementStore.newItem.phone,
-      user_id: user.value.id
+      user_id: user.value.id,
+      communication: communication.value
     }).then(() => {
       router.push('/profile');
     });
@@ -121,13 +149,16 @@ const create = (status) => {
   <section class="postAdvertisements textMontserrat wrapper">
     <search-header/>
     <main class="postAdvertisements__main">
+      <h3 class="textMontserrat_medium">
+        {{ breadcrumbs }}
+      </h3>
       <h3 class="title textMontserrat_medium">
         Параметры
       </h3>
       <div class="container">
         <div class="postAdvertisements__item">
-          <p class="textMontserrat_light">
-            Название объявления
+          <p class="textMontserrat_regular">
+            Название<br>объявления
           </p>
           <input-announcement
               v-model="titleValue"
@@ -139,7 +170,7 @@ const create = (status) => {
             :key="param.id"
             class="postAdvertisements__item param list"
         >
-          <p class="textMontserrat_light">
+          <p class="textMontserrat_regular">
             {{ param.name }}
           </p>
           <input-announcement
@@ -150,7 +181,7 @@ const create = (status) => {
             <li
                 v-for="paramVariant in JSON.parse(param.content)"
                 :key="paramVariant.id"
-                class="textMontserrat_light"
+                class="textMontserrat_regular"
             >
               <input
                   type="radio"
@@ -165,31 +196,32 @@ const create = (status) => {
           </ul>
         </div>
         <div class="postAdvertisements__item">
-          <p class="textMontserrat_light">
+          <p class="textMontserrat_regular">
             Описание
           </p>
           <text-area-with-border v-model="descriptionValue" />
         </div>
         <div class="postAdvertisements__item ">
-          <p class="textMontserrat_light">
+          <p class="textMontserrat_regular">
             Цена
           </p>
           <div class="priceContainer">
             <input-announcement
                 v-model="priceValue"
+                class="price"
                 :class="{'border_accent': createTrigger && price.length === 0}"
             />
           </div>
         </div>
         <div class="postAdvertisements__item param">
-          <p class="textMontserrat_light">
+          <p class="textMontserrat_regular">
             Фотографии
           </p>
           <div class="addContent">
             <add-file/>
             <mini-gallery/>
 <!--            <div class="linkYouTube">
-              <p class="textMontserrat_light">
+              <p class="textMontserrat_regular">
                 Фотографии и видео
               </p>
               <input-border
@@ -199,7 +231,7 @@ const create = (status) => {
           </div>
         </div>
         <div class="postAdvertisements__item param">
-          <p class="textMontserrat_light">
+          <p class="textMontserrat_regular">
             Локация
           </p>
           <div class="mapArea">
@@ -210,43 +242,65 @@ const create = (status) => {
           </div>
         </div>
         <div class="postAdvertisements__item param">
-          <p class="textMontserrat_light">
+          <p class="textMontserrat_regular">
             Контакты
           </p>
           <div class="contacts">
             <div class="phone">
-              <p class="textMontserrat_light">
-                Телефон
-              </p>
               <input-announcement
                   v-model="phoneValue"
                   placeholder="+7 999 999-99-99"
               />
             </div>
-<!--            <div class="options">
-              <p class="textMontserrat_light">
-                Способ связи
-              </p>
-              <ul class="optionsList">
-                <li>
-                  <input type="radio" id="111" class="custom-radio" name="changeOptions">
-                  <label for="111">
-                    Звонки и сообщения
-                  </label>
-                </li>
-                <li>
-                  <input type="radio" id="222" class="custom-radio" name="changeOptions">
-                  <label for="222">Только звонки</label>
-                </li>
-                <li>
-                  <input type="radio" id="333" class="custom-radio" name="changeOptions">
-                  <label for="333">
-                    Только сообщения
-                  </label>
-                </li>
-              </ul>
-            </div>-->
+            <div class="options">
+            </div>
           </div>
+        </div>
+        <div class="postAdvertisements__item param options">
+          <p class="textMontserrat_regular">
+            Способ связи
+          </p>
+          <ul class="optionsList">
+            <li>
+              <input
+                  v-model="communicationValue"
+                  type="radio"
+                  id="111"
+                  class="custom-radio"
+                  name="changeOptions"
+                  value="call+message"
+              />
+              <label for="111">
+                Звонки и сообщения
+              </label>
+            </li>
+            <li>
+              <input
+                  v-model="communicationValue"
+                  type="radio"
+                  id="222"
+                  class="custom-radio"
+                  name="changeOptions"
+                  value="call"
+              />
+              <label for="222">
+                Только звонки
+              </label>
+            </li>
+            <li>
+              <input
+                  v-model="communicationValue"
+                  type="radio"
+                  id="333"
+                  class="custom-radio"
+                  name="changeOptions"
+                  value="message"
+              />
+              <label for="333">
+                Только сообщения
+              </label>
+            </li>
+          </ul>
         </div>
       </div>
     </main>
@@ -270,6 +324,11 @@ const create = (status) => {
   &__main {
     margin-top: rem(20);
 
+    .container {
+      width: 70%;
+      margin: 0 auto;
+    }
+
     .title {
       font-size: rem(24);
       padding-bottom: rem(20);
@@ -277,16 +336,16 @@ const create = (status) => {
   }
 
   &__item {
-    margin-top: rem(50);
+    margin-top: rem(20);
     display: grid;
-    grid-template-columns: 1fr 3fr;
-    align-items: center;
+    grid-template-columns: 0.8fr 3fr;
+    align-items: start;
 
     &:first-child {
       margin-top: 0;
     }
 
-    .textMontserrat_light {
+    .textMontserrat_regular {
       max-width: rem(300);
     }
 
@@ -343,8 +402,8 @@ const create = (status) => {
       display: flex;
       gap: rem(20);
 
-      .input {
-        flex: 1 1 70%;
+      .price {
+        width: 20%;
       }
 
       .priceModal {
@@ -356,10 +415,6 @@ const create = (status) => {
         justify-content: center;
         gap: rem(30);
       }
-    }
-
-    .textMontserrat_light {
-      font-size: rem(20);
     }
 
     .addFile {
@@ -387,21 +442,23 @@ const create = (status) => {
       display: flex;
       align-items: center;
       gap: rem(31);
-    }
-    .options{
-      margin-top: rem(65);
-      display: flex;
-      gap: rem(60);
-      ul{
-        display: flex;
-        flex-direction: column;
-        gap: rem(45);
+
+      input {
+        width: 30%;
       }
     }
   }
 
+  .options{
+    ul{
+      display: flex;
+      flex-direction: column;
+      gap: rem(20);
+    }
+  }
+
   &__footer{
-    margin-top: rem(100);
+    margin: rem(70) auto 0;
     max-width: rem(573);
     display: flex;
     gap: rem(20);

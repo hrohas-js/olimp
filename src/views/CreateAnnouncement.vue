@@ -23,7 +23,7 @@ onMounted(() => {
 const getCategoriesTree = (slug, category, filter = null) => {
   switch (slug) {
     case 'category':
-      catalogStore.currentCategory = category.id;
+      catalogStore.currentCategory = category;
       catalogStore.getSubCategories();
       if (announcementStore.newItem.categories.length === 1) {
         announcementStore.newItem.categories[0] = {
@@ -71,7 +71,6 @@ const getCategoriesTree = (slug, category, filter = null) => {
           name: category.name
         });
       }
-      console.log(announcementStore.newItem)
       announcementStore.getParameters({
         filter_id: filter.id,
         filter_content_id: category.id
@@ -94,15 +93,15 @@ const getCategoriesTree = (slug, category, filter = null) => {
     </div>
     <main class="create__main">
       <nav class="create__navigation border border_subBgOpacity">
-        <p class="textMontserrat_light">
-          Категории
+        <p class="textMontserrat_bold">
+          Категории:
         </p>
         <ul class="textMontserrat_regular">
           <li
               v-for="category in categories"
               :key="category.id"
               v-html="category.name"
-              :class="{'active': category.id === newItemCategories[0]}"
+              :class="{'active': category.id === newItemCategories[0]?.id}"
               @click="getCategoriesTree('category', category)"
           />
         </ul>
@@ -112,15 +111,15 @@ const getCategoriesTree = (slug, category, filter = null) => {
             v-if="subCategories.length > 0"
             class="create__navigation border border_subBgOpacity borderLeftNone"
         >
-          <p class="textMontserrat_light">
-            Подкатегории
+          <p class="textMontserrat_bold">
+            Подкатегории:
           </p>
           <ul class="textMontserrat_regular">
             <li
                 v-for="subCategory in subCategories"
                 :key="subCategory.id"
                 v-html="subCategory.name"
-                :class="{'active': subCategory.id === newItemCategories[1]}"
+                :class="{'active': subCategory.id === newItemCategories[1]?.id}"
                 @click="getCategoriesTree('subCategory', subCategory)"
             />
           </ul>
@@ -131,8 +130,8 @@ const getCategoriesTree = (slug, category, filter = null) => {
             v-if="filters.length > 0"
             class="create__navigation border border_subBgOpacity borderLeftNone"
         >
-          <p class="textMontserrat_light">
-            Параметры
+          <p class="textMontserrat_bold">
+            Параметры:
           </p>
           <div
               v-for="filter in filters"
@@ -143,7 +142,7 @@ const getCategoriesTree = (slug, category, filter = null) => {
               <li
                   v-for="param in filter.content"
                   :key="param.id"
-                  :class="{'active': param.id === newItemCategories[3]}"
+                  :class="{'active': param.id === newItemCategories[3]?.id}"
                   @click="getCategoriesTree('filter', param, filter)"
               >
                 {{param.name}}
@@ -176,6 +175,9 @@ const getCategoriesTree = (slug, category, filter = null) => {
     flex: 0 0 33.333%;
     p,li{
       padding: rem(12) rem(10) rem(10);
+    }
+    p {
+      font-size: rem(16);
     }
     li{
       cursor: pointer;

@@ -69,15 +69,15 @@ const checkFileCount = (e) => {
 .addFile {
   display: flex;
   align-items: center;
-  gap: rem(71);
+  gap: rem(20);
   cursor: pointer;
 
   .text{
     p{
-      font-size: rem(20);
+      font-size: rem(14);
     }
     .color_blackLight{
-      margin-top: rem(20);
+      margin-top: rem(14);
     }
   }
 
@@ -90,6 +90,7 @@ const checkFileCount = (e) => {
     padding: rem(8) 0;
     display: flex;
     justify-content: center;
+    max-width: rem(55);
     svg{
       max-width: 80%;
       path{

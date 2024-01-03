@@ -11,10 +11,12 @@ const width = computed(() => mainStore.display_width);
   <footer class="footerComponent background_subBg">
     <div class="wrapper">
       <header class="footerComponent__header textMontserrat">
-        <img
-            src="@/assets/logo.jpg"
-            alt="logo"
-        />
+        <router-link to="/">
+          <img
+              src="@/assets/logo.jpg"
+              alt="logo"
+          />
+        </router-link>
         <h2 class="textMontserrat_medium color_colorBg">
           Центр Творчества
         </h2>
@@ -140,6 +142,10 @@ const width = computed(() => mainStore.display_width);
     gap: rem(50);
     //margin-left: rem(123);
     padding-bottom: rem(8);
+
+    img {
+      max-width: rem(250);
+    }
 
     .textMontserrat_medium {
       font-size: rem(18);

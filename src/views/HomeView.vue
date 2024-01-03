@@ -19,7 +19,12 @@ const mainStore = useMainStore();
 const catalogStore = useCatalogStore();
 
 const width = computed(() => mainStore.display_width);
+const location = computed(() => mainStore.location);
 const catalog = computed(() => catalogStore.searchCatalog);
+
+const openGeo = () => {
+  mainStore.popup = 'location';
+}
 </script>
 
 <template>
@@ -67,7 +72,10 @@ const catalog = computed(() => catalogStore.searchCatalog);
             v-if="width <= 1024 && width > 768"
             class="filterContainer"
         >
-          <div class="geo">
+          <div
+              class="geo"
+              @click="openGeo"
+          >
             <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="7.999" cy="6.8" stroke="#000" stroke-width="1.2" r="1.8"></circle>
               <path
@@ -76,7 +84,7 @@ const catalog = computed(() => catalogStore.searchCatalog);
               </path>
             </svg>
             <p class="textMontserrat_regular">
-              Москва и Московская область
+              {{ location }}
             </p>
           </div>
           <div class="searchContainer">
@@ -128,7 +136,10 @@ const catalog = computed(() => catalogStore.searchCatalog);
             v-if="width > 1024"
             class="filterContainer"
         >
-          <div class="geo">
+          <div
+              class="geo"
+              @click="openGeo"
+          >
             <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="7.999" cy="6.8" stroke="#000" stroke-width="1.2" r="1.8"></circle>
               <path
@@ -137,7 +148,7 @@ const catalog = computed(() => catalogStore.searchCatalog);
               </path>
             </svg>
             <p class="textMontserrat_regular">
-              Москва и Московская область
+              {{ location }}
             </p>
           </div>
           <div class="searchContainer">
@@ -293,6 +304,19 @@ const catalog = computed(() => catalogStore.searchCatalog);
       flex: 1 1 25%;
       display: flex;
       gap: rem(5);
+      justify-content: flex-end;
+      align-items: center;
+      margin-right: rem(10);
+      cursor: pointer;
+
+      &:hover {
+        color: $color_accent;
+
+        circle,
+        path {
+          stroke: $color_accent;
+        }
+      }
 
       svg {
         flex-shrink: 0;

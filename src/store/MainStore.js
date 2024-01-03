@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { validateField } from "@/plugins/validator";
+import { AnotherServicesApi } from "@/api/AnotherServices/AnotherServicesApi";
 
 export const useMainStore = defineStore("mainStore", {
     state: () => ({
@@ -26,7 +27,11 @@ export const useMainStore = defineStore("mainStore", {
             avatar_url: ""
         },
         errors: [],
-        loader: false
+        loader: false,
+        location: '',
+        marker: {
+            coordinates: [37.617644, 55.755819]
+        }
     }),
     actions: {
         closeModal(elem) {
@@ -40,6 +45,40 @@ export const useMainStore = defineStore("mainStore", {
             this.errors = this.errors.filter(elem => elem.id !== key);
             if (res.error) {
                 this.errors.push(res);
+            }
+        },
+        async fetchCLADR(str) {
+            try {
+                const response = await AnotherServicesApi.fetchCLADR(str);
+                console.log(response);
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async fetchMap(mode, coords) {
+            try {
+                const response = await AnotherServicesApi.fetchMap(coords);
+                if (mode === 'coordinates') {
+                    response.response.GeoObjectCollection.featureMember.forEach(elem => {
+                        if (elem.GeoObject.metaDataProperty.GeocoderMetaData.kind === 'locality') {
+                            this.location = elem.GeoObject.metaDataProperty.GeocoderMetaData.text.replace('Россия, ', '');
+                        }
+                    });
+                } else {
+                    this.marker = {...this.marker, coordinates: response.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ').map(Number)}
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async fetchCoords() {
+            try {
+                await AnotherServicesApi.fetchCoords().then((response) => {
+                    this.marker.coordinates = [response.lon, response.lat];
+                    this.fetchMap('coordinates', `${response.lon}, ${response.lat}`)
+                });
+            } catch (error) {
+                console.log(error)
             }
         }
     }

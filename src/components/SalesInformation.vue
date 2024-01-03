@@ -1,10 +1,16 @@
 <script setup>
 import {useMainStore} from "@/store/MainStore";
 import {computed} from "vue";
+import {useProductStore} from "@/store/ProductStore";
 
 const mainStore = useMainStore();
+const productStore = useProductStore();
 
 const width = computed(() => mainStore.display_width);
+const author = computed(() => productStore.author);
+const mainLetter = computed(() => {
+  if (author.value) return author.value[0].toUpperCase();
+});
 </script>
 
 <template>
@@ -15,7 +21,9 @@ const width = computed(() => mainStore.display_width);
     <main class="saleInformation__main">
       <div class="information">
         <header class="saleInformation__header">
-          <h3 class="textMontserrat color_subBg">Ксения Лодочкина</h3>
+          <h3 class="textMontserrat color_subBg">
+            {{ author }}
+          </h3>
         </header>
         <div class="score">
           <p class="textMontserrat_regular">
@@ -40,7 +48,7 @@ const width = computed(() => mainStore.display_width);
         <p class="textMontserrat_regular contactPerson">Частное лицо</p>
       </div>
       <div class="circle background_subBg color_colorBg">
-        К
+        {{ mainLetter }}
       </div>
     </main>
   </section>

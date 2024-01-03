@@ -53,7 +53,13 @@ const addToWishlist = () => {
 }
 
 const goToProduct = () => {
-  router.push('/cartPage/' + props.item.id);
+  const url = router.resolve({
+    name: "cartPage",
+    params: {
+      id: props.item.id
+    }
+  }).href;
+  window.open(url, '_blank');
 }
 </script>
 

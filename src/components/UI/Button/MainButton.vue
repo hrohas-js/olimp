@@ -35,7 +35,7 @@ const props = defineProps({
 
 <template>
   <button
-      class="button_mainButton"
+      class="button button_mainButton"
       :class="{
     'background_green': props.color === 'green',
     'background_subBg': props.color === 'blue',

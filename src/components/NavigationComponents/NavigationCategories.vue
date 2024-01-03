@@ -10,8 +10,8 @@ const catalogStore = useCatalogStore();
 const categories = computed(() => catalogStore.categories);
 
 const changeRoute = (category) => {
-  catalogStore.currentCategory = category.id;
-  localStorage.setItem('currentCategory', category.id);
+  catalogStore.currentCategory = category;
+  localStorage.setItem('currentCategory', JSON.stringify(category));
   catalogStore.title = category.name;
   catalogStore.getSubCategories();
   router.push(`/catalog/${category.slug}/all`);

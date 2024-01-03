@@ -16,7 +16,8 @@ export const useAnnouncementStore = defineStore("announcementStore", {
             location: '',
             phone: '',
             selectedParameters: [],
-            status: ''
+            status: '',
+            communication: ''
         }
     }),
     actions: {
@@ -127,6 +128,6 @@ export const useAnnouncementStore = defineStore("announcementStore", {
             } finally {
                 mainStore.loader = false;
             }
-        },
+        }
     }
 });

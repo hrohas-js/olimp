@@ -14,6 +14,8 @@ import {useAuthStore} from "@/store/AuthStore";
 import {useRouter} from "vue-router";
 import {onMounted, onBeforeMount, computed, watch} from "vue";
 import EditPersonalForm from "@/components/UI/Modals/EditPersonalForm";
+import GeoForm from "@/components/UI/Modals/GeoForm";
+import GeoAnnouncementForm from "@/components/UI/Modals/GeoAnnouncementForm";
 
 const mainStore = useMainStore();
 const profileStore = useProfileStore();
@@ -38,6 +40,7 @@ watch(jwt, (newValue, oldValue) => {
 onBeforeMount(() => {
   catalogStore.getCategories();
   catalogStore.getAnnouncements();
+  mainStore.fetchCoords();
 });
 
 onMounted(() => {
@@ -70,6 +73,8 @@ onMounted(() => {
     <loader v-if="load" />
     <auth-form v-if="popup === 'auth' || popup === 'register'" />
     <edit-personal-form v-if="popup === 'edit-personal'" />
+    <geo-form v-if="popup === 'location'" />
+    <geo-announcement-form v-if="popup === 'deal-location'" />
   </section>
 </template>
 

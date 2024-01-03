@@ -40,9 +40,13 @@ const changeSubCategory = (subCategory) => {
   if (width.value <= 768) {
     closeModal();
   }
-  catalogStore.subCategoryID = subCategory.id;
+  catalogStore.subCategoryID = subCategory;
   catalogStore.getFilters(subCategory.id);
-  document.querySelector('.main').scrollIntoView({
+  const element = document.querySelector('.main');
+  const rect = element.getBoundingClientRect();
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  window.scrollTo({
+    top: rect.top + scrollTop - 20, // desiredOffset - ваше желаемое смещение от верха
     behavior: 'smooth'
   });
 };

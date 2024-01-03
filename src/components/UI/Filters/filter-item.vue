@@ -33,7 +33,7 @@ const setCurrentFilter = (filID, filconID) => {
       <input
           type="checkbox"
           :id="item.id"
-          @click="setCurrentFilter(props.id, item.id)"
+          @click="setCurrentFilter(props.id, item)"
       />
       <label :for="item.id">
         {{ item.name }}
