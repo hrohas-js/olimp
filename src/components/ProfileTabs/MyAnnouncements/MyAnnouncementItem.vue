@@ -214,7 +214,7 @@ const announcementAction = (id) => {
                 </svg>
               </div>
               <p class="textMontserrat_regular">
-                {{ item.likes }}
+                {{ item.likes_count }}
               </p>
             </div>
           </div>
@@ -313,7 +313,7 @@ const announcementAction = (id) => {
                   </svg>
                 </div>
                 <p class="textMontserrat_regular">
-                  {{ item.likes }}
+                  {{ item.likes_count }}
                 </p>
               </div>
             </div>

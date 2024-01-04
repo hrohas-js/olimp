@@ -4,9 +4,11 @@ import InputBorder from "@/components/UI/Inputs/InputBorder";
 import {useMainStore} from "@/store/MainStore";
 import {useAuthStore} from "@/store/AuthStore";
 import {ElMessage} from "element-plus";
+import {useProfileStore} from "@/store/ProfileStore";
 
 const mainStore = useMainStore();
 const authStore = useAuthStore();
+const profileStore = useProfileStore();
 
 const popup = computed(() => mainStore.popup);
 const errors = computed(() => mainStore.errors);
@@ -50,7 +52,9 @@ const login = () => {
     empty = emptyCheck('email', 'Поле Email не может быть пустым');
     empty = emptyCheck('password', 'Поле Пароль не может быть пустым');
     if (!empty) {
-      authStore.auth();
+      authStore.auth().then(() => {
+        profileStore.getLikes();
+      });
     }
   }
 };

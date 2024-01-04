@@ -26,7 +26,8 @@ export const useProfileStore = defineStore("profileStore", {
             birth_datetime: "",
             avatar_url: ""
         },
-        myAnnouncements: []
+        myAnnouncements: [],
+        myLikes: []
     }),
     getters: {
         userMainLetter: (state) => {
@@ -112,6 +113,45 @@ export const useProfileStore = defineStore("profileStore", {
                 mainStore.loader = true;
                 const response = await ProfileApi.getAnnouncementOfUser(data);
                 this.myAnnouncements = response.result;
+            } catch (error) {
+                console.log(error)
+            } finally {
+                mainStore.loader = false;
+            }
+        },
+        async getLikes() {
+            const mainStore = useMainStore();
+            try {
+                mainStore.loader = true;
+                const response = await ProfileApi.getLikes({
+                    id: this.user.id
+                });
+                console.log(response)
+            } catch (error) {
+                console.log(error)
+            } finally {
+                mainStore.loader = false;
+            }
+        },
+        async addLike(data) {
+            const mainStore = useMainStore();
+            try {
+                mainStore.loader = true;
+                const response = await ProfileApi.addLike(data);
+                this.myLikes = response.result;
+                console.log(response)
+            } catch (error) {
+                console.log(error)
+            } finally {
+                mainStore.loader = false;
+            }
+        },
+        async removeLike(data) {
+            const mainStore = useMainStore();
+            try {
+                mainStore.loader = true;
+                const response = await ProfileApi.removeLike(data);
+                console.log(response)
             } catch (error) {
                 console.log(error)
             } finally {

@@ -14,15 +14,20 @@ import {useMainStore} from "@/store/MainStore";
 import {useProductStore} from "@/store/ProductStore";
 import {useCatalogStore} from "@/store/CatalogStore";
 import {computed, watch, onUnmounted} from "vue";
+import {useAuthStore} from "@/store/AuthStore";
+import {useProfileStore} from "@/store/ProfileStore";
 
 const router = useRouter();
 const route = useRoute();
 const mainStore = useMainStore();
 const productStore = useProductStore();
 const catalogStore = useCatalogStore();
+const authStore = useAuthStore();
+const profileStore = useProfileStore();
 
 const width = computed(() => mainStore.display_width);
 const someItem = computed(() => mainStore.someItem);
+const isAuth = computed(() => authStore.jwt !== null);
 
 const product = computed(() => {
   let prod = {};
@@ -65,6 +70,24 @@ const messageShow = computed(() => {
   }
   return flag;
 });
+const isLiked = computed(() => {
+  const id = parseInt(route.params.id);
+  let flag = false;
+  profileStore.myLikes.forEach(elem => {
+    if (id === elem.id) {
+      flag = true;
+    }
+  });
+  return flag;
+});
+
+const wishText = computed(() => {
+  if (isLiked.value) {
+    return 'В избранном'
+  } else {
+    return 'Добавить в избранное'
+  }
+});
 
 watch(product, (value) => {
   if (value.user_id.length > 0) {
@@ -88,6 +111,22 @@ const getLocation = () => {
   router.push('/cartPage')
   mainStore.someItem = param
 }*/
+
+const setLike = () => {
+  if (isLiked.value) {
+    profileStore.myLikes = profileStore.myLikes.filter(elem => product.value.id !== elem.id);
+    profileStore.addLike({
+      user_id: profileStore.user.id,
+      announcement_id: product.value.id
+    });
+  } else {
+    profileStore.myLikes.push(product.value);
+    profileStore.removeLike({
+      user_id: profileStore.user.id,
+      announcement_id: product.value.id
+    });
+  }
+}
 </script>
 
 <template>
@@ -100,9 +139,11 @@ const getLocation = () => {
     </div>
     <main class="cartPage__main background_elements">
       <action-button
-          v-if="width > 1024"
-          text="Добавить в избранное"
+          v-if="width > 1024 && isAuth"
+          :text="wishText"
           :double-elem="true"
+          :class="{'wish': isLiked}"
+          @click="setLike"
       />
       <div class="content">
         <div class="content__item content__photo">

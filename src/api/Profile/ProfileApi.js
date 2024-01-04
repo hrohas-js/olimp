@@ -37,4 +37,40 @@ export class ProfileApi extends BaseApi {
             }
         })
     }
+    static async getLikes(data) {
+        const token = this.getJWT();
+        return this.doRequest({
+            method: "POST",
+            url: "/user/getLikes",
+            data: data,
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+    }
+    static async addLike(data) {
+        const token = this.getJWT();
+        return this.doRequest({
+            method: "POST",
+            url: "/user/addLike",
+            data: data,
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+    }
+    static async removeLike(data) {
+        const token = this.getJWT();
+        return this.doRequest({
+            method: "POST",
+            url: "/user/removeLike",
+            data: data,
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+    }
 }

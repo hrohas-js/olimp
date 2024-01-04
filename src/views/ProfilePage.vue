@@ -13,7 +13,7 @@ import MyOrders from "@/components/ProfileTabs/MyOrders";
 import SettingTabs from "@/components/ProfileTabs/SettingsTab";
 import WalletTabs from "@/components/ProfileTabs/WalletTabs";
 
-import {computed} from "vue";
+import {computed, onMounted} from "vue";
 import {useMainStore} from "@/store/MainStore";
 import {useProfileStore} from "@/store/ProfileStore";
 
@@ -23,6 +23,7 @@ const profileStore = useProfileStore();
 const width = computed(() => mainStore.display_width);
 const content = computed(() => profileStore.content);
 const user = computed(() => profileStore.user);
+
 const changeTitle = computed(() => {
   switch (content.value) {
     case "profileInfo":
@@ -46,6 +47,10 @@ const changeTitle = computed(() => {
     case "wallet":
       return "Кошелек"
   }
+});
+
+onMounted(() => {
+  profileStore.getLikes();
 });
 
 const showNavigation = () => {
