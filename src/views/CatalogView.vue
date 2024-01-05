@@ -7,34 +7,52 @@ import CatalogSubCategories from "@/components/NavigationComponents/CatalogSubCa
 import {useMainStore} from "@/store/MainStore";
 import {useCatalogStore} from "@/store/CatalogStore";
 import {useRoute, useRouter} from "vue-router";
-import {computed, watch, onMounted} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 
 const mainStore = useMainStore();
 const catalogStore = useCatalogStore();
 const route = useRoute();
 const router = useRouter();
 
-const checkUrl = computed(() => route.params.category);
+const title = ref('');
+
 const width = computed(() => mainStore.display_width);
-const title = computed(() => catalogStore.title);
+const categories = computed(() => catalogStore.categories);
 const subCategories = computed(() => catalogStore.subCategories);
 const catalog = computed(() => catalogStore.filteredCatalog);
 
-watch(checkUrl, (newValue) => {
-  changeUrl(newValue);
-})
+watch(route, () => {
+  checkPageTitle();
+});
 
 onMounted(() => {
-  changeUrl(checkUrl);
-})
+  checkPageTitle();
+});
+
+
+const checkPageTitle = () => {
+  categories.value.forEach(elem => {
+    if (elem.id === parseInt(route.params.category)) {
+      title.value = elem.name;
+    }
+  });
+  catalogStore.getSubCategories(route.params.category);
+  if (route.params.subCategory) {
+    catalogStore.getFilters(route.params.subCategory).then(() => {
+      subCategories.value.forEach(elem => {
+        if (elem.id === parseInt(route.params.subCategory)) {
+          title.value = elem.name.replaceAll('<br>', ' ');
+        }
+      });
+    });
+  }
+}
 
 const goToProduct = (param = "") => {
   router.push("/cartPage");
   mainStore.someItem = param
 }
-const changeUrl = (value) => {
-  catalogStore.getSubCategories();
-}
+
 const showSubcategories = () => {
   catalogStore.showModalSubCategories = true
 }
@@ -50,7 +68,7 @@ const showSubcategories = () => {
     </div>
     <main class="catalogView__main" v-if="width > 1024">
       <div class="catalogView__content">
-        <div class="subCategories">
+        <div v-if="route.params.subCategory === 'all'" class="subCategories">
           <catalog-sub-categories :category-items="subCategories" />
         </div>
         <section class="main">
@@ -76,7 +94,7 @@ const showSubcategories = () => {
                 v-if="catalog.length === 0"
                 class="textMontserrat_bold"
             >
-              Каталог пуст...
+              Предложений пока нет...
             </p>
           </section>
 <!--          <section

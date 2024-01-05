@@ -35,7 +35,10 @@ const openRegistrationForm = () => {
 
 <template>
   <div
-      class="textMontserrat"
+      v-if="route.name !== 'home'"
+      class="hr"
+  />
+  <div
       :class="{
         'background_subBg':route.name !== 'home',
         'background_elements':route.name === 'home'
@@ -190,7 +193,31 @@ const openRegistrationForm = () => {
 </template>
 
 <style scoped lang="scss">
+@keyframes snowfall {
+  from {
+    background-position-y: rem(40);
+  }
+  50% {
+    background-position-y: rem(156);
+  }
+  to {
+    background-position-y: rem(240);
+  }
+}
+
+.hr {
+  display: block;
+  width: 100%;
+  height: rem(3);
+  padding: rem(2) 0;
+  background-color: $color_subBg;
+  margin-bottom: rem(1);
+}
 .background_subBg {
+  background-image: url("@/assets/svg/snow.svg");
+  background-position-y: rem(156);
+  animation: snowfall 10s linear infinite;
+
   svg path {
     //stroke: $color_bg;
     fill: $color_bg;

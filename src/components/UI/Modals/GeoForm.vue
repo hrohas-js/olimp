@@ -52,8 +52,7 @@ const closeModal = () => {
   mainStore.popup = '';
 };
 
-const markerTest = (object, event) => {
-  console.log(event);
+const setMarker = (object, event) => {
   mainStore.fetchMap('coordinates', event.coordinates.join(', '));
   mainStore.marker.coordinates = event.coordinates;
 }
@@ -86,7 +85,7 @@ const setMapAddress = () => {
         >
           <yandex-map-default-scheme-layer/>
           <yandex-map-default-features-layer/>
-          <yandex-map-listener :settings="{ onClick: markerTest }" />
+          <yandex-map-listener :settings="{ onClick: setMarker }" />
           <yandex-map-marker :settings="marker">
             <template #default>
               <div :style="styleObject"/>

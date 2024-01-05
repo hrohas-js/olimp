@@ -2,6 +2,7 @@ import {defineStore} from "pinia";
 import {useMainStore} from "@/store/MainStore";
 import {ElMessage} from "element-plus";
 import {ProfileApi} from "@/api/Profile/ProfileApi";
+import {ChatsApi} from "@/api/Chats/ChatsApi";
 
 export const useProfileStore = defineStore("profileStore", {
     state: () => ({
@@ -27,7 +28,10 @@ export const useProfileStore = defineStore("profileStore", {
             avatar_url: ""
         },
         myAnnouncements: [],
-        myLikes: []
+        myLikes: localStorage.getItem('myLikes') !== null ? localStorage.getItem('myLikes') : [],
+        myChats: [],
+        currentChatID: 0,
+        currentChat: []
     }),
     getters: {
         userMainLetter: (state) => {
@@ -134,11 +138,40 @@ export const useProfileStore = defineStore("profileStore", {
             }
         },
         async addLike(data) {
+            try {
+                const response = await ProfileApi.addLike(data);
+                this.myLikes = response.result;
+                console.log(response)
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async removeLike(data) {
+            try {
+                const response = await ProfileApi.removeLike(data);
+                console.log(response)
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async getAllChats(data) {
             const mainStore = useMainStore();
             try {
                 mainStore.loader = true;
-                const response = await ProfileApi.addLike(data);
-                this.myLikes = response.result;
+                const response = await ChatsApi.getAllChats(data);
+                console.log(response)
+                this.myChats = response.result;
+            } catch (error) {
+                console.log(error)
+            } finally {
+                mainStore.loader = false;
+            }
+        },
+        async getChat(data) {
+            const mainStore = useMainStore();
+            try {
+                mainStore.loader = true;
+                const response = await ChatsApi.getChat(data);
                 console.log(response)
             } catch (error) {
                 console.log(error)
@@ -146,11 +179,23 @@ export const useProfileStore = defineStore("profileStore", {
                 mainStore.loader = false;
             }
         },
-        async removeLike(data) {
+        async getMessages(data) {
             const mainStore = useMainStore();
             try {
                 mainStore.loader = true;
-                const response = await ProfileApi.removeLike(data);
+                const response = await ChatsApi.getMessages(data);
+                console.log(response)
+            } catch (error) {
+                console.log(error)
+            } finally {
+                mainStore.loader = false;
+            }
+        },
+        async sendMessage(data) {
+            const mainStore = useMainStore();
+            try {
+                mainStore.loader = true;
+                const response = await ChatsApi.sendMessage(data);
                 console.log(response)
             } catch (error) {
                 console.log(error)

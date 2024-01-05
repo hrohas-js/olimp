@@ -11,9 +11,9 @@ const props = defineProps({
     }
   },
   id: {
-    type: String,
+    type: Object,
     default() {
-      return ''
+      return {}
     }
   }
 });
@@ -21,6 +21,8 @@ const props = defineProps({
 const setCurrentFilter = (filID, filconID) => {
   catalogStore.filterID = filID;
   catalogStore.filterContentID = filconID;
+  console.log(catalogStore.filterID)
+  console.log(catalogStore.filterContentID)
 }
 </script>
 

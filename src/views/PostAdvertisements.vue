@@ -7,25 +7,48 @@ import AddFile from "@/components/UI/AddFile";
 import MainButton from "@/components/UI/Button/MainButton";
 import {useAnnouncementStore} from "@/store/AnnouncementStore";
 import {useProfileStore} from "@/store/ProfileStore";
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 import {validateField} from "@/plugins/validator";
 import MiniGallery from "@/components/UI/MiniGallery";
 import {ElMessage} from "element-plus";
 import {useRouter} from "vue-router";
+import {
+  YandexMap,
+  YandexMapDefaultSchemeLayer,
+  YandexMapListener,
+  YandexMapMarker,
+  YandexMapDefaultFeaturesLayer
+} from 'vue-yandex-maps';
 
 const announcementStore = useAnnouncementStore();
 const profileStore = useProfileStore();
 const router = useRouter();
 
-const parameters = computed(() => announcementStore.newItem.parameters);
-const categories = computed(() => announcementStore.newItem.categories);
-const title = computed(() => announcementStore.newItem.title);
-const price = computed(() => announcementStore.newItem.price);
-const location = computed(() => announcementStore.newItem.location);
+const newItem = computed(() => announcementStore.newItem);
+const parameters = computed(() => newItem.value.parameters);
+const categories = computed(() => newItem.value.categories);
+const title = computed(() => newItem.value.title);
+const price = computed(() => newItem.value.price);
+const location = computed(() => newItem.value.location);
 const user = computed(() => profileStore.user);
-const communication = computed(() => announcementStore.newItem.communication);
+const communication = computed(() => newItem.value.communication);
+const marker = computed(() => newItem.value.marker);
 
 const createTrigger = ref(false);
+const payAgreementCheck = ref(false);
+const styleObject = {
+  position: "relative",
+  width: "20px",
+  height: "20px",
+  backgroundColor: "#ff0000",
+  borderRadius: "50%",
+  border: "2px solid #ffffff",
+  boxShadow: "0 0 5px rgba(0, 0, 0, 0.5)",
+  textAlign: "center",
+  color: "#ffffff",
+  fontWeight: "bold",
+  lineHeight: "20px",
+};
 
 const titleValue = computed({
   get() {
@@ -85,15 +108,37 @@ const breadcrumbs = computed(() => {
     if (index !== 2) {
       str += elem.name.replace(/<br\s*\/?>/gi, ' ');
       if (index !== announcementStore.newItem.categories.length - 1) {
-        str += '>'
+        str += ' / '
       }
     }
   });
   return str;
 });
+const priceInputLabel = computed(() => {
+  let str = 'Цена';
+  if (categories.value.length > 0) {
+    if (categories.value[0].id === 1 || categories.value[0].id === 2) {
+      str = 'Оплата';
+    }
+  }
+  return str;
+});
+
+watch(newItem, () => {
+  localStorage.setItem('newItem', JSON.stringify(newItem.value))
+});
 
 const chanceInput = (e) => {
   e.target.value = validateField('description', e.target.value).message;
+}
+
+const setMarker = (object, event) => {
+  announcementStore.fetchMap('coordinates', event.coordinates.join(', '));
+  announcementStore.newItem.marker.coordinates = event.coordinates;
+}
+
+const setMapAddress = () => {
+  announcementStore.fetchMap('address', location.value)
 }
 
 const create = (status) => {
@@ -133,7 +178,7 @@ const create = (status) => {
       parameters: JSON.stringify(announcementStore.newItem.selectedParameters),
       categories: JSON.stringify(categories.value),
       location: location.value,
-      price: price.value,
+      price: payAgreementCheck.value ? 'оплата по договоренности' : price.value,
       status: status,
       phone: announcementStore.newItem.phone,
       user_id: user.value.id,
@@ -141,6 +186,17 @@ const create = (status) => {
     }).then(() => {
       router.push('/profile');
     });
+  }
+}
+
+const setPayAgreement = (e) => {
+  const input = document.querySelector('.priceContainer .price');
+  if (e.target.checked) {
+    input.setAttribute('disabled', 'true');
+    input.classList.add('background_gray');
+  } else {
+    input.removeAttribute('disabled');
+    input.classList.remove('background_gray');
   }
 }
 </script>
@@ -203,7 +259,7 @@ const create = (status) => {
         </div>
         <div class="postAdvertisements__item ">
           <p class="textMontserrat_regular">
-            Цена
+            {{ priceInputLabel }}
           </p>
           <div class="priceContainer">
             <input-announcement
@@ -211,6 +267,20 @@ const create = (status) => {
                 class="price"
                 :class="{'border_accent': createTrigger && price.length === 0}"
             />
+            <div class="pay-agreement">
+              <input
+                  v-model="payAgreementCheck"
+                  id="agreement"
+                  type="checkbox"
+                  @change="setPayAgreement"
+              />
+              <label
+                  for="agreement"
+                  class="textMontserrat_medium"
+              >
+                Оплата по договоренности
+              </label>
+            </div>
           </div>
         </div>
         <div class="postAdvertisements__item param">
@@ -239,11 +309,30 @@ const create = (status) => {
                 v-model="locationValue"
                 :class="{'border_accent': createTrigger && location.length === 0}"
             />
+            <yandex-map
+                :settings="{
+                  location: {
+                    center: marker.coordinates.length > 0 ? marker.coordinates : [37.617644, 55.755819],
+                    zoom: 9,
+                  },
+                }"
+                width="100%"
+                height="300px"
+            >
+              <yandex-map-default-scheme-layer/>
+              <yandex-map-default-features-layer/>
+              <yandex-map-listener :settings="{ onClick: setMarker }" />
+              <yandex-map-marker :settings="marker">
+                <template #default>
+                  <div :style="styleObject"/>
+                </template>
+              </yandex-map-marker>
+            </yandex-map>
           </div>
         </div>
         <div class="postAdvertisements__item param">
           <p class="textMontserrat_regular">
-            Контакты
+            Контакты для связи
           </p>
           <div class="contacts">
             <div class="phone">
@@ -258,7 +347,7 @@ const create = (status) => {
         </div>
         <div class="postAdvertisements__item param options">
           <p class="textMontserrat_regular">
-            Способ связи
+            Предпочитаемый способ связи
           </p>
           <ul class="optionsList">
             <li>
@@ -325,7 +414,7 @@ const create = (status) => {
     margin-top: rem(20);
 
     .container {
-      width: 70%;
+      width: 60%;
       margin: 0 auto;
     }
 
@@ -400,7 +489,8 @@ const create = (status) => {
     .priceContainer {
       max-width: rem(800);
       display: flex;
-      gap: rem(20);
+      flex-direction: column;
+      gap: rem(10);
 
       .price {
         width: 20%;
@@ -414,6 +504,12 @@ const create = (status) => {
         align-items: center;
         justify-content: center;
         gap: rem(30);
+      }
+
+      .pay-agreement {
+        display: flex;
+        align-items: center;
+        gap: rem(5);
       }
     }
 
@@ -469,6 +565,7 @@ const create = (status) => {
   }
   .param {
     align-items: start;
+    justify-content: space-between;
   }
 }
 </style>

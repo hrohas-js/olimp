@@ -7,7 +7,8 @@ const mainStore = useMainStore();
 const productStore = useProductStore();
 
 const width = computed(() => mainStore.display_width);
-const author = computed(() => productStore.author);
+const author = computed(() => productStore.author ? productStore.author.name : '');
+
 const mainLetter = computed(() => {
   if (author.value) return author.value[0].toUpperCase();
 });

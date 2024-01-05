@@ -1,13 +1,14 @@
 <script setup>
 import {useMainStore} from "@/store/MainStore";
 import {useCatalogStore} from "@/store/CatalogStore";
-import {useRouter, useRoute} from "vue-router";
-import {computed, onMounted} from "vue";
+import {useRoute} from "vue-router";
+import {computed, onMounted, ref} from "vue";
 
-const router = useRouter();
 const route = useRoute();
 const mainStore = useMainStore();
 const catalogStore = useCatalogStore();
+
+const title = ref('');
 
 const props = defineProps({
   categoryItems: {
@@ -17,9 +18,14 @@ const props = defineProps({
 });
 
 const width = computed(() => mainStore.display_width);
-const title = computed(() => catalogStore.title);
+const categories = computed(() => catalogStore.categories);
 
 onMounted(() => {
+  categories.value.forEach(elem => {
+    if (elem.id === parseInt(route.params.category)) {
+      title.value = elem.name
+    }
+  });
   if (width.value > 768) {
     dynamicHeightLi();
   }
@@ -29,26 +35,17 @@ const closeModal = () => {
   catalogStore.showModalSubCategories = false
 }
 
-const changeSubCategory = (subCategory) => {
-  router.push({
-    name: "catalog",
-    params: {
-      category: route.params.category,
-      subCategory: subCategory.slug
-    }
-  })
+const changeSubCategory = () => {
   if (width.value <= 768) {
     closeModal();
   }
-  catalogStore.subCategoryID = subCategory;
-  catalogStore.getFilters(subCategory.id);
-  const element = document.querySelector('.main');
+  /*const element = document.querySelector('.main');
   const rect = element.getBoundingClientRect();
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
   window.scrollTo({
-    top: rect.top + scrollTop - 20, // desiredOffset - ваше желаемое смещение от верха
+    top: rect.top + scrollTop - 20,
     behavior: 'smooth'
-  });
+  });*/
 };
 
 const dynamicHeightLi = () => {
@@ -95,15 +92,24 @@ const dynamicHeightLi = () => {
           :class="{'color_black':width <= 768}"
           v-for="category in categoryItems"
           :key="category.id"
-          @click="changeSubCategory(category)"
+          @click="changeSubCategory"
       >
-        <p
-            v-html="category.name"
-            class="textMontserrat_medium catalogSubCategories__name"
-        />
-        <sub class="textMontserrat_regular">
-          7
-        </sub>
+        <router-link
+            :to="{
+              name: 'catalog',
+              params: {
+                category: route.params.category,
+                subCategory: category.id
+              }
+            }"
+            target="_blank"
+            class="textMontserrat_medium color_black catalogSubCategories__name"
+        >
+          <p v-html="category.name" />
+          <sub class="textMontserrat_regular">
+            {{ category.announcement_count }}
+          </sub>
+        </router-link>
       </li>
     </ul>
   </nav>
@@ -119,15 +125,23 @@ const dynamicHeightLi = () => {
   }
 
   &__category {
-    cursor: pointer;
-    max-width: rem(353);
-    display: flex;
-    align-items: center;
-    gap: rem(5);
+    a {
+      cursor: pointer;
+      max-width: rem(353);
+      display: flex;
+      align-items: center;
+      gap: rem(5);
+      width: 100%;
+    }
+
+    sub {
+      flex-shrink: 0;
+    }
   }
 
   &__name {
     font-size: rem(14);
+    text-align: left;
   }
 }
 

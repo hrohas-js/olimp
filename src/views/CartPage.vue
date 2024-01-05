@@ -13,7 +13,7 @@ import {useRoute} from "vue-router";
 import {useMainStore} from "@/store/MainStore";
 import {useProductStore} from "@/store/ProductStore";
 import {useCatalogStore} from "@/store/CatalogStore";
-import {computed, watch, onUnmounted} from "vue";
+import {computed, onMounted, onUnmounted} from "vue";
 import {useAuthStore} from "@/store/AuthStore";
 import {useProfileStore} from "@/store/ProfileStore";
 
@@ -89,12 +89,10 @@ const wishText = computed(() => {
   }
 });
 
-watch(product, (value) => {
-  if (value.user_id.length > 0) {
-    productStore.getUserOfAnnouncement({
-      id: value.user_id
-    });
-  }
+onMounted(() => {
+  productStore.getUserOfAnnouncement({
+    id: route.params.author
+  });
 });
 
 onUnmounted(() => {
@@ -115,17 +113,28 @@ const getLocation = () => {
 const setLike = () => {
   if (isLiked.value) {
     profileStore.myLikes = profileStore.myLikes.filter(elem => product.value.id !== elem.id);
-    profileStore.addLike({
+    profileStore.removeLike({
       user_id: profileStore.user.id,
       announcement_id: product.value.id
     });
   } else {
     profileStore.myLikes.push(product.value);
-    profileStore.removeLike({
+    profileStore.addLike({
       user_id: profileStore.user.id,
       announcement_id: product.value.id
     });
   }
+  localStorage.setItem('myLikes', JSON.stringify(profileStore.myLikes));
+}
+
+const openChat = () => {
+  console.log(product.value)
+  profileStore.getChat({
+    title: product.value.title,
+    user1: profileStore.user.id,
+    user2: productStore.author.id,
+    announcement_id: product.value.id
+  });
 }
 </script>
 
@@ -228,6 +237,7 @@ const setLike = () => {
                   button-text="Написать сообщение"
                   color="blue"
                   size="big"
+                  @click="openChat"
               />
             </div>
           </div>
@@ -429,6 +439,7 @@ const setLike = () => {
                 button-text="Написать сообщение"
                 color="blue"
                 size="big"
+                @click="openChat"
             />
           </div>
           <SaleInformation />

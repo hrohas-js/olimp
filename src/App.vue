@@ -676,7 +676,6 @@ button::-moz-focus-inner {
   li {
     @extend .background_mainBg;
     cursor: pointer;
-    padding: rem(10);
     text-align: center;
     display: flex;
     align-items: center;
@@ -684,7 +683,9 @@ button::-moz-focus-inner {
     gap: rem(7);
     border-radius: 10px;
     transition: all 0.3s;
-
+    a {
+      padding: rem(10);
+    }
     p {
       flex: 1 1 80%;
       text-align: left;

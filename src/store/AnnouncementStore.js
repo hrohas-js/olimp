@@ -3,10 +3,11 @@ import {useMainStore} from "@/store/MainStore";
 import {useProfileStore} from "@/store/ProfileStore";
 import {AnnouncementApi} from "@/api/Announcement/AnnouncementApi";
 import {ElMessage} from "element-plus";
+import {AnotherServicesApi} from "@/api/AnotherServices/AnotherServicesApi";
 
 export const useAnnouncementStore = defineStore("announcementStore", {
     state: () => ({
-        newItem: {
+        newItem: localStorage.getItem('newItem') !== null ? JSON.parse(localStorage.getItem('newItem')) : {
             title: '',
             description: '',
             categories: [],
@@ -17,7 +18,10 @@ export const useAnnouncementStore = defineStore("announcementStore", {
             phone: '',
             selectedParameters: [],
             status: '',
-            communication: ''
+            communication: '',
+            marker: {
+                coordinates: [37.617644, 55.755819]
+            }
         }
     }),
     actions: {
@@ -127,6 +131,32 @@ export const useAnnouncementStore = defineStore("announcementStore", {
                 console.log(error)
             } finally {
                 mainStore.loader = false;
+            }
+        },
+        async fetchMap(mode, coords) {
+            try {
+                const response = await AnotherServicesApi.fetchMap(coords);
+                if (mode === 'coordinates') {
+                    response.response.GeoObjectCollection.featureMember.forEach(elem => {
+                        if (elem.GeoObject.metaDataProperty.GeocoderMetaData.kind === 'locality') {
+                            this.newItem.location = elem.GeoObject.metaDataProperty.GeocoderMetaData.text.replace('Россия, ', '');
+                        }
+                    });
+                } else {
+                    this.newItem.marker = {...this.marker, coordinates: response.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ').map(Number)}
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async fetchCoords() {
+            try {
+                await AnotherServicesApi.fetchCoords().then((response) => {
+                    this.newItem.marker.coordinates = [response.lon, response.lat];
+                    this.fetchMap('coordinates', `${response.lon}, ${response.lat}`)
+                });
+            } catch (error) {
+                console.log(error)
             }
         }
     }

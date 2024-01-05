@@ -9,10 +9,12 @@ const catalogStore = useCatalogStore();
 const announcementStore = useAnnouncementStore();
 const router = useRouter();
 
-const categories = computed(() => catalogStore.categories);
+const categories = computed(() => catalogStore.createdCategories);
 const subCategories = computed(() => catalogStore.subCategories);
 const filters = computed(() => catalogStore.filters);
 const newItemCategories = computed(() => announcementStore.newItem.categories);
+
+const subFlag = ref(false);
 
 onMounted(() => {
   catalogStore.subCategories = [];
@@ -23,18 +25,22 @@ onMounted(() => {
 const getCategoriesTree = (slug, category, filter = null) => {
   switch (slug) {
     case 'category':
-      catalogStore.currentCategory = category;
-      catalogStore.getSubCategories();
-      if (announcementStore.newItem.categories.length === 1) {
-        announcementStore.newItem.categories[0] = {
-          id: category.id,
-          name: category.name
-        };
+      if (category.name === 'Работа') {
+        subFlag.value = true;
       } else {
-        announcementStore.newItem.categories.push({
-          id: category.id,
-          name: category.name
-        });
+        catalogStore.currentCategory = category;
+        catalogStore.getSubCategories(category.id);
+        if (announcementStore.newItem.categories.length === 1) {
+          announcementStore.newItem.categories[0] = {
+            id: category.id,
+            name: category.name
+          };
+        } else {
+          announcementStore.newItem.categories.push({
+            id: category.id,
+            name: category.name
+          });
+        }
       }
       break;
     case 'subCategory':
@@ -100,10 +106,24 @@ const getCategoriesTree = (slug, category, filter = null) => {
           <li
               v-for="category in categories"
               :key="category.id"
-              v-html="category.name"
-              :class="{'active': category.id === newItemCategories[0]?.id}"
+              class="cats"
               @click="getCategoriesTree('category', category)"
-          />
+          >
+            <span v-html="category.name" />
+            <ul
+                v-if="category.subs && subFlag"
+                class="subs"
+            >
+              <li
+                  v-for="item in category.subs"
+                  :key="item.id"
+                  :class="{'active': item.id === newItemCategories[0]?.id}"
+                  @click="getCategoriesTree('category', item)"
+              >
+                {{ item.title }}
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <transition name="fade">
@@ -173,17 +193,37 @@ const getCategoriesTree = (slug, category, filter = null) => {
   }
   &__navigation {
     flex: 0 0 33.333%;
-    p,li{
+    p, li {
       padding: rem(12) rem(10) rem(10);
     }
     p {
       font-size: rem(16);
     }
-    li{
+    li {
       cursor: pointer;
+
+      .subs {
+        padding-left: rem(20);
+      }
+
       &.active,
-      &:hover{
+      &:hover {
         background: $color_blueLikeAvt;
+      }
+
+      &.cats:first-child {
+        padding: 0;
+        span {
+          padding: rem(12) rem(10) rem(10);
+          display: block;
+          &:hover {
+            background: $color_blueLikeAvt;
+          }
+        }
+        &.active,
+        &:hover{
+          background: transparent;
+        }
       }
     }
   }

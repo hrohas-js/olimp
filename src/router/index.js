@@ -13,7 +13,7 @@ const routes = [
     component: () => import("@/views/CatalogView")
   },
   {
-    path: '/cartPage/:id',
+    path: '/cartPage/:author/:id',
     name: 'cartPage',
     component: () => import("@/views/CartPage")
   }
@@ -40,9 +40,10 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
   scrollBehavior(to, from, savedPosition) {
-    if (to.params.category !== from.params.category || to.name !== from.name) {
+    /*if (to.params.category !== from.params.category || to.name !== from.name) {
       return { top: 0, behavior: 'smooth' };
-    }
+    }*/
+    return { top: 0, behavior: 'smooth' };
   }
 })
 

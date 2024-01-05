@@ -1,12 +1,12 @@
 import {defineStore} from "pinia";
 import {useMainStore} from "@/store/MainStore";
 import {CatalogApi} from "@/api/Catalog/CatalogApi";
+import {useRoute} from "vue-router";
 
 export const useCatalogStore = defineStore("catalogStore", {
     state: () => ({
         categories: [],
         subCategories: [],
-        title : '',
         showModalSubCategories: false,
         currentCategory: localStorage.getItem('currentCategory') !== null ? parseInt(localStorage.getItem('currentCategory')) : {},
         filters: [],
@@ -14,7 +14,8 @@ export const useCatalogStore = defineStore("catalogStore", {
         subCategoryID: {},
         filterID: {},
         filterContentID: {},
-        search: ''
+        search: '',
+        createdCategories: []
     }),
     getters: {
         currentCategoryName: (state) => {
@@ -25,22 +26,24 @@ export const useCatalogStore = defineStore("catalogStore", {
             return res;
         },
         filteredCatalog: (state) => {
+            const route = useRoute();
             let res = [];
-            if (state.currentCategory.id !== 0) {
+            if (route.params.category) {
                 res = state.catalog.filter(elem => {
                     const cats = JSON.parse(elem.categories);
-                    return cats[0].id === state.currentCategory.id;
+                    return cats[0].id === parseInt(route.params.category);
                 });
             } else {
                 return state.catalog;
             }
-            if (state.subCategoryID.id !== 0) {
+            if (route.params.subCategory !== 'all') {
                 res = res.filter(elem => {
                     const cats = JSON.parse(elem.categories);
-                    return cats[1].id === state.subCategoryID.id;
+                    return cats[1].id === parseInt(route.params.subCategory);
                 });
             }
-            if (state.filterID.id !== 0 && state.filterContentID.id !== 0) {
+            if (Object.keys(state.filterID).length > 0 && Object.keys(state.filterContentID).length > 0) {
+                console.log('lol')
                 res = res.filter(elem => {
                     const cats = JSON.parse(elem.categories);
                     return cats[2].id === state.filterID.id && cats[3].id === state.filterContentID.id;
@@ -57,21 +60,41 @@ export const useCatalogStore = defineStore("catalogStore", {
     actions: {
         async getCategories() {
             const mainStore = useMainStore();
+            let arr = [];
             try {
                 mainStore.loader = true;
                 const response = await CatalogApi.getCategories();
                 this.categories = response.result;
+                arr = response.result.filter(elem => elem.name !== 'Поиск специалистов');
+                arr.forEach(elem => {
+                    if (elem.name === 'Работа (вакансии)') {
+                        elem.name = 'Работа';
+                        elem.subs = [
+                            {
+                                id: 1,
+                                title: 'Соискатель',
+                                name: 'Работа (вакансии)'
+                            },
+                            {
+                                id: 2,
+                                title: 'Работодатель',
+                                name: 'Поиск специалистов'
+                            }
+                        ];
+                    }
+                });
+                this.createdCategories = arr;
             } catch (error) {
                 console.log(error)
             } finally {
                 mainStore.loader = false;
             }
         },
-        async getSubCategories() {
+        async getSubCategories(data) {
             const mainStore = useMainStore();
             try {
                 mainStore.loader = true;
-                const response = await CatalogApi.getSubCategories(this.currentCategory.id);
+                const response = await CatalogApi.getSubCategories(data);
                 this.subCategories = response.result;
             } catch (error) {
                 console.log(error)

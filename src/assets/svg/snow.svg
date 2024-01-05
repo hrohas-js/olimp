@@ -1,0 +1,26 @@
+<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Снежинка 1 -->
+  <text x="20" y="40" font-family="Arial" font-size="24" fill="white">&#10052;</text>
+  <!-- Снежинка 2 -->
+  <text x="100" y="100" font-family="Arial" font-size="30" fill="white">&#10052;</text>
+  <!-- Снежинка 3 -->
+  <text x="150" y="50" font-family="Arial" font-size="20" fill="white">&#10052;</text>
+  <!-- Снежинка 4 -->
+  <text x="50" y="150" font-family="Arial" font-size="26" fill="white">&#10052;</text>
+  <!-- Снежинка 5 -->
+  <text x="80" y="20" font-family="Arial" font-size="22" fill="white">&#10052;</text>
+  <!-- Снежинка 6 -->
+  <text x="130" y="130" font-family="Arial" font-size="28" fill="white">&#10052;</text>
+  <!-- Снежинка 7 -->
+  <text x="170" y="80" font-family="Arial" font-size="18" fill="white">&#10052;</text>
+  <!-- Снежинка 8 -->
+  <text x="40" y="110" font-family="Arial" font-size="25" fill="white">&#10052;</text>
+  <!-- Снежинка 9 -->
+  <text x="120" y="30" font-family="Arial" font-size="21" fill="white">&#10052;</text>
+  <!-- Снежинка 10 -->
+  <text x="10" y="120" font-family="Arial" font-size="27" fill="white">&#10052;</text>
+  <!-- Снежинка 11 -->
+  <text x="90" y="60" font-family="Arial" font-size="23" fill="white">&#10052;</text>
+  <!-- Снежинка 12 -->
+  <text x="160" y="140" font-family="Arial" font-size="29" fill="white">&#10052;</text>
+</svg>

@@ -8,14 +8,6 @@ const router = useRouter();
 const catalogStore = useCatalogStore();
 
 const categories = computed(() => catalogStore.categories);
-
-const changeRoute = (category) => {
-  catalogStore.currentCategory = category;
-  localStorage.setItem('currentCategory', JSON.stringify(category));
-  catalogStore.title = category.name;
-  catalogStore.getSubCategories();
-  router.push(`/catalog/${category.slug}/all`);
-}
 </script>
 
 <template>
@@ -28,24 +20,25 @@ const changeRoute = (category) => {
           v-for="category in categories"
           :key="category.id"
           class="background_mainBg"
-          :class="{active: route.params.category === category.slug}"
-          @click="changeRoute(category)"
+          :class="{active: parseInt(route.params.category) === category.id}"
       >
-        <p class="textMontserrat_semiBold">
-          {{ category.name }}
-        </p>
-        <div class="image">
-          <img
-              :src="category.img"
-              :alt="category.name"
-          />
-        </div>
+        <router-link :to="`/catalog/${category.id}/all`">
+          <p class="textMontserrat_semiBold color_black">
+            {{ category.name }}
+          </p>
+          <div class="image">
+            <img
+                :src="category.img"
+                :alt="category.name"
+            />
+          </div>
+        </router-link>
       </li>
       <li
           class="background_mainBg"
           style="opacity: 0.5"
       >
-        <p class="textMontserrat_semiBold">
+        <p class="textMontserrat_semiBold soon">
           Скоро...
         </p>
       </li>
@@ -54,12 +47,21 @@ const changeRoute = (category) => {
 </template>
 
 <style scoped lang="scss">
+.soon {
+  text-align: center;
+}
 .navigationCategories {
   ul {
     display: grid;
     gap: rem(16);
     flex-wrap: wrap;
     li{
+      a {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+      }
       .image {
         flex: 0 0 20%;
         height: 100%;

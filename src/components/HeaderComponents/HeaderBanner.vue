@@ -11,10 +11,9 @@ const mainStore = useMainStore();
 
 const isAuth = computed(() => authStore.jwt !== null);
 
-const create = () => {
-  if (isAuth.value) {
-    router.push('/create');
-  } else {
+const create = (e) => {
+  if (!isAuth.value) {
+    e.preventDefault();
     mainStore.popup = 'auth';
   }
 }
@@ -32,10 +31,12 @@ const create = () => {
         </div>
       </header>
       <footer class="headerBanner__footer">
-        <main-button
-            :button-text="'Разместить объявление'"
-            @click="create"
-        />
+        <router-link to="/create">
+          <main-button
+              :button-text="'Разместить объявление'"
+              @click="create"
+          />
+        </router-link>
       </footer>
     </div>
   </section>
@@ -70,6 +71,8 @@ const create = () => {
 
     .button_mainButton {
       max-width: rem(220);
+      padding-left: rem(10);
+      padding-right: rem(10);
     }
   }
 }

@@ -1,5 +1,5 @@
 <script setup>
-import {computed, ref} from "vue";
+import {computed} from "vue";
 import {useMainStore} from "@/store/MainStore";
 import {useProductStore} from "@/store/ProductStore";
 import {useRouter} from "vue-router";
@@ -9,8 +9,6 @@ const router = useRouter();
 const mainStore = useMainStore();
 const productStore = useProductStore();
 const profileStore = useProfileStore();
-
-const like = ref(false);
 
 const props = defineProps({
   item: {
@@ -43,11 +41,19 @@ const width = computed(() => mainStore.display_width);
 
 const mainPhoto = computed(() => {
   const gal = JSON.parse(props.item.gallery);
-  return gal[0].src;
+  if (gal[0].src) {
+    return gal[0].src;
+  } else {
+    return '';
+  }
 });
 const categoriesTree = computed(() => {
   const cats = JSON.parse(props.item.categories);
   return cats[cats.length - 1].name;
+});
+const vacancyFlag = computed(() => {
+  const cats = JSON.parse(props.item.categories);
+  return cats[0].id === 1;
 });
 const isLiked = computed(() => {
   let flag = false;
@@ -63,6 +69,7 @@ const goToProduct = () => {
   const url = router.resolve({
     name: "cartPage",
     params: {
+      author: props.item.user_id,
       id: props.item.id
     }
   }).href;
@@ -83,6 +90,7 @@ const setLike = () => {
       announcement_id: props.item.id
     });
   }
+  localStorage.setItem('myLikes', JSON.stringify(profileStore.myLikes));
 }
 </script>
 
@@ -90,13 +98,20 @@ const setLike = () => {
   <article class="goodItem background_elements">
     <div class="image" @click="goToProduct">
       <img
+          v-if="mainPhoto.length > 0"
           :src="mainPhoto"
           :alt="props.item.title"
       />
+      <span v-else>
+        {{ categoriesTree }}
+      </span>
     </div>
     <section class="goodItem__content">
       <header class="goodItem__header">
         <h2 class="textMontserrat textMontserrat_medium color_colorSubBg" @click="goToProduct">
+           <span v-if="vacancyFlag">
+             Требуется
+           </span>
           {{ props.item.title }}
         </h2>
         <div
@@ -112,15 +127,15 @@ const setLike = () => {
       </header>
       <main class="goodItem__main">
         <p class="textMontserrat textMontserrat_regular">
-          Цена: {{ props.item.price }} руб.
+          {{ vacancyFlag ? 'Оплата' : 'Цена' }}: {{ props.item.price }} руб.
         </p>
       </main>
       <footer class="goodItem__footer">
-        <p class="textMontserrat textMontserrat_light  color_blackLight">
-          {{ props.item.location }}
-        </p>
-        <p class="textMontserrat textMontserrat_light  color_blackLight">
+        <p class="textMontserrat textMontserrat_regular  color_blackLight">
           {{ categoriesTree }}
+        </p>
+        <p class="textMontserrat textMontserrat_regular  color_blackLight">
+          {{ props.item.location }}
         </p>
 <!--        <time class="textMontserrat textMontserrat_light color_blackLight" datetime="19:50">
           Сегодня 19:50
@@ -140,6 +155,9 @@ const setLike = () => {
   .image {
     height: rem(177);
     border: 1px solid #ebebeb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     img {
       height: 100%;
@@ -160,7 +178,7 @@ const setLike = () => {
   }
 
   &__main{
-    margin: rem(11) 0;
+    margin: rem(5) 0;
 
     .textMontserrat {
       text-align: left;
@@ -179,8 +197,8 @@ const setLike = () => {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: rem(7);
-    .textMontserrat_light{
+    gap: rem(5);
+    .textMontserrat_regular{
       font-size: rem(14);
     }
   }

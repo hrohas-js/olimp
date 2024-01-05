@@ -6,7 +6,7 @@ import {AnotherServicesApi} from "@/api/AnotherServices/AnotherServicesApi";
 export const useProductStore = defineStore("productStore", {
     state: () => ({
         productID: 0,
-        author: localStorage.getItem('author') !== null ? localStorage.getItem('author') : '',
+        author: {},
         marker: {
             coordinates: [37.617644, 55.755819]
         }
@@ -17,8 +17,7 @@ export const useProductStore = defineStore("productStore", {
             try {
                 mainStore.loader = true;
                 const response = await AnnouncementApi.getUserOfAnnouncement(data);
-                this.author = response.result.name;
-                localStorage.setItem('author', response.result.name);
+                this.author = response.result;
             } catch (error) {
                 console.log(error)
             } finally {
