@@ -32,7 +32,7 @@ const filters = computed(() => catalogStore.filters)
     >
       <p
           v-if="filter.name.length > 0"
-          class="textMontserrat textMontserrat_medium"
+          class="textMontserrat textMontserrat_semiBold"
           v-html="filter.name"
       />
       <div class="content">

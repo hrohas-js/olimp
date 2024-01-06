@@ -30,6 +30,7 @@ const fetchGallery = (data) => {
         :items-to-show="1"
         :wrap-around="true"
         v-model="currentSlide"
+        class="main"
         @slide-end="fetchGallery"
     >
       <Slide

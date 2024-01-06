@@ -193,18 +193,6 @@ const openRegistrationForm = () => {
 </template>
 
 <style scoped lang="scss">
-@keyframes snowfall {
-  from {
-    background-position-y: rem(40);
-  }
-  50% {
-    background-position-y: rem(156);
-  }
-  to {
-    background-position-y: rem(240);
-  }
-}
-
 .hr {
   display: block;
   width: 100%;
@@ -215,8 +203,7 @@ const openRegistrationForm = () => {
 }
 .background_subBg {
   background-image: url("@/assets/svg/snow.svg");
-  background-position-y: rem(156);
-  animation: snowfall 10s linear infinite;
+  background-position-y: rem(-45);
 
   svg path {
     //stroke: $color_bg;

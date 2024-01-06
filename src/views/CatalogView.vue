@@ -92,7 +92,7 @@ const showSubcategories = () => {
             />
             <p
                 v-if="catalog.length === 0"
-                class="textMontserrat_bold"
+                class="textMontserrat_semiBold"
             >
               Предложений пока нет...
             </p>
@@ -235,8 +235,8 @@ const showSubcategories = () => {
 
 <style scoped lang="scss">
 .textMontserrat {
-  &_bold {
-    font-size: rem(24);
+  &_semiBold {
+    font-size: rem(18);
   }
 }
 

@@ -1,6 +1,6 @@
 <script setup>
 import {validateField} from "@/plugins/validator";
-import {computed, onMounted} from "vue";
+import {computed, onMounted, ref} from "vue";
 import InputAnnouncement from "@/components/UI/Inputs/InputAnnouncement";
 import {useMainStore} from "@/store/MainStore";
 import MainButton from "@/components/UI/Button/MainButton";
@@ -17,6 +17,7 @@ const mainStore = useMainStore();
 const location = computed(() => mainStore.location);
 const marker = computed(() => mainStore.marker);
 
+const allCityTracker = ref(false);
 const styleObject = {
   position: "relative",
   width: "20px",
@@ -60,6 +61,12 @@ const setMarker = (object, event) => {
 const setMapAddress = () => {
   mainStore.fetchMap('address', location.value)
 }
+
+const changeAllCityTracker = (e) => {
+  if (e.target.checked) {
+    mainStore.location = 'Все города';
+  }
+}
 </script>
 
 <template>
@@ -69,10 +76,28 @@ const setMapAddress = () => {
         Город или регион
       </h2>
       <input-announcement
+          v-if="!allCityTracker"
           v-model="geoValue"
           @blur="setMapAddress"
       />
-      <div class="map">
+      <div class="all-city">
+        <input
+            v-model="allCityTracker"
+            id="all-city"
+            type="checkbox"
+            @change="changeAllCityTracker"
+        />
+        <label
+            for="all-city"
+            class="textMontserrat_medium color_black"
+        >
+          Все города
+        </label>
+      </div>
+      <div
+          v-if="!allCityTracker"
+          class="map"
+      >
         <yandex-map
             :settings="{
               location: {
@@ -96,6 +121,7 @@ const setMapAddress = () => {
       <main-button
           color="blue"
           button-text="Выбрать"
+          @click="closeModal"
       />
       <button class="close" @click="closeModal">
         <svg width="20" height="20" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -134,5 +160,10 @@ const setMapAddress = () => {
     width: 30%;
     align-self: flex-end;
   }
+}
+.all-city {
+  display: flex;
+  align-items: center;
+  gap: rem(5);
 }
 </style>

@@ -830,6 +830,10 @@ button::-moz-focus-inner {
 #gallery {
   margin-bottom: rem(20);
 
+  .carousel__viewport {
+    border: 1px solid $color_subBg;
+  }
+
   .carousel__prev,
   .carousel__next {
     width: rem(45);

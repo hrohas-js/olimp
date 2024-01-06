@@ -80,13 +80,37 @@ const isLiked = computed(() => {
   });
   return flag;
 });
-
 const wishText = computed(() => {
   if (isLiked.value) {
     return 'В избранном'
   } else {
     return 'Добавить в избранное'
   }
+});
+const isActor = computed(() => {
+  let flag = false;
+  if (product.value.categories) {
+    const arr = JSON.parse(product.value.categories);
+    if ((arr[2].id === 30 || arr[2].id === 51) && (arr[3].id === 1 || arr[3].id === 2 || arr[3].id === 6)) {
+      flag = true;
+    }
+  }
+  return flag
+});
+const breadcrumbs = computed(() => {
+  let str = '';
+  if (product.value.categories) {
+    const arr = JSON.parse(product.value.categories);
+    arr.forEach((elem, index) => {
+      if (index !== 2) {
+        str += elem.name.replace(/<br\s*\/?>/gi, ' ');
+        if (index !== arr.length - 1) {
+          str += ' / '
+        }
+      }
+    });
+  }
+  return str;
 });
 
 onMounted(() => {
@@ -128,7 +152,6 @@ const setLike = () => {
 }
 
 const openChat = () => {
-  console.log(product.value)
   profileStore.getChat({
     title: product.value.title,
     user1: profileStore.user.id,
@@ -141,6 +164,9 @@ const openChat = () => {
 <template>
   <section class="cartPage wrapper textMontserrat">
     <search-header v-if="width > 1024"/>
+    <p class="textMontserrat_medium">
+      {{ breadcrumbs }}
+    </p>
     <div v-if="width > 1024" class="categoryName">
       <h2 class="textMontserrat_semiBold">
           {{ product.title }}
@@ -241,7 +267,10 @@ const openChat = () => {
               />
             </div>
           </div>
-          <section class="map"  v-if="width <= 1024">
+          <section
+              v-if="width <= 1024"
+              class="map"
+          >
             <h3 class="textMontserrat_bold">
               Место сделки
             </h3>
@@ -361,7 +390,7 @@ const openChat = () => {
             class="content__item content__information"
         >
           <div
-              v-if="someItem === 'technics' && width > 1024"
+              v-if="width > 1024 && !isActor"
               class="cartPageName textMontserrat_medium"
               :class="{'fraction':width > 1024}"
           >
@@ -371,24 +400,6 @@ const openChat = () => {
             <p>
               {{ product.price }} ₽
             </p>
-          </div>
-          <div
-              v-if="someItem !== 'technics' && width > 1024"
-              class="cartPageName fraction"
-          >
-            <div class="rating">
-              <svg xmlns="http://www.w3.org/2000/svg" width="15px" height="15px" viewBox="0 0 28 25" fill="none">
-                <path
-                    d="M9.53823 7.94355L12.905 1.60982C13.3372 0.796728 14.5859 0.796728 15.018 1.60982L18.3848 7.94355L25.914 8.96548C26.88 9.09659 27.265 10.1993 26.5657 10.8318L21.1185 15.7585L22.404 22.7186C22.5691 23.6124 21.5588 24.2939 20.6944 23.8718L13.9615 20.5839L7.22862 23.8718C6.36425 24.2939 5.35389 23.6124 5.51897 22.7186L6.80449 15.7585L1.35742 10.8318C0.658039 10.1993 1.04306 9.09659 2.00908 8.96548L9.53823 7.94355Z"
-                    stroke="#E9605A" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              <p class="textMontserrat_regular">
-                Рейтинг:
-              </p>
-              <p class="textMontserrat_regular">
-                5
-              </p>
-            </div>
           </div>
 <!--          <div
               v-if="someItem === 'technics' && width > 1024"
@@ -443,7 +454,7 @@ const openChat = () => {
             />
           </div>
           <SaleInformation />
-          <section class="map">
+          <section v-if="!isActor" class="map">
             <h3 class="textMontserrat_bold">
               Место сделки
             </h3>
@@ -484,6 +495,55 @@ const openChat = () => {
                 Показать на карте
               </div>
             </div>
+          </section>
+          <section
+              v-else
+              class="parameters"
+              :class="{'fraction':width > 1024}"
+          >
+            <h3 class="textMontserrat_bold">
+              Параметры
+            </h3>
+            <main class="parameters__main">
+              <div class="tableContent">
+                <ul>
+                  <li class="textMontserrat_regular">
+                    Город
+                  </li>
+                  <li
+                      v-for="(item, index) in parameters"
+                      :key="index"
+                      class="textMontserrat_regular"
+                  >
+                    {{ item.name }}
+                  </li>
+                </ul>
+                <ul>
+                  <li class="textMontserrat_medium">
+                    {{ product.location }}
+                  </li>
+                  <li
+                      v-for="(item, index) in parameters"
+                      :key="index"
+                      class="textMontserrat_medium"
+                  >
+                    {{ item.value }}
+                  </li>
+                </ul>
+              </div>
+            </main>
+            <section
+                v-if="width <= 1024 && someItem === 'technics'"
+                class="moreInfo"
+                :class="{'fraction':width > 1024}"
+            >
+              <h3 class="textMontserrat_medium">
+                Дополнительная информация
+              </h3>
+              <p class="textMontserrat_light">
+                {{ product.description }}
+              </p>
+            </section>
           </section>
         </div>
       </div>

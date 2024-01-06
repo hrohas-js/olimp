@@ -55,7 +55,11 @@ const titleValue = computed({
     return announcementStore.newItem.title;
   },
   set(value) {
-    announcementStore.newItem.title = validateField('title', value).message;
+    if (value.length > 50) {
+      announcementStore.newItem.title = validateField('title', value.slice(0, -1)).message;
+    } else {
+      announcementStore.newItem.title = validateField('title', value).message;
+    }
   }
 });
 const descriptionValue = computed({
@@ -122,6 +126,16 @@ const priceInputLabel = computed(() => {
     }
   }
   return str;
+});
+const isActor = computed(() => {
+  let flag = false;
+  if (categories.value) {
+    const arr = categories.value;
+    if ((arr[2].id === 30 || arr[2].id === 51) && (arr[3].id === 1 || arr[3].id === 2 || arr[3].id === 6)) {
+      flag = true;
+    }
+  }
+  return flag
 });
 
 watch(newItem, () => {
@@ -257,7 +271,10 @@ const setPayAgreement = (e) => {
           </p>
           <text-area-with-border v-model="descriptionValue" />
         </div>
-        <div class="postAdvertisements__item ">
+        <div
+            v-if="!isActor"
+            class="postAdvertisements__item"
+        >
           <p class="textMontserrat_regular">
             {{ priceInputLabel }}
           </p>

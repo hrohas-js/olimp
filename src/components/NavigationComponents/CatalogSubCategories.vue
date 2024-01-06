@@ -39,13 +39,6 @@ const changeSubCategory = () => {
   if (width.value <= 768) {
     closeModal();
   }
-  /*const element = document.querySelector('.main');
-  const rect = element.getBoundingClientRect();
-  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  window.scrollTo({
-    top: rect.top + scrollTop - 20,
-    behavior: 'smooth'
-  });*/
 };
 
 const dynamicHeightLi = () => {
@@ -102,7 +95,6 @@ const dynamicHeightLi = () => {
                 subCategory: category.id
               }
             }"
-            target="_blank"
             class="textMontserrat_medium color_black catalogSubCategories__name"
         >
           <p v-html="category.name" />

@@ -65,17 +65,6 @@ const isLiked = computed(() => {
   return flag;
 });
 
-const goToProduct = () => {
-  const url = router.resolve({
-    name: "cartPage",
-    params: {
-      author: props.item.user_id,
-      id: props.item.id
-    }
-  }).href;
-  window.open(url, '_blank');
-}
-
 const setLike = () => {
   if (isLiked.value) {
     profileStore.myLikes = profileStore.myLikes.filter(elem => props.item.id !== elem.id);
@@ -96,51 +85,78 @@ const setLike = () => {
 
 <template>
   <article class="goodItem background_elements">
-    <div class="image" @click="goToProduct">
-      <img
-          v-if="mainPhoto.length > 0"
-          :src="mainPhoto"
-          :alt="props.item.title"
-      />
-      <span v-else>
+    <div class="image">
+      <router-link :to="{
+          name: 'cartPage',
+          params: {
+            author: props.item.user_id,
+            id: props.item.id
+          }
+        }" target="_blank"
+      >
+        <img
+            v-if="mainPhoto.length > 0"
+            :src="mainPhoto"
+            :alt="props.item.title"
+        />
+        <span v-else>
         {{ categoriesTree }}
       </span>
+      </router-link>
     </div>
     <section class="goodItem__content">
       <header class="goodItem__header">
-        <h2 class="textMontserrat textMontserrat_medium color_colorSubBg" @click="goToProduct">
+        <router-link :to="{
+          name: 'cartPage',
+          params: {
+            author: props.item.user_id,
+            id: props.item.id
+          }
+        }" target="_blank"
+        >
+          <h2 class="textMontserrat textMontserrat_medium color_colorSubBg">
            <span v-if="vacancyFlag">
              Требуется
            </span>
-          {{ props.item.title }}
-        </h2>
+            {{ props.item.title }}
+          </h2>
+        </router-link>
         <div
             class="wishButton"
             @click="setLike"
         >
           <svg
-              :class="{'active':isLiked}"
+              :class="{'active': isLiked}"
               xmlns="http://www.w3.org/2000/svg" width="19" height="17" viewBox="0 0 19 17" fill="none">
             <path d="M18 5.79834C18 7.06416 17.4953 8.27999 16.5939 9.17938C14.5192 11.2503 12.5068 13.4098 10.3545 15.4057C9.86116 15.8565 9.07857 15.8401 8.60648 15.3689L2.40569 9.17938C0.531435 7.30849 0.531435 4.28818 2.40569 2.41732C4.29837 0.528083 7.38175 0.528083 9.27441 2.41732L9.49983 2.64229L9.72508 2.41745C10.6325 1.51117 11.8684 1 13.1595 1C14.4506 1 15.6864 1.51112 16.5939 2.41732C17.4954 3.31678 18 4.53254 18 5.79834Z" stroke="black" stroke-opacity="0.8" stroke-linejoin="round"/>
           </svg>
         </div>
       </header>
-      <main class="goodItem__main">
-        <p class="textMontserrat textMontserrat_regular">
-          {{ vacancyFlag ? 'Оплата' : 'Цена' }}: {{ props.item.price }} руб.
-        </p>
-      </main>
-      <footer class="goodItem__footer">
-        <p class="textMontserrat textMontserrat_regular  color_blackLight">
-          {{ categoriesTree }}
-        </p>
-        <p class="textMontserrat textMontserrat_regular  color_blackLight">
-          {{ props.item.location }}
-        </p>
-<!--        <time class="textMontserrat textMontserrat_light color_blackLight" datetime="19:50">
-          Сегодня 19:50
-        </time>-->
-      </footer>
+      <router-link :to="{
+          name: 'cartPage',
+          params: {
+            author: props.item.user_id,
+            id: props.item.id
+          }
+        }" target="_blank"
+      >
+        <main class="goodItem__main">
+          <p class="textMontserrat textMontserrat_regular color_black">
+            {{ vacancyFlag ? 'Оплата' : 'Цена' }}: {{ props.item.price }} руб.
+          </p>
+        </main>
+        <footer class="goodItem__footer">
+          <p class="textMontserrat textMontserrat_regular  color_blackLight">
+            {{ categoriesTree }}
+          </p>
+          <p class="textMontserrat textMontserrat_regular  color_blackLight">
+            {{ props.item.location }}
+          </p>
+          <!--        <time class="textMontserrat textMontserrat_light color_blackLight" datetime="19:50">
+                    Сегодня 19:50
+                  </time>-->
+        </footer>
+      </router-link>
     </section>
   </article>
 </template>
@@ -151,6 +167,10 @@ const setLike = () => {
   width: 100%;
   padding: 0 0 rem(10) 0;
   transition: all 0.2s;
+
+  a {
+    height: 100%;
+  }
 
   .image {
     height: rem(177);
