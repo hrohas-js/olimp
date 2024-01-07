@@ -20,4 +20,14 @@ export class AuthApi extends BaseApi {
             headers: this.headers
         })
     }
+    static async checkAuth() {
+        return this.doRequest({
+            method: "GET",
+            url: "/auth/validateToken",
+            headers: {
+                Authorization: `Bearer ${this.getJWT()}`,
+                'Content-Type': 'application/json'
+            }
+        })
+    }
 }

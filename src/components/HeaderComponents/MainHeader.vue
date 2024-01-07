@@ -1,7 +1,6 @@
 <script setup>
 import MainButton from "@/components/UI/Button/MainButton";
-import ProfileNavigator from "@/components/NavigationComponents/ProfileNavigation";
-
+import ProfileNavigation from "@/components/NavigationComponents/ProfileNavigation";
 import {computed, ref} from "vue";
 import {useRouter, useRoute} from "vue-router";
 import {useAuthStore} from "@/store/AuthStore";
@@ -170,10 +169,10 @@ const openRegistrationForm = () => {
             </div>
           </div>
           <div
-              v-show="showNavigation"
+              v-if="showNavigation"
               class="navigatorContainer background_elements"
           >
-            <profile-navigator
+            <profile-navigation
                 position="header"
             />
           </div>

@@ -334,6 +334,7 @@ const openChat = () => {
 <!--            </div>-->
 <!--          </div>-->
           <section
+              v-if="!isActor"
               class="parameters"
               :class="{'fraction':width > 1024}"
           >
@@ -342,21 +343,14 @@ const openChat = () => {
             </h3>
             <main class="parameters__main">
               <div class="tableContent">
-                <ul>
-                  <li
-                      v-for="(item, index) in parameters"
-                      :key="index"
-                      class="textMontserrat_regular"
-                  >
+                <ul
+                    v-for="(item, index) in parameters"
+                    :key="index"
+                >
+                  <li class="textMontserrat_regular">
                     {{ item.name }}
                   </li>
-                </ul>
-                <ul>
-                  <li
-                      v-for="(item, index) in parameters"
-                      :key="index"
-                      class="textMontserrat_medium"
-                  >
+                  <li class="textMontserrat_medium">
                     {{ item.value }}
                   </li>
                 </ul>
@@ -453,7 +447,7 @@ const openChat = () => {
                 @click="openChat"
             />
           </div>
-          <SaleInformation />
+          <SaleInformation v-if="!isActor" />
           <section v-if="!isActor" class="map">
             <h3 class="textMontserrat_bold">
               Место сделки
@@ -510,23 +504,18 @@ const openChat = () => {
                   <li class="textMontserrat_regular">
                     Город
                   </li>
-                  <li
-                      v-for="(item, index) in parameters"
-                      :key="index"
-                      class="textMontserrat_regular"
-                  >
-                    {{ item.name }}
-                  </li>
-                </ul>
-                <ul>
                   <li class="textMontserrat_medium">
                     {{ product.location }}
                   </li>
-                  <li
-                      v-for="(item, index) in parameters"
-                      :key="index"
-                      class="textMontserrat_medium"
-                  >
+                </ul>
+                <ul
+                    v-for="(item, index) in parameters"
+                    :key="index"
+                >
+                  <li class="textMontserrat_regular">
+                    {{ item.name }}
+                  </li>
+                  <li class="textMontserrat_medium">
                     {{ item.value }}
                   </li>
                 </ul>
@@ -769,17 +758,15 @@ const openChat = () => {
 
     .tableContent {
       max-width: rem(470);
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
 
       ul {
         margin-right: rem(10);
-
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        margin-bottom: rem(10);
       }
 
       li {
-        margin-top: rem(10);
-
         &:first-child {
           margin-top: 0;
         }

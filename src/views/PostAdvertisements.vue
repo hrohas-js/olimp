@@ -7,7 +7,7 @@ import AddFile from "@/components/UI/AddFile";
 import MainButton from "@/components/UI/Button/MainButton";
 import {useAnnouncementStore} from "@/store/AnnouncementStore";
 import {useProfileStore} from "@/store/ProfileStore";
-import {computed, ref, watch} from "vue";
+import {computed, onUnmounted, ref, watch} from "vue";
 import {validateField} from "@/plugins/validator";
 import MiniGallery from "@/components/UI/MiniGallery";
 import {ElMessage} from "element-plus";
@@ -36,6 +36,7 @@ const marker = computed(() => newItem.value.marker);
 
 const createTrigger = ref(false);
 const payAgreementCheck = ref(false);
+const inputValues = ref({});
 const styleObject = {
   position: "relative",
   width: "20px",
@@ -131,6 +132,7 @@ const isActor = computed(() => {
   let flag = false;
   if (categories.value) {
     const arr = categories.value;
+    console.log(arr);
     if ((arr[2].id === 30 || arr[2].id === 51) && (arr[3].id === 1 || arr[3].id === 2 || arr[3].id === 6)) {
       flag = true;
     }
@@ -138,13 +140,33 @@ const isActor = computed(() => {
   return flag
 });
 
-watch(newItem, () => {
+watch(newItem.value, () => {
   localStorage.setItem('newItem', JSON.stringify(newItem.value))
 });
 
-const chanceInput = (e) => {
-  e.target.value = validateField('description', e.target.value).message;
-}
+onUnmounted(() => {
+  announcementStore.newItem = {
+    title: '',
+    description: '',
+    categories: [],
+    price: '0',
+    parameters: [],
+    gallery: [],
+    location: '',
+    phone: '',
+    selectedParameters: [],
+    status: '',
+    communication: '',
+    marker: {
+      coordinates: [37.617644, 55.755819]
+    }
+  }
+  localStorage.removeItem('newItem');
+});
+
+const updateInputValue = (paramId, value) => {
+  inputValues.value[paramId] = validateField('description', value).message;
+};
 
 const setMarker = (object, event) => {
   announcementStore.fetchMap('coordinates', event.coordinates.join(', '));
@@ -245,7 +267,8 @@ const setPayAgreement = (e) => {
           </p>
           <input-announcement
               v-if="param.content.length === 0"
-              @input="chanceInput"
+              v-model="inputValues[param.id]"
+              @input="updateInputValue(param.id, $event.target.value)"
           />
           <ul v-else class="paramList">
             <li
@@ -258,6 +281,7 @@ const setPayAgreement = (e) => {
                   :name="param.slug"
                   :id="paramVariant.slug"
                   :checked="categories[3] === paramVariant.id"
+                  :value="paramVariant.name"
               />
               <label :for="paramVariant.slug">
                 {{ paramVariant.name }}

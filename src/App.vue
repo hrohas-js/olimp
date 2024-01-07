@@ -12,7 +12,7 @@ import {useProfileStore} from "@/store/ProfileStore";
 import {useCatalogStore} from "@/store/CatalogStore";
 import {useAuthStore} from "@/store/AuthStore";
 import {useRouter} from "vue-router";
-import {onMounted, onBeforeMount, computed, watch} from "vue";
+import {onMounted, onBeforeMount, computed, watch, nextTick} from "vue";
 import EditPersonalForm from "@/components/UI/Modals/EditPersonalForm";
 import GeoForm from "@/components/UI/Modals/GeoForm";
 import GeoAnnouncementForm from "@/components/UI/Modals/GeoAnnouncementForm";
@@ -32,10 +32,15 @@ const load = computed(() => mainStore.loader);
 const jwt = computed(() => authStore.jwt);
 
 watch(jwt, (newValue, oldValue) => {
-  if (oldValue === null && newValue !== null) {
+  if (newValue !== null && oldValue === null) {
     router.push('/profile');
+  } else if (newValue === null) {
+    console.log(newValue);
+    nextTick(() => {
+      router.push('/');
+    });
   }
-})
+});
 
 onBeforeMount(() => {
   catalogStore.getCategories();
@@ -44,6 +49,9 @@ onBeforeMount(() => {
 });
 
 onMounted(() => {
+  if (jwt.value !== null) {
+    authStore.checkAuth();
+  }
   mainStore.display_width = window.innerWidth;
   window.addEventListener('resize', () => {
     mainStore.display_width = window.innerWidth;

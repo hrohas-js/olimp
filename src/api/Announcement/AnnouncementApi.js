@@ -1,14 +1,13 @@
 import {BaseApi} from "@/api/BaseApi";
 
 export class AnnouncementApi extends BaseApi {
-    static token = this.getJWT();
     static async getParameters(data) {
         return this.doRequest({
             method: "POST",
             url: "/requests/get_parameters",
             data: data,
             headers: {
-                Authorization: `Bearer ${this.token}`,
+                Authorization: `Bearer ${this.getJWT()}`,
                 'Content-Type': 'application/json'
             }
         })
@@ -19,7 +18,7 @@ export class AnnouncementApi extends BaseApi {
             url: "/user/uploadGallery",
             data: data,
             headers: {
-                Authorization: `Bearer ${this.token}`,
+                Authorization: `Bearer ${this.getJWT()}`,
                 'Content-Type': 'multipart/form-data'
             }
         })
@@ -30,7 +29,7 @@ export class AnnouncementApi extends BaseApi {
             url: "/user/removeFromGallery",
             data: data,
             headers: {
-                Authorization: `Bearer ${this.token}`,
+                Authorization: `Bearer ${this.getJWT()}`,
                 'Content-Type': 'application/json'
             }
         })
@@ -41,7 +40,7 @@ export class AnnouncementApi extends BaseApi {
             url: "/requests/addAnnouncement",
             data: data,
             headers: {
-                Authorization: `Bearer ${this.token}`,
+                Authorization: `Bearer ${this.getJWT()}`,
                 'Content-Type': 'application/json'
             }
         })
@@ -52,7 +51,7 @@ export class AnnouncementApi extends BaseApi {
             url: "/requests/changeAnnouncementStatus",
             data: data,
             headers: {
-                Authorization: `Bearer ${this.token}`,
+                Authorization: `Bearer ${this.getJWT()}`,
                 'Content-Type': 'application/json'
             }
         })
@@ -63,7 +62,7 @@ export class AnnouncementApi extends BaseApi {
             url: "/requests/getUserOfAnnouncement",
             data: data,
             headers: {
-                Authorization: `Bearer ${this.token}`,
+                Authorization: `Bearer ${this.getJWT()}`,
                 'Content-Type': 'application/json'
             }
         })

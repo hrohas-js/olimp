@@ -5,8 +5,7 @@ const routes = [
     path: '/',
     name: 'home',
     component: () => import("@/views/HomeView")
-  }
-  ,
+  },
   {
     path: '/catalog/:category/:subCategory',
     name: 'catalog',
@@ -16,14 +15,12 @@ const routes = [
     path: '/cartPage/:author/:id',
     name: 'cartPage',
     component: () => import("@/views/CartPage")
-  }
-  ,
+  },
   {
     path: '/profile',
     name: 'profile',
     component: () => import("@/views/ProfilePage")
-  }
-  ,
+  },
   {
     path: '/postAdvertisements',
     name: 'PostAdvertisements',
@@ -40,11 +37,13 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
   scrollBehavior(to, from, savedPosition) {
-    /*if (to.params.category !== from.params.category || to.name !== from.name) {
-      return { top: 0, behavior: 'smooth' };
-    }*/
     return { top: 0, behavior: 'smooth' };
   }
 })
+
+router.beforeEach((to, from, next) => {
+  console.log(`Переход от ${from.path} к ${to.path}`);
+  next();
+});
 
 export default router

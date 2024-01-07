@@ -47,13 +47,14 @@ const mainPhoto = computed(() => {
     return '';
   }
 });
+const categories = computed(() => props.item.categories);
 const categoriesTree = computed(() => {
-  const cats = JSON.parse(props.item.categories);
+  const cats = JSON.parse(categories.value);
   return cats[cats.length - 1].name;
 });
 const vacancyFlag = computed(() => {
-  const cats = JSON.parse(props.item.categories);
-  return cats[0].id === 1;
+  const cats = JSON.parse(categories.value);
+  return cats[0].id === 2;
 });
 const isLiked = computed(() => {
   let flag = false;
@@ -63,6 +64,16 @@ const isLiked = computed(() => {
     }
   });
   return flag;
+});
+const isActor = computed(() => {
+  let flag = false;
+  if (categories.value) {
+    const arr = JSON.parse(categories.value);
+    if ((arr[2].id === 30 || arr[2].id === 51) && (arr[3].id === 1 || arr[3].id === 2 || arr[3].id === 6)) {
+      flag = true;
+    }
+  }
+  return flag
 });
 
 const setLike = () => {
@@ -141,7 +152,10 @@ const setLike = () => {
         }" target="_blank"
       >
         <main class="goodItem__main">
-          <p class="textMontserrat textMontserrat_regular color_black">
+          <p
+              v-if="!isActor"
+              class="textMontserrat textMontserrat_regular color_black"
+          >
             {{ vacancyFlag ? 'Оплата' : 'Цена' }}: {{ props.item.price }} руб.
           </p>
         </main>

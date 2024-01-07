@@ -28,13 +28,13 @@ const fetchGallery = (data) => {
     <Carousel
         id="gallery"
         :items-to-show="1"
-        :wrap-around="true"
+        :wrap-around="props.slider.length > 1"
         v-model="currentSlide"
         class="main"
         @slide-end="fetchGallery"
     >
       <Slide
-          v-for="slide in slider"
+          v-for="slide in props.slider"
           :key="slide.id"
       >
         <img
@@ -48,15 +48,16 @@ const fetchGallery = (data) => {
     </Carousel>
 
     <Carousel
+        v-if="props.slider.length > 1"
         id="thumbnails"
         :items-to-show="8"
-        :wrap-around="true"
+        :wrap-around="false"
         snap-align="start"
         v-model="currentSlide"
         ref="carousel"
     >
       <Slide
-          v-for="slide in slider"
+          v-for="slide in props.slider"
           :key="slide.id"
           @click="slideTo(slide.id - 1)"
       >

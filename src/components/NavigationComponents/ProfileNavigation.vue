@@ -25,8 +25,7 @@ const changeContent = (value) => {
 
 const exit = () => {
   authStore.jwt = null;
-  localStorage.removeItem('jwt');
-  router.push('/');
+  localStorage.clear();
 }
 </script>
 
@@ -100,7 +99,7 @@ const exit = () => {
     </ul>
     <ul
     >
-      <li @click="exit">
+      <li @click.stop="exit">
         Выйти
       </li>
     </ul>

@@ -73,6 +73,21 @@ export const useAuthStore = defineStore("authStore", {
             } finally {
                 mainStore.loader = false;
             }
+        },
+        async checkAuth() {
+            const mainStore = useMainStore();
+            try {
+                mainStore.loader = true;
+                const response = await AuthApi.checkAuth();
+                if (response.code !== 200) {
+                    localStorage.clear();
+                    this.jwt = null;
+                }
+            } catch (error) {
+                console.log(error)
+            } finally {
+                mainStore.loader = false;
+            }
         }
     }
 })
