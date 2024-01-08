@@ -4,7 +4,7 @@ import ProfileNavigator from "@/components/NavigationComponents/ProfileNavigatio
 import ProfileInfo from "@/components/ProfileTabs/ProfileInfo";
 import MyAnnouncements from "@/components/ProfileTabs/MyAnnouncements/MyAnnouncements";
 import WishList from "@/components/ProfileTabs/WishList";
-import Massages from "@/components/ProfileTabs/Massage/Massages";
+import Messages from "@/components/ProfileTabs/Massage/Messages";
 import Notification from "@/components/ProfileTabs/Notification/NotificationMain";
 import NotificationBody from "@/components/ProfileTabs/Notification/NotificationBody";
 import ProfileProtect from "@/components/ProfileTabs/ProfileProtect/ProfileProtect";
@@ -32,7 +32,7 @@ const changeTitle = computed(() => {
       return "Мои объявления"
     case "wishList":
       return "Избранное"
-    case "massages":
+    case "messages":
       return "Сообщения"
     case "notification":
       return "Уведомления"
@@ -179,7 +179,7 @@ const uploadImage = () => {
         <profile-info v-if="content === 'profileInfo'"/>
         <my-announcements v-if="content === 'myAnnouncements'"/>
         <wish-list v-if="content === 'wishList'"/>
-        <massages v-if="content === 'massages'"/>
+        <messages v-if="content === 'messages'"/>
         <notification v-if="content === 'notification'"/>
         <notification-body v-if="content === 'notificationBody'"/>
         <profile-protect v-if="content === 'profileProtect'"/>

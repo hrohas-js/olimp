@@ -85,6 +85,8 @@ export const useAuthStore = defineStore("authStore", {
                 }
             } catch (error) {
                 console.log(error)
+                localStorage.clear();
+                this.jwt = null;
             } finally {
                 mainStore.loader = false;
             }

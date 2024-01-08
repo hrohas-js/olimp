@@ -21,7 +21,9 @@ export const useAnnouncementStore = defineStore("announcementStore", {
             communication: '',
             marker: {
                 coordinates: [37.617644, 55.755819]
-            }
+            },
+            video: '',
+            selectedCategories: []
         }
     }),
     actions: {

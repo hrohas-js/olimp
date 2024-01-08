@@ -46,8 +46,8 @@ const exit = () => {
       </li>
       <li
           v-if="props.position !== 'header'"
-          :class="{'active':content === 'massages'}"
-          @click="changeContent('massages')"
+          :class="{'active':content === 'messages'}"
+          @click="changeContent('messages')"
       >
         Мои сообщения
       </li>

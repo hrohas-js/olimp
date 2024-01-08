@@ -614,6 +614,7 @@ button::-moz-focus-inner {
   &__item {
     padding: 0 rem(10) rem(10) 0;
     color: $color_blackLight;
+    cursor: pointer;
   }
 
   .active {

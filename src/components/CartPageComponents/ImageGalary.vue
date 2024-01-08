@@ -18,6 +18,7 @@ const props = defineProps({
 const slideTo = (val) => {
   currentSlide.value = val
 }
+
 const fetchGallery = (data) => {
   currentSlide.value = data.currentSlideIndex
 }
@@ -31,6 +32,7 @@ const fetchGallery = (data) => {
         :wrap-around="props.slider.length > 1"
         v-model="currentSlide"
         class="main"
+        snap-align="center"
         @slide-end="fetchGallery"
     >
       <Slide

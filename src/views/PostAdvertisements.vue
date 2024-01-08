@@ -19,6 +19,8 @@ import {
   YandexMapMarker,
   YandexMapDefaultFeaturesLayer
 } from 'vue-yandex-maps';
+import CustomSelect from "@/components/UI/Inputs/CustomSelect";
+import ChooseBox from "@/components/UI/Inputs/ChooseBox";
 
 const announcementStore = useAnnouncementStore();
 const profileStore = useProfileStore();
@@ -33,6 +35,7 @@ const location = computed(() => newItem.value.location);
 const user = computed(() => profileStore.user);
 const communication = computed(() => newItem.value.communication);
 const marker = computed(() => newItem.value.marker);
+const video = computed(() => newItem.value.video);
 
 const createTrigger = ref(false);
 const payAgreementCheck = ref(false);
@@ -79,7 +82,6 @@ const priceValue = computed({
     announcementStore.newItem.price = validateField('price', value).message;
   }
 });
-
 const locationValue = computed({
   get() {
     return announcementStore.newItem.location;
@@ -88,7 +90,6 @@ const locationValue = computed({
     announcementStore.newItem.location = validateField('message', value).message;
   }
 });
-
 const phoneValue = computed({
   get() {
     return announcementStore.newItem.phone;
@@ -97,7 +98,6 @@ const phoneValue = computed({
     announcementStore.newItem.phone = validateField('phone', value).message;
   }
 });
-
 const communicationValue = computed({
   get() {
     return announcementStore.newItem.communication;
@@ -106,15 +106,21 @@ const communicationValue = computed({
     announcementStore.newItem.communication = value;
   }
 });
+const videoValue = computed({
+  get() {
+    return announcementStore.newItem.video;
+  },
+  set(value) {
+    announcementStore.newItem.video = value;
+  }
+});
 
 const breadcrumbs = computed(() => {
   let str = '';
-  announcementStore.newItem.categories.forEach((elem, index) => {
-    if (index !== 2) {
-      str += elem.name.replace(/<br\s*\/?>/gi, ' ');
-      if (index !== announcementStore.newItem.categories.length - 1) {
-        str += ' / '
-      }
+  announcementStore.newItem.selectedCategories.forEach((elem, index) => {
+    str += elem.replace(/<br\s*\/?>/gi, ' ');
+    if (index !== announcementStore.newItem.selectedCategories.length - 1) {
+      str += ' / '
     }
   });
   return str;
@@ -130,7 +136,7 @@ const priceInputLabel = computed(() => {
 });
 const isActor = computed(() => {
   let flag = false;
-  if (categories.value) {
+  if (categories.value.length > 0) {
     const arr = categories.value;
     console.log(arr);
     if ((arr[2].id === 30 || arr[2].id === 51) && (arr[3].id === 1 || arr[3].id === 2 || arr[3].id === 6)) {
@@ -183,9 +189,10 @@ const create = (status) => {
   document.querySelectorAll('.param.list').forEach(elem => {
     const name = elem.querySelector('p')?.innerText || '';
     const textInput = elem.querySelector('input[type="text"]');
-    const checkedRadioInput = elem.querySelector('input[type="radio"]:checked');
+    const selectInput = elem.querySelector('select');
+    const selectChoose = elem.querySelector('.choose-box__item.active').innerText;
 
-    const value = textInput?.value || checkedRadioInput?.value || '';
+    const value = textInput?.value || selectInput?.value || selectChoose || '';
 
     announcementStore.newItem.selectedParameters.push({ name, value });
   });
@@ -218,7 +225,8 @@ const create = (status) => {
       status: status,
       phone: announcementStore.newItem.phone,
       user_id: user.value.id,
-      communication: communication.value
+      communication: communication.value,
+      video: video.value
     }).then(() => {
       router.push('/profile');
     });
@@ -239,13 +247,13 @@ const setPayAgreement = (e) => {
 
 <template>
   <section class="postAdvertisements textMontserrat wrapper">
-    <search-header/>
+    <search-header />
     <main class="postAdvertisements__main">
       <h3 class="textMontserrat_medium">
         {{ breadcrumbs }}
       </h3>
       <h3 class="title textMontserrat_medium">
-        Параметры
+        Создать объявление
       </h3>
       <div class="container">
         <div class="postAdvertisements__item">
@@ -270,28 +278,18 @@ const setPayAgreement = (e) => {
               v-model="inputValues[param.id]"
               @input="updateInputValue(param.id, $event.target.value)"
           />
-          <ul v-else class="paramList">
-            <li
-                v-for="paramVariant in JSON.parse(param.content)"
-                :key="paramVariant.id"
-                class="textMontserrat_regular"
-            >
-              <input
-                  type="radio"
-                  :name="param.slug"
-                  :id="paramVariant.slug"
-                  :checked="categories[3] === paramVariant.id"
-                  :value="paramVariant.name"
-              />
-              <label :for="paramVariant.slug">
-                {{ paramVariant.name }}
-              </label>
-            </li>
-          </ul>
+          <custom-select
+              v-else-if="JSON.parse(param.content).length > 2"
+              :options="JSON.parse(param.content)"
+          />
+          <choose-box
+              v-else
+              :chooses="JSON.parse(param.content)"
+          />
         </div>
         <div class="postAdvertisements__item">
           <p class="textMontserrat_regular">
-            Описание
+            Дополнительная информация
           </p>
           <text-area-with-border v-model="descriptionValue" />
         </div>
@@ -329,17 +327,15 @@ const setPayAgreement = (e) => {
             Фотографии
           </p>
           <div class="addContent">
-            <add-file/>
-            <mini-gallery/>
-<!--            <div class="linkYouTube">
-              <p class="textMontserrat_regular">
-                Фотографии и видео
-              </p>
-              <input-border
-                  placeholder="Ссылка на видео"
-              />
-            </div>-->
+            <add-file />
+            <mini-gallery />
           </div>
+        </div>
+        <div class="postAdvertisements__item param">
+          <p class="textMontserrat_regular">
+            Ссылка на видео (YouTube)
+          </p>
+          <input-announcement v-model="videoValue" />
         </div>
         <div class="postAdvertisements__item param">
           <p class="textMontserrat_regular">
@@ -349,11 +345,12 @@ const setPayAgreement = (e) => {
             <input-announcement
                 v-model="locationValue"
                 :class="{'border_accent': createTrigger && location.length === 0}"
+                @blur="setMapAddress"
             />
             <yandex-map
                 :settings="{
                   location: {
-                    center: marker.coordinates.length > 0 ? marker.coordinates : [37.617644, 55.755819],
+                    center: marker?.coordinates.length > 0 ? marker?.coordinates : [37.617644, 55.755819],
                     zoom: 9,
                   },
                 }"

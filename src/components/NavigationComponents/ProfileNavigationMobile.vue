@@ -56,7 +56,7 @@ const changeContent = (value) => {
         </ul>
         <ul>
           <li
-              @click="changeContent('massages')"
+              @click="changeContent('messages')"
           >
             <p class="textMontserrat_semiBold">
               Сообщения

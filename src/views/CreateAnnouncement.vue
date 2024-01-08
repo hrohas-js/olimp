@@ -27,6 +27,10 @@ const getCategoriesTree = (slug, category, filter = null) => {
     case 'category':
       if (category.name === 'Работа') {
         subFlag.value = true;
+        if (announcementStore.newItem.selectedCategories.length > 0) {
+          announcementStore.newItem.selectedCategories = [];
+        }
+        announcementStore.newItem.selectedCategories.push(category.name);
       } else {
         catalogStore.currentCategory = category;
         catalogStore.getSubCategories(category.id);
@@ -40,6 +44,18 @@ const getCategoriesTree = (slug, category, filter = null) => {
             id: category.id,
             name: category.name
           });
+        }
+        if (category.title) {
+          if (announcementStore.newItem.selectedCategories.length === 2) {
+            announcementStore.newItem.selectedCategories[1] = category.title;
+          } else {
+            announcementStore.newItem.selectedCategories.push(category.title);
+          }
+          console.log(announcementStore.newItem.selectedCategories)
+        } else if (announcementStore.newItem.selectedCategories.length > 0) {
+          announcementStore.newItem.selectedCategories = [];
+          announcementStore.newItem.selectedCategories.push(category.name);
+          console.log(announcementStore.newItem.selectedCategories)
         }
       }
       break;
@@ -77,6 +93,12 @@ const getCategoriesTree = (slug, category, filter = null) => {
           name: category.name
         });
       }
+      if (announcementStore.newItem.selectedCategories.length === 3) {
+        announcementStore.newItem.selectedCategories[2] = category.name;
+      } else {
+        announcementStore.newItem.selectedCategories.push(category.name);
+        console.log(announcementStore.newItem.selectedCategories)
+      }
       announcementStore.getParameters({
         filter_id: filter.id,
         filter_content_id: category.id
@@ -108,7 +130,7 @@ const getCategoriesTree = (slug, category, filter = null) => {
               :key="category.id"
               class="cats"
               :class="{'active': category.id === newItemCategories[0]?.id && category.id !== 0}"
-              @click="getCategoriesTree('category', category)"
+              @click.stop="getCategoriesTree('category', category)"
           >
             <span v-html="category.name" />
             <svg
@@ -137,7 +159,7 @@ const getCategoriesTree = (slug, category, filter = null) => {
                   v-for="item in category.subs"
                   :key="item.id"
                   :class="{'active': item.id === newItemCategories[0]?.id}"
-                  @click="getCategoriesTree('category', item)"
+                  @click.stop="getCategoriesTree('category', item)"
               >
                 {{ item.title }}
               </li>
@@ -159,7 +181,7 @@ const getCategoriesTree = (slug, category, filter = null) => {
                 :key="subCategory.id"
                 v-html="subCategory.name"
                 :class="{'active': subCategory.id === newItemCategories[1]?.id}"
-                @click="getCategoriesTree('subCategory', subCategory)"
+                @click.stop="getCategoriesTree('subCategory', subCategory)"
             />
           </ul>
         </nav>
@@ -182,9 +204,9 @@ const getCategoriesTree = (slug, category, filter = null) => {
                   v-for="param in filter.content"
                   :key="param.id"
                   :class="{'active': param.id === newItemCategories[3]?.id}"
-                  @click="getCategoriesTree('filter', param, filter)"
+                  @click.stop="getCategoriesTree('filter', param, filter)"
               >
-                {{param.name}}
+                {{ param.name }}
               </li>
             </ul>
           </div>
@@ -234,7 +256,12 @@ const getCategoriesTree = (slug, category, filter = null) => {
       }
 
       .subs {
-        padding-left: rem(20);
+        padding-left: rem(30);
+
+        li {
+          padding: rem(5);
+          font-size: rem(14);
+        }
       }
 
       &.active,

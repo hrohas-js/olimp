@@ -1,13 +1,30 @@
 <script setup>
-import MassageItem from "@/components/ProfileTabs/Massage/MassageItem";
-import {ref} from "vue";
+import MassageItem from "@/components/ProfileTabs/Massage/MessageItem";
+import {ref, computed, onMounted} from "vue";
+import {useCatalogStore} from "@/store/CatalogStore";
+import {useProfileStore} from "@/store/ProfileStore";
+
+const catalogStore = useCatalogStore();
+const profileStore = useProfileStore();
+
+const categories = computed(() => catalogStore.categories);
 
 const relevance = ref("all");
+
+onMounted(() => {
+  profileStore.getAllChats({
+    user_id: profileStore.user.id
+  });
+});
+
+const changeTab = (slug) => {
+  relevance.value = slug
+}
 </script>
 
 <template>
-  <section class="massages textMontserrat">
-    <header class="massages__header">
+  <section class="messages textMontserrat">
+    <header class="messages__header">
       <h2 class="textMontserrat_medium">
         Сообщения
       </h2>
@@ -15,30 +32,28 @@ const relevance = ref("all");
         ...
       </div>
     </header>
-    <main class="massages__main">
+    <main class="messages__main">
       <nav class="profileNavigation">
         <ul>
           <li
               class="profileNavigation__item textMontserrat_bold"
               :class="{'active':relevance === 'all'}"
+              @click="changeTab('all')"
           >
             Все <sup>8</sup>
           </li>
-          <li class="textMontserrat_bold profileNavigation__item">
-            Аренда <sup>70</sup>
-          </li>
-          <li class="textMontserrat_bold profileNavigation__item">
-            Рынок <sup>60</sup>
-          </li>
-          <li class="textMontserrat_bold profileNavigation__item">
-            Вакансии <sup>40</sup>
-          </li>
-          <li class="textMontserrat_bold profileNavigation__item">
-            Работа <sup>11</sup>
+          <li
+              v-for="item in categories"
+              :key="item.id"
+              class="textMontserrat_bold profileNavigation__item"
+              :class="{'active':relevance === item.slug}"
+              @click="changeTab(item.slug)"
+          >
+            {{ item.name }} <sup>70</sup>
           </li>
         </ul>
         </nav>
-        <div class="massagesContainer">
+        <div class="messagesContainer">
           <massage-item/>
           <massage-item :writeMassage="true"/>
           <massage-item/>
@@ -48,7 +63,7 @@ const relevance = ref("all");
 </template>
 
 <style scoped lang="scss">
-.massages {
+.messages {
   &__header {
     display: flex;
     align-items: center;
@@ -72,7 +87,7 @@ const relevance = ref("all");
   &__main {
     //margin-top: rem(51);
 
-    .massagesButtonsContainer {
+    .messagesButtonsContainer {
       display: flex;
       gap: rem(35);
 
@@ -83,7 +98,7 @@ const relevance = ref("all");
     }
   }
 
-  .massagesContainer {
+  .messagesContainer {
     margin-top: rem(20);
   }
 }
