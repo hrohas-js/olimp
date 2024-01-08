@@ -25,6 +25,8 @@ onMounted(() => {
 const getCategoriesTree = (slug, category, filter = null) => {
   switch (slug) {
     case 'category':
+      catalogStore.subCategories = [];
+      catalogStore.filters = [];
       if (category.name === 'Работа') {
         subFlag.value = true;
         if (announcementStore.newItem.selectedCategories.length > 0) {
@@ -34,32 +36,28 @@ const getCategoriesTree = (slug, category, filter = null) => {
       } else {
         catalogStore.currentCategory = category;
         catalogStore.getSubCategories(category.id);
-        if (announcementStore.newItem.categories.length === 1) {
-          announcementStore.newItem.categories[0] = {
-            id: category.id,
-            name: category.name
-          };
-        } else {
-          announcementStore.newItem.categories.push({
-            id: category.id,
-            name: category.name
-          });
+        if (announcementStore.newItem.categories.length > 0) {
+          announcementStore.newItem.categories = [];
         }
+        announcementStore.newItem.categories.push({
+          id: category.id,
+          name: category.name
+        });
         if (category.title) {
           if (announcementStore.newItem.selectedCategories.length === 2) {
             announcementStore.newItem.selectedCategories[1] = category.title;
           } else {
             announcementStore.newItem.selectedCategories.push(category.title);
           }
-          console.log(announcementStore.newItem.selectedCategories)
         } else if (announcementStore.newItem.selectedCategories.length > 0) {
           announcementStore.newItem.selectedCategories = [];
           announcementStore.newItem.selectedCategories.push(category.name);
-          console.log(announcementStore.newItem.selectedCategories)
         }
       }
+      console.log(newItemCategories.value)
       break;
     case 'subCategory':
+      catalogStore.filters = [];
       catalogStore.getFilters(category.id);
       if (announcementStore.newItem.categories.length === 2) {
         announcementStore.newItem.categories[1] = {

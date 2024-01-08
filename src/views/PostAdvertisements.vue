@@ -165,7 +165,9 @@ onUnmounted(() => {
     communication: '',
     marker: {
       coordinates: [37.617644, 55.755819]
-    }
+    },
+    video: '',
+    selectedCategories: []
   }
   localStorage.removeItem('newItem');
 });
