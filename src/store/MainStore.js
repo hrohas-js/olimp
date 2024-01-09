@@ -34,6 +34,27 @@ export const useMainStore = defineStore("mainStore", {
         }
     }),
     actions: {
+        clearInputs() {
+            this.inputs = {
+                id: "",
+                name: "",
+                last_name: "",
+                second_name: "",
+                email: "",
+                phone: "",
+                password: "",
+                old_password: "",
+                confirm_password: "",
+                city: "",
+                street: "",
+                flat: "",
+                floor: "",
+                entrance: "",
+                house: "",
+                birth_datetime: "",
+                avatar_url: ""
+            }
+        },
         closeModal(elem) {
             if (elem.classList.contains("modal")) {
                 this.popup = "";

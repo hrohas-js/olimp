@@ -45,8 +45,8 @@ const removeFromGallery = (data) => {
     display: inline-block;
 
     .image {
-      width: rem(70);
-      height: rem(70);
+      width: rem(90);
+      height: rem(90);
       object-fit: cover;
     }
 

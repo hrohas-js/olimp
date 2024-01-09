@@ -9,18 +9,75 @@ import GoodsItemReviews from "@/components/Goods/GoodsItemHit";
 import MainSearch from "@/components/UI/Filters/MainSearch";
 import "vue3-carousel/dist/carousel.css";
 import {Carousel, Slide, Navigation} from "vue3-carousel";
-import {computed} from "vue";
+import {computed, onMounted, watch, ref} from "vue";
 import {useRouter} from "vue-router";
 import {useMainStore} from "@/store/MainStore";
 import {useCatalogStore} from "@/store/CatalogStore";
+import {useProfileStore} from "@/store/ProfileStore";
 
 const router = useRouter();
 const mainStore = useMainStore();
 const catalogStore = useCatalogStore();
+const profileStore = useProfileStore();
 
 const width = computed(() => mainStore.display_width);
 const location = computed(() => mainStore.location);
 const catalog = computed(() => catalogStore.searchCatalog);
+const name = computed(() => profileStore.user.name);
+
+/*let ws;
+
+const val = ref('');
+
+const closeWebSocket = () => {
+  if (ws) {
+    ws.close();
+    console.log('WebSocket connection closed');
+  }
+};
+
+const initializeWebSocket = () => {
+  if (name.value !== '') {
+    console.log(name.value)
+    const messagesList = document.getElementById('messages');
+
+    ws = new WebSocket('ws://localhost:3000');
+
+    ws.onopen = function() {
+      console.log('Connected to the WebSocket server');
+      ws.send(JSON.stringify({ type: 'name', text: name.value }));
+    };
+
+    ws.onmessage = function(event) {
+      const data = JSON.parse(event.data);
+      const messageName = document.createElement('li');
+      messageName.textContent = data.username;
+      messagesList.appendChild(messageName);
+      const message = document.createElement('li');
+      message.textContent = data.text; // Исправлено с messageName на message
+      messagesList.appendChild(message);
+    }
+  }
+};
+
+onMounted(() => {
+  if (name.value) {
+    initializeWebSocket();
+  }
+});
+
+watch(name, (newValue) => {
+  if (newValue && newValue.length > 0) {
+    initializeWebSocket();
+  } else {
+    closeWebSocket();
+  }
+});
+
+const send = () => {
+  ws.send(JSON.stringify({type: 'message', text: val.value}));
+  val.value = '';
+}*/
 
 const openGeo = () => {
   mainStore.popup = 'location';
@@ -29,6 +86,9 @@ const openGeo = () => {
 
 <template>
   <section class="home">
+<!--    <input v-model="val" type="text" id="message" placeholder="Enter message"/>
+    <button id="send" @click="send">Send</button>
+    <ul id="messages"></ul>-->
     <div
         v-if="width <= 768"
         class="filterContainer"

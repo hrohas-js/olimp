@@ -13,16 +13,18 @@ export const useAuthStore = defineStore("authStore", {
             const mainStore = useMainStore();
             try {
                 mainStore.loader = true;
-                await AuthApi.register({
+                const response = await AuthApi.register({
                     name: mainStore.inputs.name,
                     email: mainStore.inputs.email,
                     password: mainStore.inputs.password
                 });
-                mainStore.popup = 'auth';
-                ElMessage({
-                    message: "Регистрация прошла успешно",
-                    type: "success"
-                });
+                if (response.code === 200 && response.result) {
+                    mainStore.popup = 'auth';
+                    ElMessage({
+                        message: "Регистрация прошла успешно",
+                        type: "success"
+                    });
+                }
             } catch (error) {
                 console.log(error)
             } finally {

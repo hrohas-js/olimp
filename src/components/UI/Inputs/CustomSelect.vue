@@ -50,7 +50,7 @@ const deactivateFocusFlag = () => {
   }
 }
 select {
-  width: 30%;
+  width: 40%;
   border-radius: 5px;
   padding: rem(8) rem(20);
 }

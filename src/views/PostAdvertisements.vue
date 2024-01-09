@@ -146,6 +146,7 @@ const isActor = computed(() => {
   return flag
 });
 
+
 watch(newItem.value, () => {
   localStorage.setItem('newItem', JSON.stringify(newItem.value))
 });
@@ -251,14 +252,14 @@ const setPayAgreement = (e) => {
   <section class="postAdvertisements textMontserrat wrapper">
     <search-header />
     <main class="postAdvertisements__main">
-      <h3 class="textMontserrat_medium">
+      <p class="textMontserrat_medium">
         {{ breadcrumbs }}
-      </h3>
+      </p>
       <h3 class="title textMontserrat_medium">
         Создать объявление
       </h3>
       <div class="container">
-        <div class="postAdvertisements__item">
+        <div class="postAdvertisements__item name">
           <p class="textMontserrat_regular">
             Название<br>объявления
           </p>
@@ -271,6 +272,15 @@ const setPayAgreement = (e) => {
             v-for="param in parameters"
             :key="param.id"
             class="postAdvertisements__item param list"
+            :class="{
+              'age': param.name === 'Возраст',
+              'height': param.name === 'Рост',
+              'weight': param.name === 'Вес',
+              'size': param.name === 'Размер одежды',
+              'type': param.name === 'Типаж',
+              'study': param.name === 'Профильное образование',
+              'exp': param.name === 'Опыт участия в проектах',
+            }"
         >
           <p class="textMontserrat_regular">
             {{ param.name }}
@@ -289,7 +299,7 @@ const setPayAgreement = (e) => {
               :chooses="JSON.parse(param.content)"
           />
         </div>
-        <div class="postAdvertisements__item">
+        <div class="postAdvertisements__item description">
           <p class="textMontserrat_regular">
             Дополнительная информация
           </p>
@@ -297,7 +307,7 @@ const setPayAgreement = (e) => {
         </div>
         <div
             v-if="!isActor"
-            class="postAdvertisements__item"
+            class="postAdvertisements__item price"
         >
           <p class="textMontserrat_regular">
             {{ priceInputLabel }}
@@ -324,7 +334,7 @@ const setPayAgreement = (e) => {
             </div>
           </div>
         </div>
-        <div class="postAdvertisements__item param">
+        <div class="postAdvertisements__item param photo">
           <p class="textMontserrat_regular">
             Фотографии
           </p>
@@ -333,13 +343,13 @@ const setPayAgreement = (e) => {
             <mini-gallery />
           </div>
         </div>
-        <div class="postAdvertisements__item param">
+        <div class="postAdvertisements__item param video">
           <p class="textMontserrat_regular">
             Ссылка на видео (YouTube)
           </p>
           <input-announcement v-model="videoValue" />
         </div>
-        <div class="postAdvertisements__item param">
+        <div class="postAdvertisements__item param location">
           <p class="textMontserrat_regular">
             Локация
           </p>
@@ -370,7 +380,7 @@ const setPayAgreement = (e) => {
             </yandex-map>
           </div>
         </div>
-        <div class="postAdvertisements__item param">
+        <div class="postAdvertisements__item param contacts">
           <p class="textMontserrat_regular">
             Контакты для связи
           </p>
@@ -385,7 +395,7 @@ const setPayAgreement = (e) => {
             </div>
           </div>
         </div>
-        <div class="postAdvertisements__item param options">
+        <div class="postAdvertisements__item param options connect">
           <p class="textMontserrat_regular">
             Предпочитаемый способ связи
           </p>
@@ -456,11 +466,27 @@ const setPayAgreement = (e) => {
     .container {
       width: 60%;
       margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      grid-template-areas:
+          "name name name name name name name name name"
+          "type type type type type type type type type"
+          "height height weight weight size size . . ."
+          "age age age age age age age age age"
+          "study study study study study study study study study"
+          "exp exp exp exp exp exp exp exp exp"
+          "description description description description description description description description description"
+          "photo photo photo photo photo photo photo photo photo"
+          "video video video video video video video video video"
+          "location location location location location location location location location"
+          "contacts contacts contacts contacts contacts contacts contacts contacts contacts"
+          "connect connect connect connect connect connect connect connect connect";
+      column-gap: rem(20);
     }
 
     .title {
       font-size: rem(24);
-      padding-bottom: rem(20);
+      padding: rem(20) 0;
     }
   }
 
@@ -469,6 +495,73 @@ const setPayAgreement = (e) => {
     display: grid;
     grid-template-columns: 0.8fr 3fr;
     align-items: start;
+    column-gap: rem(10);
+
+
+    &.name {
+      grid-area: name;
+    }
+
+    &.type {
+      grid-area: type;
+    }
+
+    &.height {
+      grid-area: height;
+      input{
+        width: rem(70);
+      }
+    }
+
+    &.weight {
+      grid-area: weight;
+      input{
+        width: rem(70);
+      }
+    }
+
+    &.size {
+      grid-area: size;
+      input{
+        width: rem(70);
+      }
+    }
+
+    &.age {
+      grid-area: age;
+    }
+
+    &.study {
+      grid-area: study;
+    }
+
+    &.exp {
+      grid-area: exp;
+    }
+
+    &.description {
+      grid-area: description;
+    }
+
+    &.photo {
+      grid-area: photo;
+    }
+
+    &.video {
+      grid-area: video;
+    }
+
+    &.location {
+      grid-area: location;
+    }
+
+    &.contacts {
+      grid-area: contacts;
+    }
+
+    &.connect {
+      grid-area: connect;
+    }
 
     &:first-child {
       margin-top: 0;

@@ -15,7 +15,7 @@ const user = computed(() => profileStore.user);
 const fullAddress = computed(() => profileStore.fullAddress);
 const maskPhone = computed(() => {
   const regex = /(\+7 \(\d{3}\)) \d{3}/;
-  return  user.value.phone.replace(regex, '$1 ***');
+  return user.value.phone ? user.value.phone.replace(regex, '$1 ***') : '';
 
 });
 

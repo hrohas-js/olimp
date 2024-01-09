@@ -8,6 +8,10 @@ const props = defineProps({
   inputType: {
     type: String,
     default: "text"
+  },
+  inputPlaceholder: {
+    type: String,
+    default: ""
   }
 });
 
@@ -35,6 +39,7 @@ const deactivateFocusFlag = () => {
         'border_gray': !focusFlag
       }"
       :value="modelValue"
+      :placeholder="props.inputPlaceholder"
       @input="updateValue"
       @focus="activateFocusFlag"
       @blur="deactivateFocusFlag"

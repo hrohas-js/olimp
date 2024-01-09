@@ -45,6 +45,8 @@ const changeChooseFlag = (flag) => {
   &__item {
     padding: rem(5);
     cursor: pointer;
+    min-width: rem(42);
+    text-align: center;
 
     &:first-child {
       border-right: 2px solid $color_gray;

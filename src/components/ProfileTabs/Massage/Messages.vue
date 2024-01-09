@@ -13,7 +13,8 @@ const relevance = ref("all");
 
 onMounted(() => {
   profileStore.getAllChats({
-    user_id: profileStore.user.id
+    user_id: profileStore.user.id,
+    category_id: categories.value[0].id
   });
 });
 

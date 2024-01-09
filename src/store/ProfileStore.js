@@ -72,6 +72,39 @@ export const useProfileStore = defineStore("profileStore", {
         }
     },
     actions: {
+        clearStore() {
+            // Обновление простых свойств
+            this.content = "profileInfo";
+            this.navigationMobile = false;
+            this.currentChatID = 0;
+
+            // Сброс объекта user
+            this.user = {
+                id: "",
+                name: "",
+                last_name: "",
+                second_name: "",
+                email: "",
+                phone: "",
+                password: "",
+                old_password: "",
+                confirm_password: "",
+                city: "",
+                street: "",
+                flat: "",
+                floor: "",
+                entrance: "",
+                house: "",
+                birth_datetime: "",
+                avatar_url: ""
+            };
+
+            // Сброс массивов
+            this.myAnnouncements = [];
+            this.myLikes = [];
+            this.myChats = [];
+            this.currentChat = [];
+        },
         async editProfileInfo() {
             const mainStore = useMainStore();
             try {

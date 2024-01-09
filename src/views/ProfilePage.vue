@@ -95,7 +95,7 @@ const uploadImage = () => {
     <article class="person">
       <div class="image">
         <img
-            v-if="user.avatar_url.length > 0"
+            v-if="user.avatar_url"
             :src="user.avatar_url"
             :alt="user.name"
         />

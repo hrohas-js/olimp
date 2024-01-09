@@ -43,18 +43,15 @@ const getCategoriesTree = (slug, category, filter = null) => {
           id: category.id,
           name: category.name
         });
-        if (category.title) {
-          if (announcementStore.newItem.selectedCategories.length === 2) {
-            announcementStore.newItem.selectedCategories[1] = category.title;
-          } else {
-            announcementStore.newItem.selectedCategories.push(category.title);
-          }
+        if (category.title && announcementStore.newItem.selectedCategories.length === 2) {
+          announcementStore.newItem.selectedCategories[1] = category.title;
+        } else if (category.title) {
+          announcementStore.newItem.selectedCategories.push(category.title);
         } else if (announcementStore.newItem.selectedCategories.length > 0) {
           announcementStore.newItem.selectedCategories = [];
           announcementStore.newItem.selectedCategories.push(category.name);
         }
       }
-      console.log(newItemCategories.value)
       break;
     case 'subCategory':
       catalogStore.filters = [];

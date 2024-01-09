@@ -47,6 +47,7 @@ const login = () => {
     empty = emptyCheck('password', 'Поле Пароль не может быть пустым');
     if (!empty) {
       authStore.register();
+      mainStore.clearInputs();
     }
   } else if (popup.value === 'auth') {
     empty = emptyCheck('email', 'Поле Email не может быть пустым');
@@ -54,6 +55,7 @@ const login = () => {
     if (!empty) {
       authStore.auth().then(() => {
         profileStore.getLikes();
+        mainStore.clearInputs();
       });
     }
   }
