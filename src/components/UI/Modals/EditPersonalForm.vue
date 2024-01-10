@@ -65,35 +65,11 @@ const closeModal = () => {
       <form class="textMontserrat_regular" @submit.prevent="editProfile">
         <div class="form-col">
           <div class="form-group color_black">
-            <label for="name">Имя:</label>
+            <label for="name">Представьтесь:</label>
             <input-border
                 id="name"
                 input-type="text"
                 validate-i-d="name"
-            />
-          </div>
-          <div class="form-group color_black">
-            <label for="email">Email:</label>
-            <input-border
-                id="email"
-                input-type="email"
-                validate-i-d="email"
-            />
-          </div>
-          <div class="form-group color_black">
-            <label for="phone">Телефон:</label>
-            <input-border
-                id="phone"
-                input-type="tel"
-                validate-i-d="phone"
-            />
-          </div>
-          <div class="form-group color_black">
-            <label for="birth_datetime">Дата рождения:</label>
-            <input-border
-                id="birth_datetime"
-                input-type="date"
-                validate-i-d="birth_datetime"
             />
           </div>
           <div class="form-group color_black">
@@ -105,43 +81,27 @@ const closeModal = () => {
             />
           </div>
           <div class="form-group color_black">
-            <label for="street">Улица:</label>
+            <label for="birth_datetime">Дата рождения:</label>
             <input-border
-                id="street"
-                input-type="text"
-                validate-i-d="street"
+                id="birth_datetime"
+                input-type="date"
+                validate-i-d="birth_datetime"
             />
           </div>
           <div class="form-group color_black">
-            <label for="flat">Квартира:</label>
+            <label for="phone">Телефон:</label>
             <input-border
-                id="flat"
-                input-type="text"
-                validate-i-d="flat"
+                id="phone"
+                input-type="tel"
+                validate-i-d="phone"
             />
           </div>
           <div class="form-group color_black">
-            <label for="floor">Этаж:</label>
+            <label for="email">Email:</label>
             <input-border
-                id="floor"
-                input-type="text"
-                validate-i-d="floor"
-            />
-          </div>
-          <div class="form-group color_black">
-            <label for="entrance">Подъезд:</label>
-            <input-border
-                id="entrance"
-                input-type="text"
-                validate-i-d="entrance"
-            />
-          </div>
-          <div class="form-group color_black">
-            <label for="house">Дом:</label>
-            <input-border
-                id="house"
-                input-type="text"
-                validate-i-d="house"
+                id="email"
+                input-type="email"
+                validate-i-d="email"
             />
           </div>
         </div>
@@ -203,27 +163,42 @@ const closeModal = () => {
   position: relative;
 
   h2 {
-    margin-bottom: 20px;
+    margin-bottom: rem(20);
+
+    @media (max-width: em(768, 16)) {
+      margin-bottom: rem(10);
+      font-size: rem(18);
+    }
   }
 
   form {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: rem(10);
 
     .form-col {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: rem(10);
+
+      @media (max-width: em(768, 16)) {
+        gap: rem(5);
+      }
     }
 
     .form-col.flex {
       display: flex;
       flex-direction: column;
+      width: 50%;
     }
 
     .form-group {
-      margin-bottom: 15px;
+      margin-bottom: rem(15);
+
+      @media (max-width: em(768, 16)) {
+        margin-bottom: rem(5);
+      }
+
+      &:first-child {
+        grid-column: 1 / 3;
+      }
 
       label {
         margin-bottom: 5px;

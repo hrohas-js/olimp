@@ -18,6 +18,7 @@ const showNavigation = ref(false);
 const isAuth = computed(() => authStore.jwt !== null);
 const name = computed(() => profileStore.user.name);
 const mainLetter = computed(() => profileStore.userMainLetter);
+const country = computed(() =>  mainStore.country);
 
 const routerPush = (page) => {
   router.push(page)
@@ -61,7 +62,7 @@ const openRegistrationForm = () => {
           </svg>
         </div>
         <p class="textMontserrat textMontserrat_medium">
-          Россия
+          {{ country }}
         </p>
       </div>
       <div

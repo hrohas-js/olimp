@@ -1,8 +1,12 @@
 <script setup>
-
 import DataMessage from "@/components/ProfileTabs/Massage/Chat/DataMessage.vue";
-import {computed, defineProps} from "vue";
+import {computed} from "vue";
+import {useProfileStore} from "@/store/ProfileStore";
 
+const profileStore = useProfileStore();
+
+const user = computed(() => profileStore.user);
+const currentChat = computed(() => profileStore.currentChat);
 
 const props = defineProps({
   messageItem: {
@@ -19,35 +23,48 @@ const props = defineProps({
   }
 });
 
-//const currentChat = computed(() => usersStore.currentChat as UserChatMessagesResponse);
-
 const previousMessageDate = computed(() => {
   let date = "";
   if (props.index > 0) {
-    //date = currentChat.value.messages[props.index - 1].dt_created
+    date = currentChat.value[props.index - 1].dt_created
   } else {
-    //date = currentChat.value.messages[0].dt_created
+    date = currentChat.value[0].dt_created
   }
   return date;
 })
 const currentDate = computed(() => {
   let date = "";
-  /*const current = props.messageItem.dt_created.split("T")[0].split("-");
-  const previous = previousMessageDate.value.split("T")[0].split("-");
-  const dt = new Date(current.join("."));
-  if (props.index === 0 || (current[2] > previous[2] && current[1] === previous[1])) {
-    let month = dt.toLocaleDateString('default', { month: 'long' });
-    // eslint-disable-next-line no-constant-condition
-    if (month[month.length - 1] === "ь" || "й") {
-      const regex = /ь$/g;
-      month = month.replace(regex, "я")
+  const current = props.messageItem.dt_created.split(" ")[0].split("-");
+  const previous = previousMessageDate.value.split(" ")[0].split("-");
+  const currentDateObj = new Date(current[0], current[1] - 1, current[2]);
+  const previousDateObj = new Date(previous[0], previous[1] - 1, previous[2]);
+
+  // Проверка на "Сегодня"
+  const today = new Date();
+  if (currentDateObj.toDateString() === today.toDateString()) {
+    return "Сегодня";
+  }
+
+  // Проверка на "Вчера"
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  if (currentDateObj.toDateString() === yesterday.toDateString()) {
+    return "Вчера";
+  }
+
+  // Остальная логика
+  if (props.index === 0 || currentDateObj > previousDateObj) {
+    let month = currentDateObj.toLocaleDateString('default', { month: 'long' });
+    if (month[month.length - 1] === "ь" || month[month.length - 1] === "й") {
+      const regex = /ь$|й$/g;
+      month = month.replace(regex, "я");
     } else {
       month += "а";
     }
-    date = dt.getDate() + ' ' + month;
-  }*/
+    date = currentDateObj.getDate() + ' ' + month;
+  }
   return date;
-})
+});
 
 const openFile = () => {
   /*if (props.messageItem.type === "file") {
@@ -57,7 +74,13 @@ const openFile = () => {
 </script>
 
 <template>
-  <div class="message-item">
+  <div
+      class="message-item"
+      :class="{
+          'client': props.messageItem.user_id === parseInt(user.id),
+          'employee': props.messageItem.user_id !== parseInt(user.id),
+      }"
+  >
     <data-message
         v-if="currentDate.length > 0"
         :date="currentDate"
@@ -66,7 +89,9 @@ const openFile = () => {
         class="message-content text_mediumTh"
         :class="{
           'last-message': index === length - 1,
-          'is-file': messageItem.type === 'file'
+          'is-file': messageItem.type === 'file',
+          'background_avito': props.messageItem.user_id === parseInt(user.id),
+          'background_grayLight': props.messageItem.user_id !== parseInt(user.id)
         }"
         @click="openFile"
     >
@@ -92,7 +117,6 @@ const openFile = () => {
 .message-content {
   width: 65%;
   padding: rem(20) rem(28);
-  background: #FFFFFF;
   border-radius: rem(42);
   @media (max-width: em(768, 16)) {
     padding: rem(16);

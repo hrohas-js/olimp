@@ -30,6 +30,11 @@ const routes = [
     path: '/create',
     name: 'CreateAnnouncement',
     component: () => import("@/views/CreateAnnouncement")
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import("@/views/NotFound"),
   }
 ]
 

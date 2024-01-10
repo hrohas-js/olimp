@@ -16,6 +16,8 @@ import {onMounted, onBeforeMount, computed, watch, nextTick} from "vue";
 import EditPersonalForm from "@/components/UI/Modals/EditPersonalForm";
 import GeoForm from "@/components/UI/Modals/GeoForm";
 import GeoAnnouncementForm from "@/components/UI/Modals/GeoAnnouncementForm";
+import ChatBody from "@/components/ProfileTabs/Massage/Chat/ChatBody";
+import Filter from "@/components/UI/Filters/Filter";
 
 const mainStore = useMainStore();
 const profileStore = useProfileStore();
@@ -28,6 +30,7 @@ const popup = computed(() => mainStore.popup);
 const navigation = computed(() => profileStore.navigationMobile);
 const subCategories = computed(() => catalogStore.subCategories);
 const showModalSubCategories = computed(() => catalogStore.showModalSubCategories);
+const showModalFilters = computed(() => catalogStore.showModalFilters);
 const load = computed(() => mainStore.loader);
 const jwt = computed(() => authStore.jwt);
 
@@ -75,6 +78,12 @@ onMounted(() => {
     >
       <catalog-sub-categories :category-items="subCategories"/>
     </div>
+    <div
+        v-if="showModalFilters"
+        class="modal"
+    >
+      <Filter class="color_black filter-mobile" />
+    </div>
     <action-menu-mobile v-if="width <= 768"/>
     <footer-component/>
     <profile-navigation-mobile v-if="navigation"/>
@@ -83,6 +92,9 @@ onMounted(() => {
     <edit-personal-form v-if="popup === 'edit-personal'" />
     <geo-form v-if="popup === 'location'" />
     <geo-announcement-form v-if="popup === 'deal-location'" />
+    <div class="widget" style="display: none">
+      <chat-body class="mini" />
+    </div>
   </section>
 </template>
 
@@ -311,10 +323,18 @@ button::-moz-focus-inner {
   height: 100vh;
   width: 100%;
   position: fixed;
-  z-index: 100;
+  z-index: 999999;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.widget {
+  position: fixed;
+  bottom: 0;
+  right: 3%;
+  max-width: rem(411);
+  box-shadow: 0 5px 17px 0 rgba(0, 0, 0, .15)
 }
 
 .overflow {
@@ -411,6 +431,10 @@ button::-moz-focus-inner {
     background-color: $color_accent;
   }
 
+  &_avito {
+    background-color: $color_blueLikeAvt;
+  }
+
   &_subBg {
     background-color: $color_subBg;
   }
@@ -421,6 +445,10 @@ button::-moz-focus-inner {
 
   &_gray {
     background: $color_gray;
+  }
+
+  &_grayLight {
+    background: $color_grayLight;
   }
 
   &_modal {
@@ -459,6 +487,10 @@ button::-moz-focus-inner {
 
   &_gray {
     color: $color_gray;
+  }
+
+  &_grayDarker {
+    color: $color_grayDarker;
   }
 
   &_colorSubBg {
@@ -727,15 +759,19 @@ button::-moz-focus-inner {
   }
 
   &_mobile {
-    height: 100%;
+    height: 70%;
+    overflow: auto;
     display: flex;
-    align-items: center;
+    align-items: start;
     justify-content: center;
+    flex-direction: column;
+    background: $color_bg;
 
     ul {
       display: flex;
       flex-direction: column;
       gap: rem(8);
+      overflow: auto;
     }
 
     li {
@@ -743,6 +779,12 @@ button::-moz-focus-inner {
       background: none;
     }
   }
+}
+
+.filter-mobile {
+  height: 60%;
+  overflow: auto;
+  padding: rem(10);
 }
 
 .custom-checkbox {

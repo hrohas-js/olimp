@@ -166,7 +166,7 @@ const openGeo = () => {
             <announcement-item/>
           </main>
         </section>
-        <section
+<!--        <section
             v-if="width <=1024"
             class="news"
         >
@@ -191,7 +191,7 @@ const openGeo = () => {
               </template>
             </carousel>
           </main>
-        </section>
+        </section>-->
         <div
             v-if="width > 1024"
             class="filterContainer"
@@ -243,7 +243,7 @@ const openGeo = () => {
               </p>
             </footer>
           </section>
-          <section
+<!--          <section
               v-if="width > 1024"
               class="news"
           >
@@ -263,7 +263,7 @@ const openGeo = () => {
                 Смотреть все новости...
               </p>
             </footer>
-          </section>
+          </section>-->
         </aside>
         <section class="mainContent">
           <section class="goodsContainer">
@@ -488,7 +488,7 @@ const openGeo = () => {
     @media (max-width: em(1024, 16)) {
       width: 100%;
       &__header {
-        margin-bottom: rem(26);
+        margin: rem(26) 0;
       }
     }
   }

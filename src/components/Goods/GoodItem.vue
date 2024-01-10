@@ -58,11 +58,13 @@ const vacancyFlag = computed(() => {
 });
 const isLiked = computed(() => {
   let flag = false;
-  profileStore.myLikes.forEach(elem => {
-    if (props.item.id === elem.id) {
-      flag = true;
-    }
-  });
+  if (profileStore.myLikes) {
+    [...profileStore.myLikes].forEach(elem => {
+      if (props.item.id === elem.id) {
+        flag = true;
+      }
+    });
+  }
   return flag;
 });
 const isActor = computed(() => {
@@ -76,9 +78,12 @@ const isActor = computed(() => {
   return flag
 });
 
+const upperTitle = computed(()=>{
+  return mainStore.upperCase(props.item.title);
+});
 const setLike = () => {
   if (isLiked.value) {
-    profileStore.myLikes = profileStore.myLikes.filter(elem => props.item.id !== elem.id);
+    profileStore.myLikes = [...profileStore.myLikes].filter(elem => props.item.id !== elem.id);
     profileStore.addLike({
       user_id: profileStore.user.id,
       announcement_id: props.item.id
@@ -129,7 +134,7 @@ const setLike = () => {
            <span v-if="vacancyFlag">
              Требуется
            </span>
-            {{ props.item.title }}
+            {{ upperTitle }}
           </h2>
         </router-link>
         <div

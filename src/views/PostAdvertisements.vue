@@ -117,7 +117,7 @@ const videoValue = computed({
 
 const breadcrumbs = computed(() => {
   let str = '';
-  announcementStore.newItem.selectedCategories.forEach((elem, index) => {
+  [...announcementStore.newItem.selectedCategories].forEach((elem, index) => {
     str += elem.replace(/<br\s*\/?>/gi, ' ');
     if (index !== announcementStore.newItem.selectedCategories.length - 1) {
       str += ' / '
@@ -138,7 +138,6 @@ const isActor = computed(() => {
   let flag = false;
   if (categories.value.length > 0) {
     const arr = categories.value;
-    console.log(arr);
     if ((arr[2].id === 30 || arr[2].id === 51) && (arr[3].id === 1 || arr[3].id === 2 || arr[3].id === 6)) {
       flag = true;
     }
@@ -258,7 +257,10 @@ const setPayAgreement = (e) => {
       <h3 class="title textMontserrat_medium">
         Создать объявление
       </h3>
-      <div class="container">
+      <div
+          class="container"
+          :class="{'container_actor': isActor}"
+      >
         <div class="postAdvertisements__item name">
           <p class="textMontserrat_regular">
             Название<br>объявления
@@ -466,9 +468,11 @@ const setPayAgreement = (e) => {
     .container {
       width: 60%;
       margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(9, 1fr);
-      grid-template-areas:
+
+      &_actor {
+        display: grid;
+        grid-template-columns: repeat(9, 1fr);
+        grid-template-areas:
           "name name name name name name name name name"
           "type type type type type type type type type"
           "height height weight weight size size . . ."
@@ -481,7 +485,8 @@ const setPayAgreement = (e) => {
           "location location location location location location location location location"
           "contacts contacts contacts contacts contacts contacts contacts contacts contacts"
           "connect connect connect connect connect connect connect connect connect";
-      column-gap: rem(20);
+        column-gap: rem(20);
+      }
     }
 
     .title {

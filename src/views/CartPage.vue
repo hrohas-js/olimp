@@ -31,7 +31,7 @@ const isAuth = computed(() => authStore.jwt !== null);
 
 const product = computed(() => {
   let prod = {};
-  catalogStore.catalog.forEach(elem => {
+  [...catalogStore.catalog].forEach(elem => {
     if (elem.id == route.params.id) {
       prod = elem
     }
@@ -42,14 +42,21 @@ const gallery = computed(() => {
   if (product.value.gallery) {
     return JSON.parse(product.value.gallery);
   } else {
-    return {};
+    return [];
   }
 });
 const parameters = computed(() => {
   if (product.value.parameters) {
     return JSON.parse(product.value.parameters);
   } else {
-    return {};
+    return [];
+  }
+});
+const categories = computed(() => {
+  if (product.value.categories) {
+    return JSON.parse(product.value.categories);
+  } else {
+    return [];
   }
 });
 const callShow = computed(() => {
@@ -113,6 +120,10 @@ const breadcrumbs = computed(() => {
   return str;
 });
 
+const upperTitle = computed(() =>{
+  return mainStore.upperCase(product.value.title);
+});
+
 onMounted(() => {
   productStore.getUserOfAnnouncement({
     id: route.params.author
@@ -156,7 +167,8 @@ const openChat = () => {
     title: product.value.title,
     user1: profileStore.user.id,
     user2: productStore.author.id,
-    announcement_id: product.value.id
+    announcement_id: product.value.id,
+    category_id: categories.value[0].id
   });
 }
 </script>
@@ -169,7 +181,7 @@ const openChat = () => {
     </p>
     <div v-if="width > 1024" class="categoryName">
       <h2 class="textMontserrat_semiBold">
-          {{ product.title }}
+          {{ upperTitle }}
       </h2>
     </div>
     <main class="cartPage__main background_elements">
@@ -638,6 +650,10 @@ const openChat = () => {
 
 <style scoped lang="scss">
 .cartPage {
+  margin-top: rem(25);
+  .content{
+    margin-top: rem(25);
+  }
   .categoryName{
     font-size: rem(32);
   }

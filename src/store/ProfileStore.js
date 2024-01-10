@@ -28,10 +28,32 @@ export const useProfileStore = defineStore("profileStore", {
             avatar_url: ""
         },
         myAnnouncements: [],
-        myLikes: localStorage.getItem('myLikes') !== null ? localStorage.getItem('myLikes') : [],
+        myLikes: localStorage.getItem('myLikes') !== null ? JSON.parse(localStorage.getItem('myLikes')) : [],
         myChats: [],
         currentChatID: 0,
-        currentChat: []
+        currentChat: [
+            {
+                id: 1,
+                message_text: 'Сообщение1',
+                type: 'text',
+                dt_created: '2024-01-07 00:00',
+                user_id: 1
+            },
+            {
+                id: 2,
+                message_text: 'Сообщение2',
+                type: 'text',
+                dt_created: '2024-01-08 00:00',
+                user_id: 2
+            },
+            {
+                id: 3,
+                message_text: 'Сообщение3',
+                type: 'text',
+                dt_created: '2024-01-09 00:00',
+                user_id: 1
+            }
+        ]
     }),
     getters: {
         userMainLetter: (state) => {
@@ -51,21 +73,21 @@ export const useProfileStore = defineStore("profileStore", {
         },
         myActiveAnnouncements: (state) => {
             if (state.myAnnouncements.length > 0) {
-                return state.myAnnouncements.filter(elem => elem.status === 'publish');
+                return [...state.myAnnouncements].filter(elem => elem.status === 'publish');
             } else {
                 return []
             }
         },
         myArchiveAnnouncements: (state) => {
             if (state.myAnnouncements.length > 0) {
-                return state.myAnnouncements.filter(elem => elem.status === 'archive');
+                return [...state.myAnnouncements].filter(elem => elem.status === 'archive');
             } else {
                 return []
             }
         },
         myDraftAnnouncements: (state) => {
             if (state.myAnnouncements.length > 0) {
-                return state.myAnnouncements.filter(elem => elem.status === 'draft');
+                return [...state.myAnnouncements].filter(elem => elem.status === 'draft');
             } else {
                 return []
             }

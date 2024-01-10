@@ -56,6 +56,10 @@ const goToProduct = (param = "") => {
 const showSubcategories = () => {
   catalogStore.showModalSubCategories = true
 }
+
+const showFilters = () => {
+  catalogStore.showModalFilters = true;
+}
 </script>
 
 <template>
@@ -80,7 +84,7 @@ const showSubcategories = () => {
           </aside>
           <section
               :class="{
-                'mainCatalog ': route.params.subCategory === 'all',
+                'mainCatalog': route.params.subCategory === 'all',
                 'goodItemContainer': catalog.length > 0,
                 'catalogEmpty': catalog.length === 0
               }"
@@ -97,56 +101,6 @@ const showSubcategories = () => {
               Предложений пока нет...
             </p>
           </section>
-<!--          <section
-              v-if="route.params.category === 'vacancy'"
-              class="goodItemContainer"
-              :class="{'mainCatalog': route.params.subCategory === 'all'}"
-          >
-            <good-item
-                v-for="item in 8"
-                :key="item"
-                :item-title="'Галь Гадот'"
-                :item-price="'1000'"
-                @click="goToProduct()"
-            />
-          </section>
-          <section
-              v-if="route.params.category === 'rent'"
-              class="goodItemContainer"
-              :class="{'mainCatalog': route.params.subCategory === 'all'}"
-          >
-            <good-item
-                v-for="item in 8"
-                :item-title="'Локация для съемок'"
-                :item-price="'1000'"
-                @click="goToProduct('technics')"
-            />
-          </section>
-          <section
-              v-if="$route.params.category === 'market'"
-              class="goodItemContainer"
-              :class="{'mainCatalog': route.params.subCategory === 'all'}"
-          >
-            <good-item
-                v-for="item in 8"
-                :item-title="'Фотоаппарат'"
-                :item-price="'1000'"
-                @click="goToProduct('technics')"
-            />
-          </section>
-          <section
-              v-if="route.params.category === 'job'"
-              class="goodItemContainer"
-              :class="{'mainCatalog': route.params.subCategory === 'all'}"
-          >
-            <good-item
-                v-for="item in 8"
-                :item-title="'Актерские пробы'"
-                :item-price="'1000'"
-                @click="goToProduct('technics')"
-            />
-          </section>-->
-
         </section>
       </div>
       <aside class="right">
@@ -167,7 +121,11 @@ const showSubcategories = () => {
           class="catalogView__main-mobile"
           v-if="width <= 1024"
       >
-        <div class="burgerMenu">
+        <div
+            v-if="route.params.subCategory !== 'all'"
+            class="burgerMenu"
+            @click="showFilters"
+        >
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="0 0 24 16" fill="none">
             <path d="M1 5H19" stroke="black" stroke-linecap="round"/>
             <path d="M7.49023 10H19.0002" stroke="black" stroke-linecap="round"/>
@@ -179,54 +137,18 @@ const showSubcategories = () => {
             Фильтры
           </p>
         </div>
-        <section
-            v-if="route.params.category === 'vacancy'"
-            class="goodItemContainer"
-            :class="{'mainCatalog': route.params.subCategory === 'all'}"
-        >
+        <section class="goodItemContainer">
           <good-item
-              v-for="item in 8"
-              :key="item"
-              :item-title="'Галь Гадот'"
-              :item-price="'1000'"
-              @click="goToProduct"
+              v-for="item in catalog"
+              :key="item.id"
+              :item="item"
           />
-        </section>
-        <section
-            v-if="route.params.category === 'rent'"
-            class="goodItemContainer"
-            :class="{'mainCatalog': route.params.subCategory === 'all'}"
-        >
-          <good-item
-              v-for="item in 8"
-              :item-title="'Локация для съемок'"
-              :item-price="'1000'"
-              @click="goToProduct('technics')"
-          />
-        </section>
-        <section
-            v-if="route.params.category === 'market'"
-            class="goodItemContainer"
-            :class="{'mainCatalog': route.params.subCategory === 'all'}"
-        >
-          <good-item
-              v-for="item in 8"
-              :item-title="'Фотоаппарат'"
-              :item-price="'1000'"
-              @click="goToProduct('technics')"
-          />
-        </section>
-        <section
-            v-if="route.params.category === 'job'"
-            class="goodItemContainer"
-            :class="{'mainCatalog': route.params.subCategory === 'all'}"
-        >
-          <good-item
-              v-for="item in 8"
-              :item-title="'Актерские пробы'"
-              :item-price="'1000'"
-              @click="goToProduct('technics')"
-          />
+          <p
+              v-if="catalog.length === 0"
+              class="textMontserrat_semiBold"
+          >
+            Предложений пока нет...
+          </p>
         </section>
       </main>
     </section>

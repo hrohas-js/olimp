@@ -1,10 +1,13 @@
 <script setup>
 import {useMainStore} from "@/store/MainStore";
 import {computed} from "vue";
+import {useCatalogStore} from "@/store/CatalogStore";
 
 const mainStore = useMainStore();
+const catalogStore = useCatalogStore();
 
 const width = computed(() => mainStore.display_width);
+const categories = computed(() => catalogStore.categories);
 </script>
 
 <template>
@@ -23,45 +26,16 @@ const width = computed(() => mainStore.display_width);
       </header>
       <main class="footerComponent__main border_accent">
         <ul>
-          <li class="textMontserrat">
-            <p class="textMontserrat_regular color_colorBg">
-              Кастинги
-            </p>
-          </li>
-          <li class="textMontserrat">
-            <p class="textMontserrat_regular color_colorBg">
-              Поиск специалистов и участников на проект
-            </p>
-          </li>
-          <li class="textMontserrat">
-            <p class="textMontserrat_regular color_colorBg">
-              Требуются специалисты на проект (работа)
-            </p>
-          </li>
-          <li class="textMontserrat">
-            <p class="textMontserrat_regular color_colorBg">
-              Рынок
-            </p>
-          </li>
-          <li class="textMontserrat">
-            <p class="textMontserrat_regular color_colorBg">
-              Аренда
-            </p>
-          </li>
-          <li class="textMontserrat">
-            <p class="textMontserrat_regular color_colorBg">
-              Заказчикам
-            </p>
-          </li>
-          <li class="textMontserrat">
-            <p class="textMontserrat_regular color_colorBg">
-              Недвижимость, лофты, локации для съемок
-            </p>
-          </li>
-          <li class="textMontserrat">
-            <p class="textMontserrat_regular color_colorBg">
-              Предложения о сотрудничестве
-            </p>
+          <li
+              v-for="category in categories"
+              :key="category.id"
+              class="textMontserrat"
+          >
+            <router-link :to="`/catalog/${category.id}/all`">
+              <p class="textMontserrat_regular color_colorBg">
+                {{ category.name }}
+              </p>
+            </router-link>
           </li>
         </ul>
         <div class="group">

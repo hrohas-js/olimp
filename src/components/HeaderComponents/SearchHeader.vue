@@ -11,13 +11,18 @@ const route = useRoute();
 const mainStore = useMainStore();
 
 const width = computed(() => mainStore.display_width);
+
+const goBack = () => {
+  router.back();
+}
 </script>
 
 <template>
   <header class="search background_elements fractions">
     <div
         v-if="width <= 1024"
-        class="arrowBeak"
+        class="arrowBack"
+        @click="goBack"
     >
       <svg width="18px" height="20px" viewBox="0 0 18 20" xmlns="http://www.w3.org/2000/svg">
         <title>ic_back</title>
@@ -116,7 +121,7 @@ const width = computed(() => mainStore.display_width);
     }
   }
 
-  .arrowBeak {
+  .arrowBack {
     cursor: pointer;
   }
 

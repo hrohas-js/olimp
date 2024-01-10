@@ -54,7 +54,11 @@ const categories = computed(() => catalogStore.categories);
   ul {
     display: grid;
     gap: rem(16);
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+
+    @media (max-width: em(768, 16)) {
+      display: flex;
+    }
     li{
       a {
         display: flex;
@@ -63,10 +67,14 @@ const categories = computed(() => catalogStore.categories);
         width: 100%;
       }
       .image {
-        flex: 0 0 20%;
+        flex: 0 0 40px;
         height: 100%;
         display: flex;
         align-items: flex-end;
+
+        @media (max-width: em(768, 16)) {
+          flex: 0 0 40px;
+        }
       }
     }
   }
@@ -108,7 +116,6 @@ const categories = computed(() => catalogStore.categories);
 
       li {
         flex-shrink: 0;
-        height: fit-content;
         //flex-direction: column;
         align-items: center;
         //min-width: 220px;

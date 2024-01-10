@@ -57,7 +57,7 @@ export const useAnnouncementStore = defineStore("announcementStore", {
                 mainStore.loader = true;
                 const response = await AnnouncementApi.removeFromGallery(data);
                 if (response.result) {
-                    this.newItem.gallery = this.newItem.gallery.filter(elem => elem.src !== data.url);
+                    this.newItem.gallery = [...this.newItem.gallery].filter(elem => elem.src !== data.url);
                 } else {
                     ElMessage.error('При удалении изображения произошла ошибка');
                 }

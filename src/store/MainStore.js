@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { validateField } from "@/plugins/validator";
 import { AnotherServicesApi } from "@/api/AnotherServices/AnotherServicesApi";
+import { useCatalogStore } from "@/store/CatalogStore";
 
 export const useMainStore = defineStore("mainStore", {
     state: () => ({
@@ -29,6 +30,7 @@ export const useMainStore = defineStore("mainStore", {
         errors: [],
         loader: false,
         location: '',
+        country: '',
         marker: {
             coordinates: [37.617644, 55.755819]
         }
@@ -56,17 +58,23 @@ export const useMainStore = defineStore("mainStore", {
             }
         },
         closeModal(elem) {
+            const catalogStore = useCatalogStore();
             if (elem.classList.contains("modal")) {
                 this.popup = "";
+                catalogStore.showModalFilters = false;
+                catalogStore.showModalSubCategories = false;
             }
         },
         setInputs(key, value) {
             const res = validateField(key, value);
             this.inputs[key] = res.message;
-            this.errors = this.errors.filter(elem => elem.id !== key);
+            this.errors = [...this.errors].filter(elem => elem.id !== key);
             if (res.error) {
                 this.errors.push(res);
             }
+        },
+        upperCase(str){
+            return str[0].toUpperCase() + str.slice(1);
         },
         async fetchCLADR(str) {
             try {
@@ -82,7 +90,10 @@ export const useMainStore = defineStore("mainStore", {
                 if (mode === 'coordinates') {
                     response.response.GeoObjectCollection.featureMember.forEach(elem => {
                         if (elem.GeoObject.metaDataProperty.GeocoderMetaData.kind === 'locality') {
-                            this.location = elem.GeoObject.metaDataProperty.GeocoderMetaData.text.replace('Россия, ', '');
+                            this.location = elem.GeoObject.name;
+                        }
+                        if (elem.GeoObject.metaDataProperty.GeocoderMetaData.kind === 'country') {
+                            this.country = elem.GeoObject.name;
                         }
                     });
                 } else {

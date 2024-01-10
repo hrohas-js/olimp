@@ -8,6 +8,7 @@ export const useCatalogStore = defineStore("catalogStore", {
         categories: [],
         subCategories: [],
         showModalSubCategories: false,
+        showModalFilters: false,
         currentCategory: localStorage.getItem('currentCategory') !== null ? parseInt(localStorage.getItem('currentCategory')) : {},
         filters: [],
         catalog: [],
@@ -20,7 +21,7 @@ export const useCatalogStore = defineStore("catalogStore", {
     getters: {
         currentCategoryName: (state) => {
             let res = '';
-            state.categories.forEach(elem => {
+            [...state.categories].forEach(elem => {
                 if (elem.id === state.currentCategory.id) res = elem.name;
             });
             return res;
@@ -29,7 +30,7 @@ export const useCatalogStore = defineStore("catalogStore", {
             const route = useRoute();
             let res = [];
             if (route.params.category) {
-                res = state.catalog.filter(elem => {
+                res = [...state.catalog].filter(elem => {
                     const cats = JSON.parse(elem.categories);
                     return cats[0].id === parseInt(route.params.category);
                 });
@@ -43,7 +44,6 @@ export const useCatalogStore = defineStore("catalogStore", {
                 });
             }
             if (Object.keys(state.filterID).length > 0 && Object.keys(state.filterContentID).length > 0) {
-                console.log('lol')
                 res = res.filter(elem => {
                     const cats = JSON.parse(elem.categories);
                     return cats[2].id === state.filterID.id && cats[3].id === state.filterContentID.id;
@@ -54,7 +54,7 @@ export const useCatalogStore = defineStore("catalogStore", {
         searchCatalog: (state) => {
             if (state.search.length === 0) return state.catalog;
             const srch = state.search.toLowerCase();
-            return state.catalog.filter(elem => elem.title.toLowerCase().indexOf(srch) !== -1);
+            return [...state.catalog].filter(elem => elem.title.toLowerCase().indexOf(srch) !== -1);
         }
     },
     actions: {

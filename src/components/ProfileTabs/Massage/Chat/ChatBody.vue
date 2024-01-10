@@ -1,25 +1,12 @@
 <script setup>
 import InputAnnouncement from "@/components/UI/Inputs/InputAnnouncement";
 import MessageItem from "@/components/ProfileTabs/Massage/Chat/MessageItem.vue";
-import {ref} from "vue";
+import {useProfileStore} from "@/store/ProfileStore";
+import {computed} from "vue";
 
-const chat = ref([
-  {
-    id: 1,
-    message_text: 'Сообщение1',
-    type: 'text'
-  },
-  {
-    id: 2,
-    message_text: 'Сообщение2',
-    type: 'text'
-  },
-  {
-    id: 3,
-    message_text: 'Сообщение3',
-    type: 'text'
-  }
-]);
+const profileStore = useProfileStore();
+
+const chat = computed(() => profileStore.currentChat);
 /*
 import InputDecorate from "@/components/UI/inputs/InputDecorate.vue";
 import MessageItem from "@/components/UI/elements/MessageItem.vue";
@@ -197,13 +184,31 @@ const clickFile = () => {
 </script>
 
 <template>
-  <section class="chat">
-    <header class="chat__header background_colorRed">
-      <h1 class="color_bg text_large">
-        Имя чата
-      </h1>
+  <section class="chat background_mainBg">
+    <header class="chat__header">
+      <div class="back">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="icon-icon-JUE8Z" style="width: 24px; height: 24px;">
+          <path d="m7.414 13 5.293 5.293a1 1 0 0 1-1.414 1.414l-7-7a1 1 0 0 1 0-1.414l7-7a1 1 0 1 1 1.414 1.414L7.414 11H19a1 1 0 1 1 0 2H7.414Z" fill="black"></path>
+        </svg>
+      </div>
+      <div class="header-content">
+        <div class="image"></div>
+        <div class="info">
+          <div class="info__name">
+            <span class="textMontserrat_bold">
+            Михаил
+          </span>
+            <span class="color_grayDarker">
+            В сети в 12:26
+          </span>
+          </div>
+          <div class="info__title">
+            Акустическая система
+          </div>
+        </div>
+      </div>
     </header>
-    <main class="chat__main background_chat">
+    <main class="chat__main">
       <div class="dataContainer">
         <message-item
             v-for="(item, index) in chat"
@@ -237,20 +242,8 @@ const clickFile = () => {
       <input-announcement
         input-placeholder="Текст сообщения..."
       />
-      <svg
-          ref="submit"
-          xmlns="http://www.w3.org/2000/svg"
-          width="49"
-          height="49"
-          viewBox="0 0 49 49"
-          fill="none"
-      >
-        <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M4.15091 27L23.0321 27L16.8848 33.2464L20.4485 36.7536L30.7819 26.2536L32.5076 24.5L30.7819 22.7464L20.4485 12.2464L16.8848 15.7536L23.0321 22L4.15091 22C5.38408 11.8573 14.0245 4 24.5 4C35.8218 4 45 13.1782 45 24.5C45 35.8218 35.8218 45 24.5 45C14.0245 45 5.38408 37.1427 4.15091 27Z"
-            fill="#F24259"
-        />
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="icon-submit" style="width: 24px; height: 24px;">
+        <path d="M22 12a1 1 0 0 1-.574.905l-17 8a1 1 0 0 1-1.39-1.168l1.5-5.5a1 1 0 0 1 .605-.67L9.214 12l-4.073-1.567a1 1 0 0 1-.606-.67l-1.5-5.5a1 1 0 0 1 1.39-1.168l17 8A1 1 0 0 1 22 12Z" fill="currentColor"></path>
       </svg>
     </footer>
   </section>
@@ -259,24 +252,32 @@ const clickFile = () => {
 <style scoped lang="scss">
 .chat {
   height: 100vh;
+
+  &.mini {
+    height: rem(470);
+
+    .chat__main {
+      height: 70%;
+    }
+  }
+
   &__header {
     height: rem(72);
     display: flex;
-    justify-content: center;
     align-items: center;
-    text-align: center;
+    gap: rem(10);
     box-shadow: 0 24px 24px -24px rgba(0, 0, 0, .13);
 
     @media (max-width: em(768, 16)) {
       border-radius: unset;
     }
 
-    .text_large {
-      font-size: rem(24);
+    .back {
+      flex: 0 0 10%;
+    }
 
-      @media (max-width: em(768, 16)) {
-        font-size: rem(17);
-      }
+    .info {
+      flex: 0 1 90%;
     }
   }
 
@@ -304,15 +305,16 @@ const clickFile = () => {
 
     svg {
       cursor: pointer;
+      path {
+        fill: $color_gray;
+      }
     }
 
-    .addFile {
-      margin-right: rem(16.75);
-    }
-
-    .inputDecorate {
-      width: 100%;
-      max-width: rem(665);
+    .icon-submit {
+      margin-left: rem(10);
+      path {
+        fill: $color_subBg;
+      }
     }
 
     .voice {

@@ -12,7 +12,7 @@ const props = defineProps({
 <template>
   <div class="dataMassage background_colorRedBlur">
     <h3 class="color_bg text_medium">
-      date
+      {{ props.date }}
     </h3>
   </div>
 </template>

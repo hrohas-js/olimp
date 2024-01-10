@@ -123,38 +123,73 @@ const closeModal = () => {
     <div v-if="popup === 'register'" class="modal-content">
       <h2 class="textMontserrat_medium color_black">Регистрация</h2>
       <form @submit.prevent="login" class="textMontserrat_regular">
-        <div class="form-group color_black">
-          <label for="email">Имя:</label>
-          <input-border
-              id="name"
-              input-type="text"
-              validate-i-d="name"
-          />
+        <div class="form-col">
+          <div class="form-group color_black">
+            <label for="name">Представьтесь:</label>
+            <input-border
+                id="name"
+                input-type="text"
+                validate-i-d="name"
+            />
+          </div>
+          <div class="form-group color_black">
+            <label for="city">Город:</label>
+            <input-border
+                id="city"
+                input-type="text"
+                validate-i-d="city"
+            />
+          </div>
+          <div class="form-group color_black">
+            <label for="birth_datetime">Дата рождения:</label>
+            <input-border
+                id="birth_datetime"
+                input-type="date"
+                validate-i-d="birth_datetime"
+            />
+          </div>
+          <div class="form-group color_black">
+            <label for="phone">Телефон:</label>
+            <input-border
+                id="phone"
+                input-type="tel"
+                validate-i-d="phone"
+            />
+          </div>
+          <div class="form-group color_black">
+            <label for="email">Email:</label>
+            <input-border
+                id="email"
+                input-type="email"
+                validate-i-d="email"
+            />
+          </div>
         </div>
-        <div class="form-group color_black">
-          <label for="email">Email:</label>
-          <input-border
-              id="email"
-              input-type="email"
-              validate-i-d="email"
-          />
-        </div>
-        <div class="form-group color_black">
-          <label for="password">Пароль:</label>
-          <input-border
-              id="password"
-              input-type="password"
-              validate-i-d="password"
-          />
-          <p class="textMontserrat_light">Пароль должен содержать минимум 6 символов</p>
-        </div>
-        <div class="form-group color_black">
-          <label for="confirm_password">Повторить пароль:</label>
-          <input-border
-              id="confirm_password"
-              input-type="password"
-              validate-i-d="confirm_password"
-          />
+        <div class="form-col flex">
+          <div class="form-group color_black">
+            <label for="old_password">Старый пароль:</label>
+            <input-border
+                id="old_password"
+                input-type="password"
+                validate-i-d="old_password"
+            />
+          </div>
+          <div class="form-group color_black">
+            <label for="password">Новый пароль:</label>
+            <input-border
+                id="password"
+                input-type="password"
+                validate-i-d="password"
+            />
+          </div>
+          <div class="form-group color_black">
+            <label for="confirm_password">Подтвердите пароль:</label>
+            <input-border
+                id="confirm_password"
+                input-type="password"
+                validate-i-d="confirm_password"
+            />
+          </div>
         </div>
         <button
             class="button_mainButton background_green"
@@ -179,10 +214,17 @@ const closeModal = () => {
   .background_green {
     margin-top: rem(10);
   }
+  .background_subBg {
+    width: 100%;
+  }
 }
 .register {
   .background_green {
     margin-bottom: rem(10);
+  }
+  .background_red {
+    width: 57%;
+    margin: 0 auto;
   }
 }
 .textMontserrat {
@@ -210,13 +252,24 @@ const closeModal = () => {
   }
 
   form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    .form-col {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: rem(10);
+    }
+
+    .form-col.flex {
+      display: flex;
+      flex-direction: column;
+      width: 50%;
+    }
 
     .form-group {
       margin-bottom: 15px;
-      width: 100%;
+
+      &:first-child {
+        grid-column: 1 / 3;
+      }
 
       label {
         margin-bottom: 5px;
@@ -231,10 +284,9 @@ const closeModal = () => {
     }
 
     button {
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+      grid-column: 1 / 3;
+      width: 57%;
+      margin: 0 auto;
     }
   }
 
