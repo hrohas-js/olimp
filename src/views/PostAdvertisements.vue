@@ -7,6 +7,7 @@ import AddFile from "@/components/UI/AddFile";
 import MainButton from "@/components/UI/Button/MainButton";
 import {useAnnouncementStore} from "@/store/AnnouncementStore";
 import {useProfileStore} from "@/store/ProfileStore";
+import {useMainStore} from "@/store/MainStore";
 import {computed, onUnmounted, ref, watch} from "vue";
 import {validateField} from "@/plugins/validator";
 import MiniGallery from "@/components/UI/MiniGallery";
@@ -24,8 +25,10 @@ import ChooseBox from "@/components/UI/Inputs/ChooseBox";
 
 const announcementStore = useAnnouncementStore();
 const profileStore = useProfileStore();
+const mainStore = useMainStore();
 const router = useRouter();
 
+const width = computed(() => mainStore.display_width);
 const newItem = computed(() => announcementStore.newItem);
 const parameters = computed(() => newItem.value.parameters);
 const categories = computed(() => newItem.value.categories);
@@ -263,7 +266,7 @@ const setPayAgreement = (e) => {
       >
         <div class="postAdvertisements__item name">
           <p class="textMontserrat_regular">
-            Название<br>объявления
+            Название<br v-if="width > 768"> объявления
           </p>
           <input-announcement
               v-model="titleValue"
@@ -469,6 +472,10 @@ const setPayAgreement = (e) => {
       width: 60%;
       margin: 0 auto;
 
+      @media (max-width: em(768, 16)) {
+        width: 100%;
+      }
+
       &_actor {
         display: grid;
         grid-template-columns: repeat(9, 1fr);
@@ -492,6 +499,11 @@ const setPayAgreement = (e) => {
     .title {
       font-size: rem(24);
       padding: rem(20) 0;
+
+      @media (max-width: em(768, 16)) {
+        font-size: rem(18);
+        padding: rem(10) 0;
+      }
     }
   }
 
@@ -501,6 +513,10 @@ const setPayAgreement = (e) => {
     grid-template-columns: 0.8fr 3fr;
     align-items: start;
     column-gap: rem(10);
+
+    @media (max-width: em(768, 16)) {
+      display: block;
+    }
 
 
     &.name {
