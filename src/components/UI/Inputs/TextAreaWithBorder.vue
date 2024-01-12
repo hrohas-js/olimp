@@ -12,8 +12,6 @@ const updateValue = (event) => {
 
 <template>
   <textarea
-      cols="30"
-      rows="10"
       class="border_subBg textMontserrat"
       :value="modelValue"
       @input="updateValue"
@@ -22,6 +20,8 @@ const updateValue = (event) => {
 
 <style scoped lang="scss">
 textarea{
+  width: 100%;
+  height: rem(200);
   border-radius: 5px;
   padding: rem(8) rem(20);
 }

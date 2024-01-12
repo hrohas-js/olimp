@@ -1,11 +1,36 @@
 <script setup>
+import MainSearch from "@/components/UI/Filters/MainSearch";
+import {ref, computed} from "vue";
+import {useMainStore} from "@/store/MainStore";
+import {useAuthStore} from "@/store/AuthStore";
+import {useRouter} from "vue-router";
 
+const mainStore = useMainStore();
+const authStore = useAuthStore();
+const router = useRouter();
+
+const jwt = computed(() => authStore.jwt);
+
+const searchShow = ref(false);
+
+const changeSearchShow = () => {
+  searchShow.value = !searchShow.value;
+}
+
+const profileRouter = (to) => {
+  if (jwt.value) {
+    router.push(to);
+  } else {
+    mainStore.popup = 'auth';
+  }
+}
 </script>
 
 <template>
   <nav class="actionMenu background_elements">
+    <main-search v-if="searchShow" />
     <ul class="wrapper">
-      <li>
+      <li @click="changeSearchShow">
         <div class="image">
           <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
             <path d="M19 19L25 25" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
@@ -26,7 +51,7 @@
           Избранное
         </p>
       </li>
-      <li>
+      <li @click="profileRouter('/create')">
         <div class="image">
           <svg xmlns="http://www.w3.org/2000/svg" width="35" height="27" viewBox="0 0 35 27" fill="none">
             <rect x="0.5" y="0.5" width="34" height="26" stroke="white"/>
@@ -48,7 +73,7 @@
           Сообщения
         </p>
       </li>
-      <li>
+      <li @click="profileRouter('/profile')">
         <div class="image">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="27" viewBox="0 0 24 27" fill="none">
             <path d="M1 26V24.4375C1 18.3969 5.89689 13.5 11.9375 13.5C17.9781 13.5 22.875 18.3969 22.875 24.4375V26" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
@@ -71,6 +96,11 @@
   position: fixed;
   bottom: 0;
   z-index: 99999;
+
+  .wrapper {
+    margin-top: rem(5);
+  }
+
   ul{
     display: flex;
     justify-content: space-between;

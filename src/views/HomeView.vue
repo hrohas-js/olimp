@@ -103,7 +103,12 @@ const openGeo = () => {
         </svg>
       </div>
       <div class="searchContainer">
-        <main-search/>
+        <router-link to="/">
+          <img
+              src="@/assets/logo.jpg"
+              alt="logo"
+          />
+        </router-link>
       </div>
       <div class="notifications">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" viewBox="0 0 20 22" fill="none">
@@ -548,8 +553,9 @@ const openGeo = () => {
       align-items: center;
       padding: rem(7) 3.08%;
       border-radius: 0;
+      justify-content: space-between;
       .searchContainer{
-        flex: 1 1 90%;
+        flex: 0 1 70%;
       }
       .geo{
         flex: 0 1 5%;

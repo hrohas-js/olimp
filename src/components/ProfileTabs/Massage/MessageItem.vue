@@ -1,53 +1,72 @@
 <script setup>
 import {useProfileStore} from "@/store/ProfileStore";
+import {computed} from "vue";
 
 const profileStore = useProfileStore();
 
 const props = defineProps({
-  writeMassage: {
+  writeMessage: {
     type: Boolean,
     default() {
       return false
     }
+  },
+  item: {
+    type: Object,
+    default() {
+      return {}
+    }
   }
 });
 
+const mainPhoto = computed(() => {
+  let src = '';
+  if (props.item.gallery) {
+    src = JSON.parse(props.item.gallery)[0].src;
+  }
+  return src;
+});
+
 const changeContent = () => {
+  profileStore.currentChat = props.item;
   profileStore.content = "chat";
+  profileStore.getMessages({
+    chat_id: props.item.chat_id
+  });
 }
 </script>
 
 <template>
-  <article class="massageItem ">
-    <div class="massageItem__check"/>
-    <div class="massageItem__information">
+  <article class="messageItem" @click="changeContent">
+    <div class="messageItem__check"/>
+    <div class="messageItem__information">
       <div class="image">
-        <img src="@/assets/png/MyAnnouncements/cinema.png" alt="altText"/>
+        <img :src="mainPhoto" alt="altText"/>
       </div>
       <div class="text">
         <h2 class="textMontserrat_bold text__item">
-          Анжелика
+          {{ item.user_name }}
         </h2>
         <p class="textMontserrat_medium text__item">
-          Аренда проф. аппарата, 1000 руб/час
+          {{ item.title }}
         </p>
-        <p class="textMontserrat_light text__item">
+<!--        <p class="textMontserrat_light text__item">
           Арендодатель не подтвердил заявку
-        </p>
+        </p>-->
       </div>
-      <div class="avatar">
+<!--      <div class="avatar">
         <img src="@/assets/png/Profile/avatar.jpg" alt="Анжелика"/>
-      </div>
+      </div>-->
     </div>
-    <time
-        v-if="!props.writeMassage"
-        class="massageItem__time textMontserrat_medium" datetime="20 авг"
+<!--    <time
+        v-if="!props.writeMessage"
+        class="messageItem__time textMontserrat_medium" datetime="20 авг"
     >
       20 авг
     </time>
     <time
-        v-if="props.writeMassage"
-        class="massageItem__write textMontserrat_light" datetime="20 авг"
+        v-if="props.writeMessage"
+        class="messageItem__write textMontserrat_light" datetime="20 авг"
     >
       <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"
            class="icon-icon-JUE8Z status-icon-root-kGiuI status-icon-statusRead-lFsAI"
@@ -58,12 +77,12 @@ const changeContent = () => {
         </path>
       </svg>
       20 авг
-    </time>
+    </time>-->
   </article>
 </template>
 
 <style scoped lang="scss">
-.massageItem {
+.messageItem {
   cursor: pointer;
   margin-top: rem(40);
   display: grid;

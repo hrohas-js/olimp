@@ -1,4 +1,9 @@
 <script setup>
+import {computed} from "vue";
+import {useCatalogStore} from "@/store/CatalogStore";
+
+const catalogStore = useCatalogStore();
+
 const props = defineProps({
   placeholderFrom: {
     type: String,
@@ -11,6 +16,29 @@ const props = defineProps({
     default: () => {
       return ""
     }
+  },
+  paramName: {
+    type: String,
+    default: () => {
+      return ""
+    }
+  }
+});
+
+const fromValue = computed({
+  get() {
+    return catalogStore.filterParams.age.from;
+  },
+  set(value) {
+    catalogStore.filterParams.age.from = value;
+  }
+});
+const toValue = computed({
+  get() {
+    return catalogStore.filterParams.age.to;
+  },
+  set(value) {
+    catalogStore.filterParams.age.to = value;
   }
 });
 </script>
@@ -18,11 +46,13 @@ const props = defineProps({
 <template>
   <div class="cost textMontserrat">
     <input
+        v-model="fromValue"
         type="text"
         class="cost__item border_gray textMontserrat_light"
         :placeholder="props.placeholderFrom"
     >
     <input
+        v-model="toValue"
         type="text"
         class="cost__item border_gray textMontserrat_light"
         :placeholder="props.placeholderTo"

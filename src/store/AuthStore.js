@@ -89,6 +89,7 @@ export const useAuthStore = defineStore("authStore", {
                 console.log(error)
                 localStorage.clear();
                 this.jwt = null;
+                ElMessage.error('Сессия пользователя закончена в связи со сменой IP адреса');
             } finally {
                 mainStore.loader = false;
             }

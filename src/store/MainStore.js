@@ -29,6 +29,7 @@ export const useMainStore = defineStore("mainStore", {
         },
         errors: [],
         loader: false,
+        miniChat: false,
         location: '',
         country: '',
         marker: {

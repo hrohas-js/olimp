@@ -1,8 +1,24 @@
 <script setup>
 import GoodItemProfile from "@/components/Goods/GoodItemProfile";
-import {ref} from "vue";
+import {computed, onMounted} from "vue";
+import {useProfileStore} from "@/store/ProfileStore";
 
-const relevance = ref("all");
+const profileStore = useProfileStore();
+
+const categories = computed(() => profileStore.wishCategories);
+const relevance = computed(() => profileStore.wishRelevance);
+const myLikes = computed(() => profileStore.myLikes);
+const myFilteredLikes = computed(() => profileStore.myFilteredLikes);
+
+onMounted(() => {
+  profileStore.getLikesCategories({
+    user_id: profileStore.user.id
+  });
+});
+
+const changeTab = (slug) => {
+  profileStore.wishRelevance = slug;
+}
 </script>
 
 <template>
@@ -17,26 +33,28 @@ const relevance = ref("all");
         <ul>
           <li
               class="profileNavigation__item textMontserrat_bold"
-              :class="{'active':relevance === 'all'}"
+              :class="{'active':relevance === 0}"
+              @click="changeTab(0)"
           >
-            Все <sup>8</sup>
+            Все <sup>{{ myLikes.length }}</sup>
           </li>
-          <li class="textMontserrat_bold profileNavigation__item">
-            Аренда <sup>70</sup>
-          </li>
-          <li class="textMontserrat_bold profileNavigation__item">
-            Рынок <sup>10</sup>
-          </li>
-          <li class="textMontserrat_bold profileNavigation__item">
-            Вакансии <sup>40</sup>
-          </li>
-          <li class="textMontserrat_bold profileNavigation__item">
-            Работа <sup>11</sup>
+          <li
+              v-for="item in categories"
+              :key="item.id"
+              class="textMontserrat_bold profileNavigation__item"
+              :class="{'active':relevance === item.id}"
+              @click="changeTab(item.id)"
+          >
+            {{ item.name }} <sup>{{ item.like_count }}</sup>
           </li>
         </ul>
       </nav>
       <div class="content">
-        <good-item-profile/>
+        <good-item-profile
+            v-for="item in myFilteredLikes"
+            :key="item.id"
+            :item="item"
+        />
       </div>
     </main>
   </section>

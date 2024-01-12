@@ -7,19 +7,22 @@ import {useProfileStore} from "@/store/ProfileStore";
 const catalogStore = useCatalogStore();
 const profileStore = useProfileStore();
 
-const categories = computed(() => catalogStore.categories);
-
-const relevance = ref("all");
+const categories = computed(() => profileStore.chatCategories);
+const chats = computed(() => profileStore.myFilteredChats);
+const allCount = computed(() => profileStore.myChats.length);
+const relevance = computed(() => profileStore.relevance);
 
 onMounted(() => {
+  profileStore.getChatsCategories({
+    user_id: profileStore.user.id
+  });
   profileStore.getAllChats({
-    user_id: profileStore.user.id,
-    category_id: categories.value[0].id
+    user_id: profileStore.user.id
   });
 });
 
 const changeTab = (slug) => {
-  relevance.value = slug
+  profileStore.relevance = slug;
 }
 </script>
 
@@ -29,35 +32,37 @@ const changeTab = (slug) => {
       <h2 class="textMontserrat_medium">
         Сообщения
       </h2>
-      <div class="activeMenu border_subBg">
+<!--      <div class="activeMenu border_subBg">
         ...
-      </div>
+      </div>-->
     </header>
     <main class="messages__main">
       <nav class="profileNavigation">
         <ul>
           <li
               class="profileNavigation__item textMontserrat_bold"
-              :class="{'active':relevance === 'all'}"
-              @click="changeTab('all')"
+              :class="{'active':relevance === 0}"
+              @click="changeTab(0)"
           >
-            Все <sup>8</sup>
+            Все <sup>{{ allCount }}</sup>
           </li>
           <li
               v-for="item in categories"
               :key="item.id"
               class="textMontserrat_bold profileNavigation__item"
-              :class="{'active':relevance === item.slug}"
-              @click="changeTab(item.slug)"
+              :class="{'active':relevance === item.id}"
+              @click="changeTab(item.id)"
           >
-            {{ item.name }} <sup>70</sup>
+            {{ item.name }} <sup>{{ item.chat_count }}</sup>
           </li>
         </ul>
         </nav>
         <div class="messagesContainer">
-          <massage-item/>
-          <massage-item :writeMassage="true"/>
-          <massage-item/>
+          <massage-item
+              v-for="item in chats"
+              :key="item.id"
+              :item="item"
+          />
         </div>
     </main>
   </section>

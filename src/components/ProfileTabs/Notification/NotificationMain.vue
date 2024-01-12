@@ -1,26 +1,32 @@
 <script setup>
 import NotificationItem from "@/components/ProfileTabs/Notification/NotificationItem";
 import {useProfileStore} from "@/store/ProfileStore";
+import {onMounted, computed} from "vue";
 
 const profileStore = useProfileStore();
 
-const changeContent = (value) => {
-  profileStore.content = value
-}
+const notifications = computed(() => profileStore.notifications)
+
+onMounted(() => {
+  profileStore.getNotifications({
+    user_id: profileStore.user.id
+  });
+});
 </script>
 
 <template>
   <section class="notification textMontserrat">
     <header class="notification__header fraction">
       <h2 class="textMontserrat_medium">
-        Мои объявления
+        Мои уведомления
       </h2>
     </header>
     <main class="notification__main">
-      <notification-item @click="changeContent('notificationBody')"/>
-      <notification-item @click="changeContent('notificationBody')"/>
-      <notification-item @click="changeContent('notificationBody')"/>
-      <notification-item @click="changeContent('notificationBody')"/>
+      <notification-item
+          v-for="(item, index) in notifications"
+          :key="index"
+          :item="item"
+      />
     </main>
   </section>
 </template>

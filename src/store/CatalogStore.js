@@ -16,9 +16,33 @@ export const useCatalogStore = defineStore("catalogStore", {
         filterID: {},
         filterContentID: {},
         search: '',
-        createdCategories: []
+        createdCategories: [],
+        filterParams: {
+            age: {
+                from: 0,
+                to: 0
+            },
+            sex: {},
+            type: {},
+            selectedSex: {},
+            selectedType: {}
+        }
     }),
     getters: {
+        modelFlag: (state) => {
+            let res = false;
+            if ((state.filterID.id === 30 || state.filterID.id === 51) && state.filterContentID.id === 6) {
+                res = true
+            }
+            return res;
+        },
+        actorFlag: (state) => {
+            let res = false;
+            if ((state.filterID.id === 30 || state.filterID.id === 51) && (state.filterContentID.id === 1 || state.filterContentID.id === 2)) {
+                res = true
+            }
+            return res;
+        },
         currentCategoryName: (state) => {
             let res = '';
             [...state.categories].forEach(elem => {
@@ -48,6 +72,11 @@ export const useCatalogStore = defineStore("catalogStore", {
                     const cats = JSON.parse(elem.categories);
                     return cats[2].id === state.filterID.id && cats[3].id === state.filterContentID.id;
                 });
+                if (state.filterID.name === 'Актеры, актрисы, модели,\n' + 'артисты ориг. жанра,\n' + 'агенты' &&
+                    (state.filterContentID.name === 'Актеры' || state.filterContentID.name === 'Актрисы' || state.filterContentID.name === 'Модели')
+                ) {
+
+                }
             }
             return res;
         },
@@ -109,12 +138,28 @@ export const useCatalogStore = defineStore("catalogStore", {
                 mainStore.loader = true;
                 const response = await CatalogApi.getFilters(id);
                 response.result.forEach(elem => {
-                    this.filters.push({
-                        id: elem.id,
-                        name: elem.name,
-                        catID: elem.sub_category_id,
-                        content: JSON.parse(elem.content)
-                    });
+                    if (elem.id === 108 || elem.id === 109) {
+                        this.filterParams.sex = {
+                            id: elem.id,
+                            name: elem.name,
+                            catID: elem.sub_category_id,
+                            content: JSON.parse(elem.content)
+                        }
+                    } else if (elem.id === 110 || elem.id === 111) {
+                        this.filterParams.type = {
+                            id: elem.id,
+                            name: elem.name,
+                            catID: elem.sub_category_id,
+                            content: JSON.parse(elem.content)
+                        }
+                    } else {
+                        this.filters.push({
+                            id: elem.id,
+                            name: elem.name,
+                            catID: elem.sub_category_id,
+                            content: JSON.parse(elem.content)
+                        });
+                    }
                 });
             } catch (error) {
                 console.log(error)

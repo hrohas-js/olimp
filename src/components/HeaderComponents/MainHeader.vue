@@ -19,6 +19,7 @@ const isAuth = computed(() => authStore.jwt !== null);
 const name = computed(() => profileStore.user.name);
 const mainLetter = computed(() => profileStore.userMainLetter);
 const country = computed(() =>  mainStore.country);
+const notCount = computed(() => profileStore.newNotificationsCount);
 
 const routerPush = (page) => {
   router.push(page)
@@ -30,6 +31,11 @@ const openAuthForm = () => {
 
 const openRegistrationForm = () => {
   mainStore.popup = 'register';
+}
+
+const goToProfile = (mode) => {
+  profileStore.content = mode;
+  router.push('/profile');
 }
 </script>
 
@@ -87,7 +93,16 @@ const openRegistrationForm = () => {
           v-if="isAuth"
           class="mainHeader__item actions"
       >
-        <div class="image">
+        <div
+            class="image"
+            @click="goToProfile('notification')"
+        >
+          <span
+              v-if="notCount > 0"
+              class="background_accent color_likeAvt"
+          >
+            {{ notCount }}
+          </span>
           <svg
               class="ring"
               xmlns="http://www.w3.org/2000/svg" width="28" height="31" viewBox="0 0 28 31" fill="none">
@@ -99,7 +114,10 @@ const openRegistrationForm = () => {
                 stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
-        <div class="image">
+        <div
+            class="image"
+            @click="goToProfile('wishList')"
+        >
           <svg
               class="heart"
               xmlns="http://www.w3.org/2000/svg" width="32" height="28" viewBox="0 0 32 28" fill="none">
@@ -108,14 +126,10 @@ const openRegistrationForm = () => {
                 stroke="black" stroke-linejoin="round"/>
           </svg>
         </div>
-        <div class="image">
-          <!--          <svg xmlns="http://www.w3.org/2000/svg" width="39" height="28" viewBox="0 0 39 28" fill="none">-->
-          <!--            <path d="M10.2778 8.42227L19.5557 14.9168L28.8335 8.42227" stroke="black" stroke-linecap="round"-->
-          <!--                  stroke-linejoin="round"/>-->
-          <!--            <path-->
-          <!--                d="M1 23.2668V4.71113C1 2.66153 2.66153 1 4.71113 1H34.4002C36.4499 1 38.1113 2.66153 38.1113 4.71113V23.2668C38.1113 25.3165 36.4499 26.9779 34.4002 26.9779H4.71113C2.66153 26.9779 1 25.3165 1 23.2668Z"-->
-          <!--                stroke="black"/>-->
-          <!--          </svg>-->
+        <div
+            class="image"
+            @click="goToProfile('messages')"
+        >
           <svg
               class="mail"
               id="Layer_1"
@@ -245,6 +259,20 @@ const openRegistrationForm = () => {
       //max-width: rem(24);
       min-width: rem(20);
       min-height: rem(20);
+      position: relative;
+
+      span {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: rem(8);
+        width: rem(12);
+        height: rem(12);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+      }
 
       svg {
         width: rem(20);

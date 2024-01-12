@@ -31,7 +31,6 @@ const fetchGallery = (data) => {
         :items-to-show="1"
         :wrap-around="props.slider.length > 1"
         v-model="currentSlide"
-        class="main"
         snap-align="center"
         @slide-end="fetchGallery"
     >
@@ -44,7 +43,7 @@ const fetchGallery = (data) => {
             alt="actor"
         />
       </Slide>
-      <template #addons>
+      <template v-if="props.slider.length > 1" #addons>
         <navigation/>
       </template>
     </Carousel>

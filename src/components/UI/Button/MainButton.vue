@@ -1,4 +1,8 @@
 <script setup>
+import {ref} from "vue";
+
+const phoneShow = ref(false);
+
 const props = defineProps({
   buttonText: {
     type: String,
@@ -29,20 +33,44 @@ const props = defineProps({
     default() {
       return ""
     }
+  },
+  phone: {
+    type: String,
+    default() {
+      return ""
+    }
   }
 });
+
+const phoneShowTrigger = () => {
+  phoneShow.value = !phoneShow.value;
+}
 </script>
 
 <template>
   <button
       class="button button_mainButton"
       :class="{
-    'background_green': props.color === 'green',
-    'background_subBg': props.color === 'blue',
-    'bugSize': props.size === 'big'
-  }"
+        'background_green': props.color === 'green',
+        'background_subBg': props.color === 'blue',
+        'bugSize': props.size === 'big'
+      }"
   >
-    <p>{{ props.buttonText }} </p>
+    <p
+        v-if="phone.length > 0"
+        class="phone-change"
+        @click="phoneShowTrigger"
+    >
+      <span :class="{'cover': phoneShow, 'uncover': !phoneShow}">
+          {{ props.buttonText }}
+      </span>
+      <span :class="{'cover': !phoneShow, 'uncover': phoneShow}">
+        {{ props.phone }}
+      </span>
+    </p>
+    <p v-else>
+      {{ props.buttonText }}
+    </p>
     <span
         v-if="props.buttonText === 'Показать телефон'"
         class="image"
@@ -148,6 +176,25 @@ const props = defineProps({
   .image{
     left: 5%;
     position:absolute;
+  }
+}
+
+.phone-change {
+  span {
+    transition: opacity 0.3s;
+    position: absolute;
+    top: 35%;
+    left: 35%;
+
+    &:last-child {
+      left: 38%;
+    }
+  }
+  .cover {
+    opacity: 0;
+  }
+  .uncover {
+    opacity: 1;
   }
 }
 </style>

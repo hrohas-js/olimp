@@ -3,6 +3,7 @@ import {useMainStore} from "@/store/MainStore";
 import {ElMessage} from "element-plus";
 import {ProfileApi} from "@/api/Profile/ProfileApi";
 import {ChatsApi} from "@/api/Chats/ChatsApi";
+import {getCurrentDateTime} from "@/plugins/validator";
 
 export const useProfileStore = defineStore("profileStore", {
     state: () => ({
@@ -30,30 +31,14 @@ export const useProfileStore = defineStore("profileStore", {
         myAnnouncements: [],
         myLikes: localStorage.getItem('myLikes') !== null ? JSON.parse(localStorage.getItem('myLikes')) : [],
         myChats: [],
-        currentChatID: 0,
-        currentChat: [
-            {
-                id: 1,
-                message_text: 'Сообщение1',
-                type: 'text',
-                dt_created: '2024-01-07 00:00',
-                user_id: 1
-            },
-            {
-                id: 2,
-                message_text: 'Сообщение2',
-                type: 'text',
-                dt_created: '2024-01-08 00:00',
-                user_id: 2
-            },
-            {
-                id: 3,
-                message_text: 'Сообщение3',
-                type: 'text',
-                dt_created: '2024-01-09 00:00',
-                user_id: 1
-            }
-        ]
+        currentChat: {},
+        currentChatHistory: [],
+        chatCategories: [],
+        relevance: 0,
+        wishCategories: [],
+        wishRelevance: 0,
+        notifications: [],
+        newNotificationsCount: 0
     }),
     getters: {
         userMainLetter: (state) => {
@@ -75,21 +60,37 @@ export const useProfileStore = defineStore("profileStore", {
             if (state.myAnnouncements.length > 0) {
                 return [...state.myAnnouncements].filter(elem => elem.status === 'publish');
             } else {
-                return []
+                return [];
             }
         },
         myArchiveAnnouncements: (state) => {
             if (state.myAnnouncements.length > 0) {
                 return [...state.myAnnouncements].filter(elem => elem.status === 'archive');
             } else {
-                return []
+                return [];
             }
         },
         myDraftAnnouncements: (state) => {
             if (state.myAnnouncements.length > 0) {
                 return [...state.myAnnouncements].filter(elem => elem.status === 'draft');
             } else {
-                return []
+                return [];
+            }
+        },
+        myFilteredChats: (state) => {
+            if (state.relevance !== 0) {
+                return [...state.myChats].filter(elem => elem.category_id === state.relevance);
+            }
+            else {
+                return state.myChats;
+            }
+        },
+        myFilteredLikes: (state) => {
+            if (state.wishRelevance !== 0) {
+                return [...state.myLikes].filter(elem => JSON.parse(elem.categories)[0].id === state.wishRelevance);
+            }
+            else {
+                return state.myLikes;
             }
         }
     },
@@ -98,8 +99,6 @@ export const useProfileStore = defineStore("profileStore", {
             // Обновление простых свойств
             this.content = "profileInfo";
             this.navigationMobile = false;
-            this.currentChatID = 0;
-
             // Сброс объекта user
             this.user = {
                 id: "",
@@ -125,7 +124,13 @@ export const useProfileStore = defineStore("profileStore", {
             this.myAnnouncements = [];
             this.myLikes = [];
             this.myChats = [];
-            this.currentChat = [];
+            this.currentChat = {};
+            this.currentChatHistory = [];
+            this.chatCategories = [];
+            this.relevance = 0;
+            this.wishCategories = [];
+            this.wishRelevance = 0;
+            this.notifications = [];
         },
         async editProfileInfo() {
             const mainStore = useMainStore();
@@ -178,6 +183,19 @@ export const useProfileStore = defineStore("profileStore", {
                 mainStore.loader = false;
             }
         },
+        async getLikesCategories(data) {
+            const mainStore = useMainStore();
+            try {
+                mainStore.loader = true;
+                const response = await ProfileApi.getLikesCategories(data);
+                this.wishCategories = response.result;
+                console.log(response)
+            } catch (error) {
+                console.log(error)
+            } finally {
+                mainStore.loader = false;
+            }
+        },
         async getLikes() {
             const mainStore = useMainStore();
             try {
@@ -185,7 +203,7 @@ export const useProfileStore = defineStore("profileStore", {
                 const response = await ProfileApi.getLikes({
                     id: this.user.id
                 });
-                console.log(response)
+                this.myLikes = response.result;
             } catch (error) {
                 console.log(error)
             } finally {
@@ -195,7 +213,6 @@ export const useProfileStore = defineStore("profileStore", {
         async addLike(data) {
             try {
                 const response = await ProfileApi.addLike(data);
-                this.myLikes = response.result;
                 console.log(response)
             } catch (error) {
                 console.log(error)
@@ -228,6 +245,19 @@ export const useProfileStore = defineStore("profileStore", {
                 mainStore.loader = true;
                 const response = await ChatsApi.getChat(data);
                 console.log(response)
+                this.currentChat = response.result[0];
+            } catch (error) {
+                console.log(error)
+            } finally {
+                mainStore.loader = false;
+            }
+        },
+        async getChatsCategories(data) {
+            const mainStore = useMainStore();
+            try {
+                mainStore.loader = true;
+                const response = await ChatsApi.getChatsCategories(data);
+                this.chatCategories = response.result;
             } catch (error) {
                 console.log(error)
             } finally {
@@ -239,7 +269,7 @@ export const useProfileStore = defineStore("profileStore", {
             try {
                 mainStore.loader = true;
                 const response = await ChatsApi.getMessages(data);
-                console.log(response)
+                this.currentChatHistory = response.result;
             } catch (error) {
                 console.log(error)
             } finally {
@@ -252,6 +282,35 @@ export const useProfileStore = defineStore("profileStore", {
                 mainStore.loader = true;
                 const response = await ChatsApi.sendMessage(data);
                 console.log(response)
+            } catch (error) {
+                console.log(error)
+            } finally {
+                mainStore.loader = false;
+            }
+        },
+        async getNotifications(data) {
+            const mainStore = useMainStore();
+            try {
+                mainStore.loader = true;
+                const response = await ProfileApi.getNotifications(data);
+                this.notifications = response.result;
+            } catch (error) {
+                console.log(error)
+            } finally {
+                mainStore.loader = false;
+            }
+        },
+        async addNotification(data) {
+            const mainStore = useMainStore();
+            try {
+                mainStore.loader = true;
+                const response = await ProfileApi.addNotification(data);
+                if (response.result) {
+                    this.notifications.push({
+                        user_id: this.user.id,
+                        dt_created: getCurrentDateTime()
+                    });
+                }
             } catch (error) {
                 console.log(error)
             } finally {

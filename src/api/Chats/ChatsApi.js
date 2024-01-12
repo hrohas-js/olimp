@@ -12,6 +12,17 @@ export class ChatsApi extends BaseApi {
             }
         })
     }
+    static async getChatsCategories(data) {
+        return this.doRequest({
+            method: "POST",
+            url: "/requests/get_chat_categories",
+            data: data,
+            headers: {
+                Authorization: `Bearer ${this.getJWT()}`,
+                'Content-Type': 'application/json'
+            }
+        })
+    }
     static async getMessages(data) {
         return this.doRequest({
             method: "POST",

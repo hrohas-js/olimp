@@ -169,6 +169,8 @@ const openChat = () => {
     user2: productStore.author.id,
     announcement_id: product.value.id,
     category_id: categories.value[0].id
+  }).then(() => {
+    mainStore.miniChat = true;
   });
 }
 </script>
@@ -269,6 +271,7 @@ const openChat = () => {
                   button-text="Показать телефон"
                   color="green"
                   size="big"
+                  :phone="product.phone"
               />
               <main-button
                   v-if="messageShow"
@@ -450,6 +453,7 @@ const openChat = () => {
                 button-text="Показать телефон"
                 color="green"
                 size="big"
+                :phone="product.phone"
             />
             <main-button
                 v-if="messageShow"
@@ -650,7 +654,6 @@ const openChat = () => {
 
 <style scoped lang="scss">
 .cartPage {
-  margin-top: rem(25);
   .content{
     margin-top: rem(25);
   }

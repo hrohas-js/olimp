@@ -33,6 +33,8 @@ const showModalSubCategories = computed(() => catalogStore.showModalSubCategorie
 const showModalFilters = computed(() => catalogStore.showModalFilters);
 const load = computed(() => mainStore.loader);
 const jwt = computed(() => authStore.jwt);
+const miniChat = computed(() => mainStore.miniChat);
+const notifications = computed(() => profileStore.notifications);
 
 watch(jwt, (newValue, oldValue) => {
   if (newValue !== null && oldValue === null) {
@@ -42,6 +44,13 @@ watch(jwt, (newValue, oldValue) => {
     nextTick(() => {
       router.push('/');
     });
+  }
+});
+watch(notifications, (newValue, oldValue) => {
+  if (newValue.length > oldValue.length) {
+    profileStore.newNotificationsCount = newValue.length - oldValue.length
+  } else {
+    profileStore.newNotificationsCount = 0
   }
 });
 
@@ -92,7 +101,10 @@ onMounted(() => {
     <edit-personal-form v-if="popup === 'edit-personal'" />
     <geo-form v-if="popup === 'location'" />
     <geo-announcement-form v-if="popup === 'deal-location'" />
-    <div class="widget" style="display: none">
+    <div
+        v-if="miniChat"
+        class="widget"
+    >
       <chat-body class="mini" />
     </div>
   </section>
@@ -885,6 +897,15 @@ button::-moz-focus-inner {
     border: 1px solid $color_subBg;
   }
 
+  .carousel__track {
+    margin: 0 !important;
+  }
+
+  .carousel__slide {
+    height: rem(300);
+    @extend .background_modal;
+  }
+
   .carousel__prev,
   .carousel__next {
     width: rem(45);
@@ -896,6 +917,8 @@ button::-moz-focus-inner {
 
   img {
     width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
 }
 

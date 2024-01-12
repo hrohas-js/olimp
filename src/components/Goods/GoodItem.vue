@@ -58,7 +58,7 @@ const vacancyFlag = computed(() => {
 });
 const isLiked = computed(() => {
   let flag = false;
-  if (profileStore.myLikes) {
+  if (profileStore.myLikes.length > 0) {
     [...profileStore.myLikes].forEach(elem => {
       if (props.item.id === elem.id) {
         flag = true;
@@ -84,13 +84,13 @@ const upperTitle = computed(()=>{
 const setLike = () => {
   if (isLiked.value) {
     profileStore.myLikes = [...profileStore.myLikes].filter(elem => props.item.id !== elem.id);
-    profileStore.addLike({
+    profileStore.removeLike({
       user_id: profileStore.user.id,
       announcement_id: props.item.id
     });
   } else {
     profileStore.myLikes.push(props.item);
-    profileStore.removeLike({
+    profileStore.addLike({
       user_id: profileStore.user.id,
       announcement_id: props.item.id
     });
@@ -165,10 +165,10 @@ const setLike = () => {
           </p>
         </main>
         <footer class="goodItem__footer">
-          <p class="textMontserrat textMontserrat_regular  color_blackLight">
+          <p class="textMontserrat textMontserrat_regular color_blackLight">
             {{ categoriesTree }}
           </p>
-          <p class="textMontserrat textMontserrat_regular  color_blackLight">
+          <p class="textMontserrat textMontserrat_regular color_blackLight">
             {{ props.item.location }}
           </p>
           <!--        <time class="textMontserrat textMontserrat_light color_blackLight" datetime="19:50">

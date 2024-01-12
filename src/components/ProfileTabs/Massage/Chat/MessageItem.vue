@@ -6,7 +6,7 @@ import {useProfileStore} from "@/store/ProfileStore";
 const profileStore = useProfileStore();
 
 const user = computed(() => profileStore.user);
-const currentChat = computed(() => profileStore.currentChat);
+const currentChatHistory = computed(() => profileStore.currentChatHistory);
 
 const props = defineProps({
   messageItem: {
@@ -26,9 +26,9 @@ const props = defineProps({
 const previousMessageDate = computed(() => {
   let date = "";
   if (props.index > 0) {
-    date = currentChat.value[props.index - 1].dt_created
+    date = currentChatHistory.value[props.index - 1].dt_created
   } else {
-    date = currentChat.value[0].dt_created
+    date = currentChatHistory.value[0].dt_created
   }
   return date;
 })
@@ -77,8 +77,8 @@ const openFile = () => {
   <div
       class="message-item"
       :class="{
-          'client': props.messageItem.user_id === parseInt(user.id),
-          'employee': props.messageItem.user_id !== parseInt(user.id),
+          'client': props.messageItem.user_id === user.id,
+          'employee': props.messageItem.user_id !== user.id,
       }"
   >
     <data-message
@@ -115,7 +115,8 @@ const openFile = () => {
 }
 
 .message-content {
-  width: 65%;
+  width: fit-content;
+  max-width: 65%;
   padding: rem(20) rem(28);
   border-radius: rem(42);
   @media (max-width: em(768, 16)) {

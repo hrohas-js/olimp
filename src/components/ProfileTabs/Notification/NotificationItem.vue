@@ -1,5 +1,10 @@
 <script setup>
-
+const props = defineProps({
+  item: {
+    type: Object,
+    default: () => ({})
+  }
+});
 </script>
 
 <template>
@@ -9,7 +14,7 @@
         В ваш профиль зашли с нового устройства
       </h3>
       <time class="textMontserrat_light" datetime="Вчера 21:00">
-        Вчера 21:00
+        {{ props.item.dt_created }}
       </time>
     </header>
     <footer class="notificationItem__footer fraction">

@@ -15,14 +15,18 @@ const props = defineProps({
     default() {
       return {}
     }
+  },
+  filterType: {
+    type: String,
+    default() {
+      return ""
+    }
   }
 });
 
 const setCurrentFilter = (filID, filconID) => {
   catalogStore.filterID = filID;
   catalogStore.filterContentID = filconID;
-  console.log(catalogStore.filterID)
-  console.log(catalogStore.filterContentID)
 }
 </script>
 
@@ -33,8 +37,9 @@ const setCurrentFilter = (filID, filconID) => {
         :key="item.id"
     >
       <input
-          type="checkbox"
+          type="radio"
           :id="item.id"
+          :name="props.id.id"
           @click="setCurrentFilter(props.id, item)"
       />
       <label :for="item.id">

@@ -56,6 +56,9 @@ const login = () => {
       authStore.auth().then(() => {
         profileStore.getLikes();
         mainStore.clearInputs();
+        profileStore.addNotification({
+          user_id: profileStore.user.id
+        });
       });
     }
   }

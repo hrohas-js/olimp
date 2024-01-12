@@ -10,6 +10,10 @@ const mainStore = useMainStore();
 
 const width = computed(() => mainStore.display_width);
 const filters = computed(() => catalogStore.filters);
+const actorFlag = computed(() => catalogStore.actorFlag);
+const modelFlag = computed(() => catalogStore.modelFlag);
+const sex = computed(() => catalogStore.filterParams.sex);
+const type = computed(() => catalogStore.filterParams.type);
 
 onMounted(() => {
   document.addEventListener('click', (e) => {
@@ -35,34 +39,70 @@ const closeModal = () => {
             fill="black"/>
       </svg>
     </div>
-<!--    <div
-        v-if="$route.params.category === 'market'"
-        class="fraction"
-    >
-      <p class="textMontserrat textMontserrat_medium">
-        Цена, руб
-      </p>
-      <div class="content cost">
-        <cost-area
-            placeholder-from="от 100"
-            placeholder-to="до 50000"
-        />
-      </div>
-    </div>-->
     <div
         v-for="filter in filters"
         :key="filter.id"
         class="fraction"
     >
-      <p
-          v-if="filter.name.length > 0"
-          class="textMontserrat textMontserrat_semiBold"
-          v-html="filter.name"
-      />
-      <div class="content">
-        <filter-item
-            :id="filter"
-            :filter-param="filter.content"
+      <div>
+        <p
+            v-if="filter.name.length > 0"
+            class="textMontserrat textMontserrat_semiBold"
+            v-html="filter.name"
+        />
+        <div class="content">
+          <filter-item
+              :id="filter"
+              :filter-param="filter.content"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+        v-if="modelFlag"
+        class="fraction"
+    >
+      <div>
+        <p
+            class="textMontserrat textMontserrat_semiBold"
+            v-html="sex.name"
+        />
+        <div class="content">
+          <filter-item
+              :id="sex"
+              :filter-param="sex.content"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+        v-if="actorFlag || modelFlag"
+        class="fraction"
+    >
+      <div>
+        <p
+            class="textMontserrat textMontserrat_semiBold"
+            v-html="type.name"
+        />
+        <div class="content">
+          <filter-item
+              :id="type"
+              :filter-param="type.content"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+        v-if="actorFlag || modelFlag"
+        class="fraction"
+    >
+      <p class="textMontserrat textMontserrat_medium">
+        Возраст
+      </p>
+      <div class="content cost">
+        <cost-area
+            placeholder-from="от"
+            placeholder-to="до"
         />
       </div>
     </div>

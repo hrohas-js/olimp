@@ -1,20 +1,25 @@
 <script setup>
 import {useCatalogStore} from "@/store/CatalogStore";
 import {useAnnouncementStore} from "@/store/AnnouncementStore";
+import {useMainStore} from "@/store/MainStore";
 import {computed, onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
 import SearchHeader from "@/components/HeaderComponents/SearchHeader";
 
 const catalogStore = useCatalogStore();
 const announcementStore = useAnnouncementStore();
+const mainStore = useMainStore();
 const router = useRouter();
 
+const width = computed(() => mainStore.display_width);
 const categories = computed(() => catalogStore.createdCategories);
 const subCategories = computed(() => catalogStore.subCategories);
 const filters = computed(() => catalogStore.filters);
 const newItemCategories = computed(() => announcementStore.newItem.categories);
 
 const subFlag = ref(false);
+const mobileCategoriesShowFlag = ref(true);
+const mobileSubCategoriesShowFlag = ref(false);
 
 onMounted(() => {
   catalogStore.subCategories = [];
@@ -51,6 +56,10 @@ const getCategoriesTree = (slug, category, filter = null) => {
           announcementStore.newItem.selectedCategories = [];
           announcementStore.newItem.selectedCategories.push(category.name);
         }
+        mobileSubCategoriesShowFlag.value = true;
+        if (width.value < 768) {
+          mobileCategoriesShowFlag.value = false;
+        }
       }
       break;
     case 'subCategory':
@@ -66,6 +75,9 @@ const getCategoriesTree = (slug, category, filter = null) => {
           id: category.id,
           name: category.name
         });
+      }
+      if (width.value < 768) {
+        mobileSubCategoriesShowFlag.value = false;
       }
       break;
     case 'filter':
@@ -115,7 +127,10 @@ const getCategoriesTree = (slug, category, filter = null) => {
       </h1>
     </div>
     <main class="create__main">
-      <nav class="create__navigation border border_subBgOpacity">
+      <nav
+          v-if="mobileCategoriesShowFlag"
+          class="create__navigation border border_subBgOpacity"
+      >
         <p class="textMontserrat_bold">
           Категории:
         </p>
@@ -164,7 +179,7 @@ const getCategoriesTree = (slug, category, filter = null) => {
       </nav>
       <transition name="fade">
         <nav
-            v-if="subCategories.length > 0"
+            v-if="subCategories.length > 0 && mobileSubCategoriesShowFlag"
             class="create__navigation border border_subBgOpacity borderLeftNone"
         >
           <p class="textMontserrat_bold">
@@ -229,6 +244,11 @@ const getCategoriesTree = (slug, category, filter = null) => {
   }
   &__navigation {
     flex: 0 0 33.333%;
+
+    @media (max-width: em(768, 16)) {
+      flex: 0 0 100%;
+    }
+
     p, li {
       padding: rem(12) rem(10) rem(10);
     }

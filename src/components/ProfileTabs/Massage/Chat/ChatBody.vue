@@ -2,176 +2,45 @@
 import InputAnnouncement from "@/components/UI/Inputs/InputAnnouncement";
 import MessageItem from "@/components/ProfileTabs/Massage/Chat/MessageItem.vue";
 import {useProfileStore} from "@/store/ProfileStore";
-import {computed} from "vue";
+import {useMainStore} from "@/store/MainStore";
+import {computed, ref} from "vue";
+import {useRouter} from "vue-router";
+import {getCurrentDateTime} from "@/plugins/validator";
 
 const profileStore = useProfileStore();
+const mainStore = useMainStore();
+const router = useRouter();
 
-const chat = computed(() => profileStore.currentChat);
-/*
-import InputDecorate from "@/components/UI/inputs/InputDecorate.vue";
-import MessageItem from "@/components/UI/elements/MessageItem.vue";
-import {useUsersStore} from "@/store/UsersStore";
-import {computed, onMounted, ref, onUnmounted} from "vue";
-import IncludeFileItem from "@/components/UI/elements/IncludeFileItem.vue";
-import { UserChatMessagesResponse } from "@/api/user/models";
-import { ChatUploadedFile } from "@/store/types/user";
+const chat = computed(() => profileStore.currentChatHistory);
+const chatInfo = computed(() => profileStore.currentChat);
+const userID = computed(() => profileStore.user.id);
 
-const usersStore = useUsersStore();
+let ws;
+const messageValue = ref('');
 
-const audioSwitch = ref(false);
-const minutes = ref(0);
-const seconds = ref(0);
-const timer = ref();
-const chatFetcher = ref();
-const timeValue = ref(0);
-const garbageShow = ref(false);
-
-const chatName = computed(() => usersStore.currentChatName);
-const chat = computed(() => usersStore.currentChat as UserChatMessagesResponse);
-const chatNumber = computed(() => usersStore.currentChatNumber);
-const newMessage = computed(() => usersStore.currentChatNewMessage);
-const chatUploadedFiles = computed(() => Object.keys(usersStore.chatUploadedFiles[0]).length > 0 ? usersStore.chatUploadedFiles : []) as unknown as ChatUploadedFile[];
-const fileIds = computed(() => usersStore.fileIds)
-
-onMounted(() => {
-  chatFetcher.value = setInterval(() => {
-    usersStore.getChatMessages(chatNumber.value);
-  }, 20000);
-});
-
-onUnmounted(() => {
-  usersStore.currentChatNumber = 0;
-  clearInterval(chatFetcher.value)
-});
-
-const convertFileToBase64 = (file: any, callback: any) => {
-  const reader = new FileReader();
-  reader.onload = callback;
-  reader.readAsDataURL(file);
-};
-
-const changeFile = (e:any) => {
-  e.stopPropagation();
-  e.preventDefault();
-  e.target.files.forEach((file:any) => {
-    convertFileToBase64(file, (resp:any) => {
-      const fileToSend = {
-        file: resp.currentTarget.result,
-        file_name: file.name,
-      };
-      usersStore.uploadFile(fileToSend);
-    });
-  });
-};
-
-const clickFile = () => {
-  document.getElementById("file-input")?.click();
-}
-
-const timerLoaded = () => {
-  timer.value = setInterval(() => {
-    if (timeValue.value < 100) {
-      timeValue.value++
-    }
-    seconds.value++;
-    if (seconds.value === 60) {
-      seconds.value = 0;
-      minutes.value++;
-    }
-  }, 1000)
-}
-
-const recordFile = ref([]);
-const fileToSendLocal = ref();
-const audioMic = navigator.mediaDevices.getUserMedia({ audio: true });
-
-const recorder = ref();
-
-const runAudio = async () => {
-  recordFile.value = [];
-  fileToSendLocal.value = null;
-
-  if (navigator.mediaDevices) {
-    audioMic.then((stream) => {
-      recorder.value = new MediaRecorder(stream);
-      recorder.value.ondataavailable = (e: { data: never }) => {
-        recordFile.value.push(e.data);
-      }
-      recorder.value.start(1);
-    });
+const mainPhoto = computed(() => {
+  let res = '';
+  if (chatInfo.value.gallery) {
+    res = JSON.parse(chatInfo.value.gallery)[0].src;
   }
-}
+  return res;
+});
+const chatID = computed(() => {
+  let id = 0;
+  if (chatInfo.value.id) {
+    id = chatInfo.value.id
+    ws = new WebSocket(`ws://localhost:3000/chat/${id}`);
+    ws.onopen = function() {
+      console.log('Connected to the chat');
+    };
+    ws.onmessage = function(event) {
+      profileStore.currentChatHistory.push(JSON.parse(event.data));
+      messageValue.value = '';
+    };
 
-const stopAudio = () => {
-  fileToSendLocal.value = new Blob(recordFile.value, { type: 'audio/mp3' });
-  recorder.value.stop();
-  console.log(fileToSendLocal.value)
-}
-
-const startAudio = () => {
-  audioSwitch.value = true;
-  timerLoaded();
-  runAudio();
-}
-
-const removeAudio = () => {
-  recordFile.value = [];
-  fileToSendLocal.value = '';
-  minutes.value = 0;
-  seconds.value = 0;
-  timeValue.value = 0;
-  audioSwitch.value = false;
-};
-
-
-const timerStop = () => {
-  clearInterval(timer.value);
-  garbageShow.value = true;
-  stopAudio();
-}
-
-const sendAudio = () => {
-  convertFileToBase64(fileToSendLocal.value, (resp:any) => {
-    const fileToSend = {
-      file: resp.currentTarget.result,
-      file_name: `${new Date()}.mp3`,
-    }
-    usersStore.uploadFile(fileToSend).then(() => {
-      usersStore.sendMessage({
-        chat_id: chatNumber.value,
-        content: newMessage.value,
-        file_ids: fileIds.value
-      });
-    }).then(() => {
-      usersStore.getChatMessages(chatNumber.value).then(() => {
-        const chatWindow = document.querySelector('.chat__main');
-        if (chatWindow) {
-          chatWindow.scrollTo(0, chatWindow.scrollHeight);
-        }
-      });
-      fileToSendLocal.value = '';
-      audioSwitch.value = false;
-    });
-  });
-}
-
-
-const sendMessage = () => {
-  if (newMessage.value!.length > 0 || fileIds.value[0] !== 0) {
-    usersStore.sendMessage({
-      chat_id: chatNumber.value,
-      content: newMessage.value,
-      file_ids: fileIds.value
-    }).then(() => {
-      usersStore.getChatMessages(chatNumber.value).then(() => {
-        const chatWindow = document.querySelector('.chat__main');
-        if (chatWindow) {
-          chatWindow.scrollTo(0, chatWindow.scrollHeight);
-        }
-      })
-    })
   }
-}*/
+  return id;
+});
 
 const changeFile = (e) => {
   e.stopPropagation();
@@ -181,29 +50,57 @@ const changeFile = (e) => {
 const clickFile = () => {
   document.getElementById("file-input")?.click();
 }
+
+const send = () => {
+  const message = {
+    chat_id: chatID.value,
+    user_id: userID.value,
+    message_text: messageValue.value,
+    dt_created: getCurrentDateTime(),
+    is_read: false
+  }
+  profileStore.sendMessage(message).then(() => {
+    ws.send(JSON.stringify(message));
+  })
+}
+
+const goBack = () => {
+  router.push('/profile');
+  profileStore.content = 'messages';
+  mainStore.miniChat = false;
+}
 </script>
 
 <template>
   <section class="chat background_mainBg">
     <header class="chat__header">
-      <div class="back">
+      <div
+          class="back"
+          @click="goBack"
+      >
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="icon-icon-JUE8Z" style="width: 24px; height: 24px;">
           <path d="m7.414 13 5.293 5.293a1 1 0 0 1-1.414 1.414l-7-7a1 1 0 0 1 0-1.414l7-7a1 1 0 1 1 1.414 1.414L7.414 11H19a1 1 0 1 1 0 2H7.414Z" fill="black"></path>
         </svg>
       </div>
       <div class="header-content">
-        <div class="image"></div>
+        <div class="image">
+          <span style="display: none">{{ chatID }}</span>
+          <img
+              :src="mainPhoto"
+              alt="main"
+          />
+        </div>
         <div class="info">
           <div class="info__name">
             <span class="textMontserrat_bold">
-            Михаил
+            {{ chatInfo.user_name }}
           </span>
             <span class="color_grayDarker">
             В сети в 12:26
           </span>
           </div>
           <div class="info__title">
-            Акустическая система
+            {{ chatInfo.chat_name }}
           </div>
         </div>
       </div>
@@ -212,7 +109,7 @@ const clickFile = () => {
       <div class="dataContainer">
         <message-item
             v-for="(item, index) in chat"
-            :key="item.id"
+            :key="index"
             :message-item="item"
             :index="index"
             :length="chat.length"
@@ -220,7 +117,7 @@ const clickFile = () => {
       </div>
     </main>
     <footer class="chat__footer background_colorWhite">
-      <svg
+<!--      <svg
           class="addFile"
           xmlns="http://www.w3.org/2000/svg"
           width="37"
@@ -238,11 +135,18 @@ const clickFile = () => {
           id="file-input"
           type="file"
           @change="changeFile"
-      />
+      />-->
       <input-announcement
-        input-placeholder="Текст сообщения..."
+          v-model="messageValue"
+          input-placeholder="Текст сообщения..."
       />
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="icon-submit" style="width: 24px; height: 24px;">
+      <svg
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          class="icon-submit"
+          style="width: 24px; height: 24px;"
+          @click="send"
+      >
         <path d="M22 12a1 1 0 0 1-.574.905l-17 8a1 1 0 0 1-1.39-1.168l1.5-5.5a1 1 0 0 1 .605-.67L9.214 12l-4.073-1.567a1 1 0 0 1-.606-.67l-1.5-5.5a1 1 0 0 1 1.39-1.168l17 8A1 1 0 0 1 22 12Z" fill="currentColor"></path>
       </svg>
     </footer>
@@ -251,7 +155,7 @@ const clickFile = () => {
 
 <style scoped lang="scss">
 .chat {
-  height: 100vh;
+  height: rem(360);
 
   &.mini {
     height: rem(470);
@@ -272,12 +176,25 @@ const clickFile = () => {
       border-radius: unset;
     }
 
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: rem(10);
+    }
+
     .back {
       flex: 0 0 10%;
+      cursor: pointer;
     }
 
     .info {
       flex: 0 1 90%;
+    }
+
+    .image {
+      img {
+        height: rem(35);
+      }
     }
   }
 

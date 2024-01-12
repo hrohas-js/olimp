@@ -1,18 +1,68 @@
 <script setup>
+import {computed} from "vue";
+import {useProfileStore} from "@/store/ProfileStore";
 
+const profileStore = useProfileStore();
+
+const mainPhoto = computed(() => {
+  let res = '';
+  if (props.item.gallery) {
+    res = JSON.parse(props.item.gallery)[0].src
+  }
+  return res;
+});
+
+const props = defineProps({
+  item: {
+    type: Object,
+    default: () => ({})
+  }
+});
+
+const removeLike = () => {
+  profileStore.myLikes = [...profileStore.myLikes].filter(elem => props.item.id !== elem.id);
+  profileStore.removeLike({
+    user_id: profileStore.user.id,
+    announcement_id: props.item.id
+  }).then(() => {
+    profileStore.getLikesCategories({
+      user_id: profileStore.user.id
+    });
+  });
+}
 </script>
 
 <template>
   <article class="goodItemProfile profileGoods">
     <div class="image">
-      <img src="@/assets/png/MyAnnouncements/cinema.png" alt="altText"/>
+      <router-link :to="{
+        name: 'cartPage',
+        params: {
+          author: props.item.user_id,
+          id: props.item.id
+        }
+      }">
+        <img
+            :src="mainPhoto"
+            alt="altText"
+        />
+      </router-link>
     </div>
     <div class="content">
       <div class="header">
         <h2 class="textMontserrat_medium">
-          Аренда проф. фотоаппарата
+          <router-link :to="{
+          name: 'cartPage',
+          params: {
+            author: props.item.user_id,
+            id: props.item.id
+          }
+        }"
+          >
+            {{ props.item.title }}
+          </router-link>
         </h2>
-        <div class="wishButton">
+        <div class="wishButton" @click="removeLike">
           <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="29" viewBox="0 0 32 29" fill="none">
             <path
                 d="M31 9.79333C31 12.113 30.1093 14.3412 28.5187 15.9893C24.8573 19.7845 21.3061 23.742 17.5079 27.3996C16.6373 28.2258 15.2563 28.1956 14.4232 27.3321L3.48064 15.9893C0.173121 12.5608 0.173121 7.02584 3.48064 3.59735C6.82066 0.135175 12.2619 0.135175 15.6019 3.59735L15.9997 4.00963L16.3972 3.59759C17.9986 1.93675 20.1796 1 22.4579 1C24.7363 1 26.9172 1.93666 28.5187 3.59735C30.1094 5.24567 31 7.47365 31 9.79333Z"
@@ -20,17 +70,23 @@
           </svg>
         </div>
       </div>
-      <div class="info">
-        <p class="price textMontserrat_light">
-          1000 руб/час
+      <router-link :to="{
+          name: 'cartPage',
+          params: {
+            author: props.item.user_id,
+            id: props.item.id
+          }
+        }" class="info">
+        <p v-if="props.item.price > 0" class="price textMontserrat_light color_black">
+          {{ props.item.price }} руб
         </p>
         <p class="infoLocation textMontserrat textMontserrat_light  color_blackLight">
-          Москва, м. Курская
+          {{ props.item.location }}
         </p>
-        <time class="infoLocation textMontserrat textMontserrat_light color_blackLight" datetime="19:50">
+<!--        <time class="infoLocation textMontserrat textMontserrat_light color_blackLight" datetime="19:50">
           Сегодня 19:50
-        </time>
-      </div>
+        </time>-->
+      </router-link>
     </div>
   </article>
 </template>
@@ -43,9 +99,11 @@
 
   .image {
     height: rem(137);
-    //flex: 1 1 30%;
+    flex: 1 1 30%;
+    overflow: hidden;
 
     img {
+      width: 100%;
       height: 100%;
       object-fit: cover;
     }
