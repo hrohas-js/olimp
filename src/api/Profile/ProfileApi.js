@@ -100,4 +100,15 @@ export class ProfileApi extends BaseApi {
             }
         })
     }
+    static async getSellAnnouncements(data) {
+        return this.doRequest({
+            method: "POST",
+            url: "/requests/getSellAnnouncements",
+            data: data,
+            headers: {
+                Authorization: `Bearer ${this.getJWT()}`,
+                'Content-Type': 'application/json'
+            }
+        })
+    }
 }

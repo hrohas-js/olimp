@@ -38,7 +38,9 @@ export const useProfileStore = defineStore("profileStore", {
         wishCategories: [],
         wishRelevance: 0,
         notifications: [],
-        newNotificationsCount: 0
+        newNotificationsCount: 0,
+        mySells: [],
+        sellsRelevance: 'active'
     }),
     getters: {
         userMainLetter: (state) => {
@@ -92,7 +94,21 @@ export const useProfileStore = defineStore("profileStore", {
             else {
                 return state.myLikes;
             }
-        }
+        },
+        myActiveSellsAnnouncements: (state) => {
+            if (state.mySells.length > 0) {
+                return [...state.mySells].filter(elem => elem.status === 'publish');
+            } else {
+                return [];
+            }
+        },
+        myArchiveSellsAnnouncements: (state) => {
+            if (state.mySells.length > 0) {
+                return [...state.mySells].filter(elem => elem.status === 'archive');
+            } else {
+                return [];
+            }
+        },
     },
     actions: {
         clearStore() {
@@ -131,6 +147,9 @@ export const useProfileStore = defineStore("profileStore", {
             this.wishCategories = [];
             this.wishRelevance = 0;
             this.notifications = [];
+            this.newNotificationsCount = 0;
+            this.mySells = [];
+            this.sellsRelevance = 'active';
         },
         async editProfileInfo() {
             const mainStore = useMainStore();
@@ -311,6 +330,20 @@ export const useProfileStore = defineStore("profileStore", {
                         dt_created: getCurrentDateTime()
                     });
                 }
+            } catch (error) {
+                console.log(error)
+            } finally {
+                mainStore.loader = false;
+            }
+        },
+        async getSellAnnouncements() {
+            const mainStore = useMainStore();
+            try {
+                mainStore.loader = true;
+                const response = await ProfileApi.getSellAnnouncements({
+                    user_id: this.user.id
+                });
+                this.mySells = response.result;
             } catch (error) {
                 console.log(error)
             } finally {

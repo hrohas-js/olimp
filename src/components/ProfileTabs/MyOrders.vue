@@ -1,8 +1,21 @@
 <script setup>
 import GoodItemProfile from "@/components/Goods/GoodItemProfile";
-import {ref} from "vue";
+import {useProfileStore} from "@/store/ProfileStore";
+import {computed, onMounted} from "vue";
 
-const relevance = ref("active");
+const profileStore = useProfileStore();
+
+const relevance = computed(() => profileStore.sellsRelevance);
+const active = computed(() => profileStore.myActiveSellsAnnouncements);
+const archive = computed(() => profileStore.myArchiveSellsAnnouncements);
+
+onMounted(() => {
+  profileStore.getSellAnnouncements();
+});
+
+const changeTab = (tab) => {
+  profileStore.sellsRelevance = tab;
+}
 </script>
 
 <template>
@@ -17,27 +30,49 @@ const relevance = ref("active");
         <ul>
           <li
               class="profileNavigation__item textMontserrat_bold"
-              :class="{'active':relevance === 'active'}"
+              :class="{'active': relevance === 'active'}"
+              @click="changeTab('active')"
           >
-            Активные <sup>40</sup>
+            Активные <sup>{{ active.length }}</sup>
           </li>
-          <li class="textMontserrat_bold profileNavigation__item">
-            Архив <sup>4</sup>
+          <li
+              class="textMontserrat_bold profileNavigation__item"
+              :class="{'active': relevance === 'archive'}"
+              @click="changeTab('archive')"
+          >
+            Архив <sup>{{ archive.length }}</sup>
           </li>
         </ul>
       </nav>
       <nav class="myActionsGoods">
         <ul>
-          <li class="background_gray textMontserrat_regular">
+<!--          <li class="background_gray textMontserrat_regular">
             Покупаю
-          </li>
+          </li>-->
           <li class="background_gray textMontserrat_regular">
             Продаю
           </li>
         </ul>
       </nav>
-      <div class="content">
-        <GoodItemProfile />
+      <div
+          v-if="relevance === 'active'"
+          class="content"
+      >
+        <GoodItemProfile
+            v-for="item in active"
+            :key="item.id"
+            :item="item"
+        />
+      </div>
+      <div
+          v-if="relevance === 'archive'"
+          class="content"
+      >
+        <GoodItemProfile
+            v-for="item in archive"
+            :key="item.id"
+            :item="item"
+        />
       </div>
     </main>
   </section>

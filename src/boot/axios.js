@@ -5,7 +5,7 @@ export const api = axios.create({
 });
 
 export const kladr = axios.create({
-    baseURL: 'http://kladr-api.ru',
+    baseURL: 'https://kladr-api.ru',
     withCredentials: false,
     headers: {
         Accept: 'application/json',

@@ -72,11 +72,39 @@ export const useCatalogStore = defineStore("catalogStore", {
                     const cats = JSON.parse(elem.categories);
                     return cats[2].id === state.filterID.id && cats[3].id === state.filterContentID.id;
                 });
-                if (state.filterID.name === 'Актеры, актрисы, модели,\n' + 'артисты ориг. жанра,\n' + 'агенты' &&
-                    (state.filterContentID.name === 'Актеры' || state.filterContentID.name === 'Актрисы' || state.filterContentID.name === 'Модели')
-                ) {
-
-                }
+            }
+            if (Object.keys(state.filterParams.selectedSex).length > 0) {
+                res = res.filter(elem => {
+                    let tmp = false;
+                    JSON.parse(elem.parameters).forEach(elem => {
+                        if (state.filterParams.selectedSex.name === elem.name) {
+                            tmp = true;
+                        }
+                    });
+                    return tmp;
+                });
+            }
+            if (state.filterParams.age.from > 0) {
+                res = res.filter(elem => {
+                    let tmp = false;
+                    JSON.parse(elem.parameters).forEach(elem => {
+                        if (elem.name === 'Возраст' && state.filterParams.age.from > parseInt(elem.value)) {
+                            tmp = true;
+                        }
+                    });
+                    return tmp;
+                });
+            }
+            if (state.filterParams.age.to > 0) {
+                res = res.filter(elem => {
+                    let tmp = false;
+                    JSON.parse(elem.parameters).forEach(elem => {
+                        if (elem.name === 'Возраст' && state.filterParams.age.to < parseInt(elem.value)) {
+                            tmp = true;
+                        }
+                    });
+                    return tmp;
+                });
             }
             return res;
         },

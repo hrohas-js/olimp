@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { validateField } from "@/plugins/validator";
 import { AnotherServicesApi } from "@/api/AnotherServices/AnotherServicesApi";
 import { useCatalogStore } from "@/store/CatalogStore";
+import jsonp from 'jsonp';
 
 export const useMainStore = defineStore("mainStore", {
     state: () => ({
@@ -34,7 +35,8 @@ export const useMainStore = defineStore("mainStore", {
         country: '',
         marker: {
             coordinates: [37.617644, 55.755819]
-        }
+        },
+        CLADR: []
     }),
     actions: {
         clearInputs() {
@@ -78,12 +80,14 @@ export const useMainStore = defineStore("mainStore", {
             return str[0].toUpperCase() + str.slice(1);
         },
         async fetchCLADR(str) {
-            try {
-                const response = await AnotherServicesApi.fetchCLADR(str);
-                console.log(response);
-            } catch (error) {
-                console.log(error)
-            }
+            const url = 'https://kladr-api.ru/api.php?token=EkT8i2ktHQaK7YZEQfde9Ed9aAyEb5ZN&contentType=city&query=' + str;
+            jsonp(url, null, (err, response) => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    this.CLADR = response.result;
+                }
+            });
         },
         async fetchMap(mode, coords) {
             try {

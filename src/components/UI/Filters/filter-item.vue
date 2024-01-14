@@ -25,8 +25,14 @@ const props = defineProps({
 });
 
 const setCurrentFilter = (filID, filconID) => {
-  catalogStore.filterID = filID;
-  catalogStore.filterContentID = filconID;
+  if (props.filterType === 'sex') {
+    catalogStore.filterParams.selectedSex = filconID;
+  } else if (props.filterType === 'type') {
+    catalogStore.filterParams.selectedType = filconID;
+  } else {
+    catalogStore.filterID = filID;
+    catalogStore.filterContentID = filconID;
+  }
 }
 </script>
 

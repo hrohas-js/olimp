@@ -38,7 +38,7 @@ const geoValue = computed({
   },
   set(value) {
     const temp = validateField('search', value).message;
-    //mainStore.fetchCLADR(temp);
+    mainStore.fetchCLADR(temp);
     mainStore.location = temp;
   }
 });

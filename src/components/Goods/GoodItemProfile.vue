@@ -16,6 +16,12 @@ const props = defineProps({
   item: {
     type: Object,
     default: () => ({})
+  },
+  mode: {
+    type: String,
+    default: () => {
+      return "";
+    }
   }
 });
 
@@ -62,7 +68,11 @@ const removeLike = () => {
             {{ props.item.title }}
           </router-link>
         </h2>
-        <div class="wishButton" @click="removeLike">
+        <div
+            v-if="props.mode !== 'sell'"
+            class="wishButton"
+            @click="removeLike"
+        >
           <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="29" viewBox="0 0 32 29" fill="none">
             <path
                 d="M31 9.79333C31 12.113 30.1093 14.3412 28.5187 15.9893C24.8573 19.7845 21.3061 23.742 17.5079 27.3996C16.6373 28.2258 15.2563 28.1956 14.4232 27.3321L3.48064 15.9893C0.173121 12.5608 0.173121 7.02584 3.48064 3.59735C6.82066 0.135175 12.2619 0.135175 15.6019 3.59735L15.9997 4.00963L16.3972 3.59759C17.9986 1.93675 20.1796 1 22.4579 1C24.7363 1 26.9172 1.93666 28.5187 3.59735C30.1094 5.24567 31 7.47365 31 9.79333Z"

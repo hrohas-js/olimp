@@ -69,6 +69,7 @@ const closeModal = () => {
         />
         <div class="content">
           <filter-item
+              filter-type="sex"
               :id="sex"
               :filter-param="sex.content"
           />
@@ -86,6 +87,7 @@ const closeModal = () => {
         />
         <div class="content">
           <filter-item
+              filter-type="type"
               :id="type"
               :filter-param="type.content"
           />
