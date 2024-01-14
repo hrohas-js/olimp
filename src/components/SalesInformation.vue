@@ -26,7 +26,7 @@ const mainLetter = computed(() => {
             {{ author }}
           </h3>
         </header>
-        <div class="score">
+<!--        <div class="score">
           <p class="textMontserrat_regular">
             5,0 </p>
           <div class="stars">
@@ -45,7 +45,7 @@ const mainLetter = computed(() => {
           <p class="textMontserrat_regular color_colorSubBg">
             3 отзыва
           </p>
-        </div>
+        </div>-->
         <p class="textMontserrat_regular contactPerson">Частное лицо</p>
       </div>
       <div class="circle background_subBg color_colorBg">

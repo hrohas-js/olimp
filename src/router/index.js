@@ -22,7 +22,7 @@ const routes = [
     component: () => import("@/views/ProfilePage")
   },
   {
-    path: '/postAdvertisements',
+    path: '/postAdvertisements/:mode',
     name: 'PostAdvertisements',
     component: () => import("@/views/PostAdvertisements")
   },

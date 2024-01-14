@@ -8,11 +8,12 @@ import MainButton from "@/components/UI/Button/MainButton";
 import {useAnnouncementStore} from "@/store/AnnouncementStore";
 import {useProfileStore} from "@/store/ProfileStore";
 import {useMainStore} from "@/store/MainStore";
-import {computed, onUnmounted, ref, watch} from "vue";
+import {computed, onMounted, onUnmounted, ref, watch} from "vue";
 import {validateField} from "@/plugins/validator";
 import MiniGallery from "@/components/UI/MiniGallery";
 import {ElMessage} from "element-plus";
 import {useRouter} from "vue-router";
+import {useRoute} from "vue-router";
 import {
   YandexMap,
   YandexMapDefaultSchemeLayer,
@@ -27,6 +28,7 @@ const announcementStore = useAnnouncementStore();
 const profileStore = useProfileStore();
 const mainStore = useMainStore();
 const router = useRouter();
+const route = useRoute();
 
 const width = computed(() => mainStore.display_width);
 const newItem = computed(() => announcementStore.newItem);
@@ -39,6 +41,7 @@ const user = computed(() => profileStore.user);
 const communication = computed(() => newItem.value.communication);
 const marker = computed(() => newItem.value.marker);
 const video = computed(() => newItem.value.video);
+const editID = computed(() => announcementStore.editID);
 
 const createTrigger = ref(false);
 const payAgreementCheck = ref(false);
@@ -120,12 +123,14 @@ const videoValue = computed({
 
 const breadcrumbs = computed(() => {
   let str = '';
-  [...announcementStore.newItem.selectedCategories].forEach((elem, index) => {
-    str += elem.replace(/<br\s*\/?>/gi, ' ');
-    if (index !== announcementStore.newItem.selectedCategories.length - 1) {
-      str += ' / '
-    }
-  });
+  if (announcementStore.newItem.selectedCategories) {
+    [...announcementStore.newItem.selectedCategories].forEach((elem, index) => {
+      str += elem.replace(/<br\s*\/?>/gi, ' ');
+      if (index !== announcementStore.newItem.selectedCategories.length - 1) {
+        str += ' / '
+      }
+    });
+  }
   return str;
 });
 const priceInputLabel = computed(() => {
@@ -151,6 +156,60 @@ const isActor = computed(() => {
 
 watch(newItem.value, () => {
   localStorage.setItem('newItem', JSON.stringify(newItem.value))
+});
+watch(categories.value, (newValue) => {
+  if (newValue.length > 0) {
+    announcementStore.getParameters({
+      filter_id: newValue[2].id,
+      filter_content_id: newValue[3].id
+    });
+  }
+});
+
+onMounted(() => {
+  announcementStore.getParameters({
+    filter_id: categories.value[2].id,
+    filter_content_id: categories.value[3].id
+  }).then(() => {
+    if (route.params.mode === 'edit') {
+      document.querySelectorAll('.param.list').forEach(elem => {
+        const name = elem.querySelector('p')?.innerText || '';
+        const param = elem.querySelector('.param-input');
+        if (param.tagName === 'input' && param.getAttribute('type') === 'text') {
+          [...announcementStore.newItem.selectedParameters].forEach(item => {
+            if (item.name === name) {
+              elem.querySelector('input').value = item.value;
+            }
+          });
+        }
+        if (param.tagName === 'select') {
+          [...announcementStore.newItem.selectedParameters].forEach(item => {
+            if (item.name === name) {
+              elem.querySelector('select').value = item.value;
+            }
+          });
+        }
+        if (param.tagName === 'select') {
+          [...announcementStore.newItem.selectedParameters].forEach(item => {
+            if (item.name === name) {
+              elem.querySelector('select').value = item.value;
+            }
+          });
+        }
+        if (param.tagName === 'div') {
+          [...announcementStore.newItem.selectedParameters].forEach(item => {
+            if (item.name === name) {
+              param.querySelectorAll('.choose-box__item').forEach(i => {
+                if (i.innerText === item.value) {
+                  i.click();
+                }
+              });
+            }
+          });
+        }
+      });
+    }
+  });
 });
 
 onUnmounted(() => {
@@ -195,7 +254,7 @@ const create = (status) => {
     const name = elem.querySelector('p')?.innerText || '';
     const textInput = elem.querySelector('input[type="text"]');
     const selectInput = elem.querySelector('select');
-    const selectChoose = elem.querySelector('.choose-box__item.active').innerText;
+    const selectChoose = elem.querySelector('.choose-box__item.active')?.innerText;
 
     const value = textInput?.value || selectInput?.value || selectChoose || '';
 
@@ -219,7 +278,7 @@ const create = (status) => {
     flag = true;
   }
   if (!flag) {
-    announcementStore.createAnnouncement({
+    const params = {
       title: title.value,
       gallery: JSON.stringify(announcementStore.newItem.gallery),
       description: announcementStore.newItem.description,
@@ -232,9 +291,20 @@ const create = (status) => {
       user_id: user.value.id,
       communication: communication.value,
       video: video.value
-    }).then(() => {
-      router.push('/profile');
-    });
+    }
+    if (editID.value > 0) {
+      params.id = editID.value
+    }
+    if (route.params.mode === 'create') {
+      announcementStore.createAnnouncement(params).then(() => {
+        router.push('/profile');
+      });
+    }
+    if (route.params.mode === 'edit') {
+      announcementStore.editAnnouncement(params).then(() => {
+        router.push('/profile');
+      });
+    }
   }
 }
 
@@ -258,7 +328,7 @@ const setPayAgreement = (e) => {
         {{ breadcrumbs }}
       </p>
       <h3 class="title textMontserrat_medium">
-        Создать объявление
+        {{ route.params.mode === 'create' ? 'Создать' : 'Редактировать' }} объявление
       </h3>
       <div
           class="container"
@@ -293,15 +363,18 @@ const setPayAgreement = (e) => {
           <input-announcement
               v-if="param.content.length === 0"
               v-model="inputValues[param.id]"
+              class="param-input"
               @input="updateInputValue(param.id, $event.target.value)"
           />
           <custom-select
               v-else-if="JSON.parse(param.content).length > 2"
               :options="JSON.parse(param.content)"
+              class="param-input"
           />
           <choose-box
               v-else
               :chooses="JSON.parse(param.content)"
+              class="param-input"
           />
         </div>
         <div class="postAdvertisements__item description">
@@ -448,9 +521,12 @@ const setPayAgreement = (e) => {
         </div>
       </div>
     </main>
-    <footer class="postAdvertisements__footer">
+    <footer v-if="route.params.mode === 'create'" class="postAdvertisements__footer">
       <main-button button-text="Разместить объявление" @click="create('publish')"/>
       <action-button text="Сохранить и выйти" @click="create('draft')"/>
+    </footer>
+    <footer v-else class="postAdvertisements__footer">
+      <main-button button-text="Сохранить изменения" @click="create('publish')"/>
     </footer>
   </section>
 </template>

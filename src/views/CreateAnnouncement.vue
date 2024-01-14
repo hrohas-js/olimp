@@ -104,13 +104,8 @@ const getCategoriesTree = (slug, category, filter = null) => {
         announcementStore.newItem.selectedCategories[2] = category.name;
       } else {
         announcementStore.newItem.selectedCategories.push(category.name);
-        console.log(announcementStore.newItem.selectedCategories)
       }
-      announcementStore.getParameters({
-        filter_id: filter.id,
-        filter_content_id: category.id
-      });
-      router.push('/postAdvertisements');
+      router.push('/postAdvertisements/create');
       break;
     default:
       break;

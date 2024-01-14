@@ -16,6 +16,7 @@ import {useCatalogStore} from "@/store/CatalogStore";
 import {computed, onMounted, onUnmounted} from "vue";
 import {useAuthStore} from "@/store/AuthStore";
 import {useProfileStore} from "@/store/ProfileStore";
+import {useAnnouncementStore} from "@/store/AnnouncementStore";
 
 const router = useRouter();
 const route = useRoute();
@@ -24,6 +25,7 @@ const productStore = useProductStore();
 const catalogStore = useCatalogStore();
 const authStore = useAuthStore();
 const profileStore = useProfileStore();
+const announcementStore = useAnnouncementStore();
 
 const width = computed(() => mainStore.display_width);
 const someItem = computed(() => mainStore.someItem);
@@ -36,6 +38,7 @@ const product = computed(() => {
       prod = elem
     }
   });
+  console.log(prod)
   return prod;
 });
 const gallery = computed(() => {
@@ -127,6 +130,10 @@ const upperTitle = computed(() =>{
 onMounted(() => {
   productStore.getUserOfAnnouncement({
     id: route.params.author
+  });
+  announcementStore.setAnnouncementViews({
+    id: route.params.id,
+    views: product.value.views
   });
 });
 

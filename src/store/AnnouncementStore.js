@@ -7,6 +7,7 @@ import {AnotherServicesApi} from "@/api/AnotherServices/AnotherServicesApi";
 
 export const useAnnouncementStore = defineStore("announcementStore", {
     state: () => ({
+        editID: 0,
         newItem: localStorage.getItem('newItem') !== null ? JSON.parse(localStorage.getItem('newItem')) : {
             title: '',
             description: '',
@@ -98,6 +99,46 @@ export const useAnnouncementStore = defineStore("announcementStore", {
                         status: ''
                     }
                 }
+            } catch (error) {
+                console.log(error)
+            } finally {
+                mainStore.loader = false;
+            }
+        },
+        async editAnnouncement(data) {
+            const mainStore = useMainStore();
+            try {
+                mainStore.loader = true;
+                const response = await AnnouncementApi.editAnnouncement(data);
+                if (response.result) {
+                    ElMessage({
+                        message: 'Изменения сохранены!',
+                        type: 'success'
+                    });
+                    this.newItem = {
+                        title: '',
+                        description: '',
+                        categories: [],
+                        price: '0',
+                        parameters: [],
+                        gallery: [],
+                        location: '',
+                        phone: '',
+                        selectedParameters: [],
+                        status: ''
+                    }
+                }
+            } catch (error) {
+                console.log(error)
+            } finally {
+                mainStore.loader = false;
+            }
+        },
+        async setAnnouncementViews(data) {
+            const mainStore = useMainStore();
+            try {
+                mainStore.loader = true;
+                await AnnouncementApi.setAnnouncementViews(data);
             } catch (error) {
                 console.log(error)
             } finally {

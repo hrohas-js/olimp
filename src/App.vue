@@ -40,7 +40,6 @@ watch(jwt, (newValue, oldValue) => {
   if (newValue !== null && oldValue === null) {
     router.push('/profile');
   } else if (newValue === null) {
-    console.log(newValue);
     nextTick(() => {
       router.push('/');
     });
@@ -345,7 +344,7 @@ button::-moz-focus-inner {
   position: fixed;
   bottom: 0;
   right: 3%;
-  max-width: rem(411);
+  width: rem(372);
   box-shadow: 0 5px 17px 0 rgba(0, 0, 0, .15)
 }
 

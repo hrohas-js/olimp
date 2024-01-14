@@ -45,6 +45,28 @@ export class AnnouncementApi extends BaseApi {
             }
         })
     }
+    static async editAnnouncement(data) {
+        return this.doRequest({
+            method: "POST",
+            url: "/requests/editAnnouncement",
+            data: data,
+            headers: {
+                Authorization: `Bearer ${this.getJWT()}`,
+                'Content-Type': 'application/json'
+            }
+        })
+    }
+    static async setAnnouncementViews(data) {
+        return this.doRequest({
+            method: "POST",
+            url: "/requests/setAnnouncementViews",
+            data: data,
+            headers: {
+                Authorization: `Bearer ${this.getJWT()}`,
+                'Content-Type': 'application/json'
+            }
+        })
+    }
     static async changeAnnouncementStatus(data) {
         return this.doRequest({
             method: "POST",

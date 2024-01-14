@@ -132,7 +132,7 @@ const uploadImage = () => {
         <!--        <p class="checkProfile color_green">-->
         <!--          Профиль подтвержден-->
         <!--        </p>-->
-        <div class="rating">
+<!--        <div class="rating">
           <div class="score ">
             <p class="Montserrat_semiBold">
               5,0
@@ -170,7 +170,7 @@ const uploadImage = () => {
               Отзывы (100)
             </p>
           </div>
-        </div>
+        </div>-->
       </div>
     </article>
     <main class="profilePage__main">

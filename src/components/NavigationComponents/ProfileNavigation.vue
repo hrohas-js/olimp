@@ -27,7 +27,6 @@ const exit = () => {
   authStore.jwt = null;
   localStorage.clear();
   profileStore.clearStore();
-  console.log(profileStore.user)
 }
 </script>
 

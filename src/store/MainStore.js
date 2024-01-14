@@ -76,8 +76,12 @@ export const useMainStore = defineStore("mainStore", {
                 this.errors.push(res);
             }
         },
-        upperCase(str){
-            return str[0].toUpperCase() + str.slice(1);
+        upperCase(str) {
+            if (str) {
+                return str[0].toUpperCase() + str.slice(1);
+            } else {
+                return '';
+            }
         },
         async fetchCLADR(str) {
             const url = 'https://kladr-api.ru/api.php?token=EkT8i2ktHQaK7YZEQfde9Ed9aAyEb5ZN&contentType=city&query=' + str;

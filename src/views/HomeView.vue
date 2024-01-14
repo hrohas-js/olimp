@@ -9,7 +9,7 @@ import GoodsItemReviews from "@/components/Goods/GoodsItemHit";
 import MainSearch from "@/components/UI/Filters/MainSearch";
 import "vue3-carousel/dist/carousel.css";
 import {Carousel, Slide, Navigation} from "vue3-carousel";
-import {computed, onMounted, watch, ref} from "vue";
+import {computed, onMounted, watch, ref, onBeforeMount} from "vue";
 import {useRouter} from "vue-router";
 import {useMainStore} from "@/store/MainStore";
 import {useCatalogStore} from "@/store/CatalogStore";
@@ -24,6 +24,10 @@ const width = computed(() => mainStore.display_width);
 const location = computed(() => mainStore.location);
 const catalog = computed(() => catalogStore.searchCatalog);
 const name = computed(() => profileStore.user.name);
+
+onBeforeMount(() => {
+  catalogStore.getAnnouncements();
+});
 
 /*let ws;
 

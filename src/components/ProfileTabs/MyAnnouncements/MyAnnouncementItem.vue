@@ -4,7 +4,9 @@ import {useMainStore} from "@/store/MainStore";
 import {useAnnouncementStore} from "@/store/AnnouncementStore";
 import {useProfileStore} from "@/store/ProfileStore";
 import {computed, ref, onMounted} from "vue";
+import {useRouter} from "vue-router";
 
+const router = useRouter();
 const mainStore = useMainStore();
 const announcementStore = useAnnouncementStore();
 const profileStore = useProfileStore();
@@ -100,7 +102,19 @@ const openActionMenu = () => {
 const announcementAction = (id) => {
   switch (id) {
     case 1:
-      //some
+      announcementStore.newItem.title = props.item.title;
+      announcementStore.newItem.description = props.item.description;
+      announcementStore.newItem.categories = JSON.parse(props.item.categories);
+      announcementStore.newItem.price = props.item.price;
+      announcementStore.newItem.selectedParameters = JSON.parse(props.item.parameters);
+      announcementStore.newItem.gallery = JSON.parse(props.item.gallery);
+      announcementStore.newItem.location = props.item.location;
+      announcementStore.newItem.phone = props.item.phone;
+      announcementStore.newItem.status = props.item.status;
+      announcementStore.newItem.communication = props.item.communication;
+      announcementStore.newItem.video = props.item.video;
+      announcementStore.editID = props.item.id;
+      router.push('/postAdvertisements/edit')
       break;
     case 2:
       //some
@@ -130,10 +144,10 @@ const announcementAction = (id) => {
           :src="mainImage"
           :alt="item.title"
       />
-      <input
+<!--      <input
           type="checkbox"
           class="chooseThis"
-      />
+      />-->
     </div>
     <div class="content">
       <div
@@ -229,7 +243,7 @@ const announcementAction = (id) => {
           />
           <div
               class="actionItem border_subBg"
-              @click="openActionMenu"
+              @click.stop="openActionMenu"
           >
             ...
           </div>
@@ -282,7 +296,7 @@ const announcementAction = (id) => {
               <div class="likeInfo__item">
                 <div class="image">
                   <svg height="25" width="1rem" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
-                       xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 60.671 60.671" xml:space="preserve"
+                       viewBox="0 0 60.671 60.671" xml:space="preserve"
                        fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                     <g id="SVGRepo_iconCarrier"> <g> <g> <ellipse style="fill:#010002;" cx="30.336" cy="12.097"
@@ -313,25 +327,32 @@ const announcementAction = (id) => {
                   </svg>
                 </div>
                 <p class="textMontserrat_regular">
-                  {{ item.likes_count }}
+                  {{ item.likes }}
                 </p>
               </div>
             </div>
           </div>
           <div class="buttons">
-            <action-button text="Aктивировать"/>
-            <div class="actionItem border_subBg">
+            <action-button
+                :text="mainButton.name"
+                @click="announcementAction(mainButton.id)"
+            />
+            <div
+                class="actionItem border_subBg"
+                @click.stop="openActionMenu"
+            >
               ...
             </div>
             <div
                 v-if="actionItem"
                 class="actionsMenu textMontserrat_regular background_elements"
             >
-              <p>
-                Редактировать
-              </p>
-              <p>
-                Удалить
+              <p
+                  v-for="button in secondaryButtons"
+                  :key="button.id"
+                  @click="announcementAction(button.id)"
+              >
+                {{ button.name }}
               </p>
             </div>
           </div>

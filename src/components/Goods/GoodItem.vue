@@ -41,7 +41,7 @@ const width = computed(() => mainStore.display_width);
 
 const mainPhoto = computed(() => {
   const gal = JSON.parse(props.item.gallery);
-  if (gal[0].src) {
+  if (gal[0]?.src) {
     return gal[0].src;
   } else {
     return '';

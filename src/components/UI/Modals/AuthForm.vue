@@ -170,15 +170,7 @@ const closeModal = () => {
         </div>
         <div class="form-col flex">
           <div class="form-group color_black">
-            <label for="old_password">Старый пароль:</label>
-            <input-border
-                id="old_password"
-                input-type="password"
-                validate-i-d="old_password"
-            />
-          </div>
-          <div class="form-group color_black">
-            <label for="password">Новый пароль:</label>
+            <label for="password">Пароль:</label>
             <input-border
                 id="password"
                 input-type="password"
@@ -269,6 +261,7 @@ const closeModal = () => {
 
     .form-group {
       margin-bottom: 15px;
+      position: relative;
 
       &:first-child {
         grid-column: 1 / 3;

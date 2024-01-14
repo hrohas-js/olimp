@@ -78,12 +78,12 @@ const changeTabs = (tab) => {
           </li>
         </ul>
       </nav>
-      <div
+      <!--div
           class="chooseAll"
       >
         <input type="checkbox" id="chooseAll" @change="changeActionCheckBox">
         <label for="chooseAll">Выбрать все</label>
-      </div>
+      </div>-->
       <div class="content">
         <my-announcement-item
             v-for="item in currentAnnouncements"
