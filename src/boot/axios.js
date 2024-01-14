@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const api = axios.create({
-    baseURL: 'http://95-163-243-224.cloudvps.regruhosting.ru/api'
+    baseURL: 'https://api.productioncity.pro/api'
 });
 
 export const kladr = axios.create({
@@ -21,5 +21,5 @@ export const map = axios.create({
 });
 
 export const coords = axios.create({
-    baseURL: 'http://ip-api.com'
+    baseURL: 'https://ip-api.com'
 });

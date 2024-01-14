@@ -29,7 +29,7 @@ const chatID = computed(() => {
   let id = 0;
   if (chatInfo.value.id) {
     id = chatInfo.value.id
-    ws = new WebSocket(`ws://localhost:3000/chat/${id}`);
+    ws = new WebSocket(`ws://95-163-243-224.cloudvps.regruhosting.ru:10000/chat/${id}`);
     ws.onopen = function() {
       console.log('Connected to the chat');
     };
