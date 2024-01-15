@@ -21,5 +21,5 @@ export const map = axios.create({
 });
 
 export const coords = axios.create({
-    baseURL: 'https://ip-api.com'
+    baseURL: 'http://ip-api.com'
 });
