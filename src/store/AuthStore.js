@@ -27,6 +27,7 @@ export const useAuthStore = defineStore("authStore", {
                 }
             } catch (error) {
                 console.log(error)
+                ElMessage.error(error.response.data.message)
             } finally {
                 mainStore.loader = false;
             }

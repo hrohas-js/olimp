@@ -93,6 +93,17 @@ export const useMainStore = defineStore("mainStore", {
                 }
             });
         },
+        async fetchCoords() {
+            const url = 'http://ip-api.com/json/';
+            jsonp(url, null, (err, response) => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    this.marker.coordinates = [response.lon, response.lat];
+                    this.fetchMap('coordinates', `${response.lon}, ${response.lat}`)
+                }
+            });
+        },
         async fetchMap(mode, coords) {
             try {
                 const response = await AnotherServicesApi.fetchMap(coords);
@@ -108,16 +119,6 @@ export const useMainStore = defineStore("mainStore", {
                 } else {
                     this.marker = {...this.marker, coordinates: response.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ').map(Number)}
                 }
-            } catch (error) {
-                console.log(error)
-            }
-        },
-        async fetchCoords() {
-            try {
-                await AnotherServicesApi.fetchCoords().then((response) => {
-                    this.marker.coordinates = [response.lon, response.lat];
-                    this.fetchMap('coordinates', `${response.lon}, ${response.lat}`)
-                });
             } catch (error) {
                 console.log(error)
             }
