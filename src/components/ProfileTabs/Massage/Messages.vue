@@ -3,14 +3,17 @@ import MassageItem from "@/components/ProfileTabs/Massage/MessageItem";
 import {ref, computed, onMounted} from "vue";
 import {useCatalogStore} from "@/store/CatalogStore";
 import {useProfileStore} from "@/store/ProfileStore";
+import {useMainStore} from "@/store/MainStore";
 
 const catalogStore = useCatalogStore();
 const profileStore = useProfileStore();
+const mainStore = useMainStore();
 
 const categories = computed(() => profileStore.chatCategories);
 const chats = computed(() => profileStore.myFilteredChats);
 const allCount = computed(() => profileStore.myChats.length);
 const relevance = computed(() => profileStore.relevance);
+const miniChat = computed(() => mainStore.miniChat);
 
 onMounted(() => {
   profileStore.getChatsCategories({
@@ -37,7 +40,10 @@ const changeTab = (slug) => {
       </div>-->
     </header>
     <main class="messages__main">
-      <nav class="profileNavigation">
+      <nav
+          v-if="!miniChat"
+          class="profileNavigation"
+      >
         <ul>
           <li
               class="profileNavigation__item textMontserrat_bold"

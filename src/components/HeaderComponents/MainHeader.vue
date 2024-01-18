@@ -21,6 +21,16 @@ const mainLetter = computed(() => profileStore.userMainLetter);
 const country = computed(() =>  mainStore.country);
 const notCount = computed(() => profileStore.newNotificationsCount);
 
+const newMessages = computed(() => {
+  let res = false;
+  [...profileStore.myChats].forEach(elem => {
+    if (elem.new_messages === 1) {
+      res = true;
+    }
+  });
+  return res;
+});
+
 const routerPush = (page) => {
   router.push(page)
 }
@@ -130,6 +140,10 @@ const goToProfile = (mode) => {
             class="image"
             @click="goToProfile('messages')"
         >
+          <span
+              v-if="newMessages"
+              class="background_accent color_likeAvt"
+          />
           <svg
               class="mail"
               id="Layer_1"

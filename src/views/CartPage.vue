@@ -38,7 +38,6 @@ const product = computed(() => {
       prod = elem
     }
   });
-  console.log(prod)
   return prod;
 });
 const gallery = computed(() => {
@@ -170,15 +169,19 @@ const setLike = () => {
 }
 
 const openChat = () => {
-  profileStore.getChat({
-    title: product.value.title,
-    user1: profileStore.user.id,
-    user2: productStore.author.id,
-    announcement_id: product.value.id,
-    category_id: categories.value[0].id
-  }).then(() => {
-    mainStore.miniChat = true;
-  });
+  if (isAuth.value) {
+    profileStore.getChat({
+      title: product.value.title,
+      user1: profileStore.user.id,
+      user2: productStore.author.id,
+      announcement_id: product.value.id,
+      category_id: categories.value[0].id
+    }).then(() => {
+      mainStore.miniChat = true;
+    });
+  } else {
+    mainStore.popup = 'auth';
+  }
 }
 </script>
 

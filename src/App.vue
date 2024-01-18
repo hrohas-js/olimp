@@ -18,6 +18,7 @@ import GeoForm from "@/components/UI/Modals/GeoForm";
 import GeoAnnouncementForm from "@/components/UI/Modals/GeoAnnouncementForm";
 import ChatBody from "@/components/ProfileTabs/Massage/Chat/ChatBody";
 import Filter from "@/components/UI/Filters/Filter";
+import Messages from "@/components/ProfileTabs/Massage/Messages";
 
 const mainStore = useMainStore();
 const profileStore = useProfileStore();
@@ -35,13 +36,22 @@ const load = computed(() => mainStore.loader);
 const jwt = computed(() => authStore.jwt);
 const miniChat = computed(() => mainStore.miniChat);
 const notifications = computed(() => profileStore.notifications);
+const currentChat = computed(() => profileStore.currentChat);
+
+let chatsTimer;
 
 watch(jwt, (newValue, oldValue) => {
   if (newValue !== null && oldValue === null) {
     router.push('/profile');
+    chatsTimer = setInterval(() => {
+      profileStore.getAllChats({
+        user_id: profileStore.user.id
+      });
+    }, 3000);
   } else if (newValue === null) {
     nextTick(() => {
       router.push('/');
+      clearInterval(chatsTimer);
     });
   }
 });
@@ -68,6 +78,10 @@ onMounted(() => {
     mainStore.display_width = window.innerWidth;
   });
 });
+
+const closeMiniChat = () => {
+  mainStore.miniChat = false;
+}
 </script>
 
 <template>
@@ -104,7 +118,20 @@ onMounted(() => {
         v-if="miniChat"
         class="widget"
     >
-      <chat-body class="mini" />
+      <button
+          class="close"
+          @click="closeMiniChat"
+      >
+        <svg width="20" height="20" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="30" cy="30" r="30" fill="#E9605A"/>
+          <path d="M16.8297 18.8295L28.7335 30.7333M28.7335 30.7333L40.6373 42.6371M28.7335 30.7333L41.563 17.9038M28.7335 30.7333L15.904 43.5628" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <chat-body
+          v-if="Object.keys(currentChat).length > 0"
+          class="mini"
+      />
+      <messages v-else />
     </div>
   </section>
 </template>
@@ -334,7 +361,7 @@ button::-moz-focus-inner {
   height: 100vh;
   width: 100%;
   position: fixed;
-  z-index: 999999;
+  z-index: 99;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -345,7 +372,15 @@ button::-moz-focus-inner {
   bottom: 0;
   right: 3%;
   width: rem(372);
-  box-shadow: 0 5px 17px 0 rgba(0, 0, 0, .15)
+  height: rem(465);
+  background-color: white;
+  box-shadow: 0 5px 17px 0 rgba(0, 0, 0, .15);
+
+  .close {
+    position: absolute;
+    top: rem(10);
+    right: rem(10);
+  }
 }
 
 .overflow {

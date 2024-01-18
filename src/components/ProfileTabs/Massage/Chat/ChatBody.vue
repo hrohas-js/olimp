@@ -3,19 +3,21 @@ import InputAnnouncement from "@/components/UI/Inputs/InputAnnouncement";
 import MessageItem from "@/components/ProfileTabs/Massage/Chat/MessageItem.vue";
 import {useProfileStore} from "@/store/ProfileStore";
 import {useMainStore} from "@/store/MainStore";
-import {computed, ref} from "vue";
+import {computed, onUnmounted, ref} from "vue";
 import {useRouter} from "vue-router";
+import {useRoute} from "vue-router";
 import {getCurrentDateTime} from "@/plugins/validator";
 
 const profileStore = useProfileStore();
 const mainStore = useMainStore();
 const router = useRouter();
+const route = useRoute();
 
 const chat = computed(() => profileStore.currentChatHistory);
 const chatInfo = computed(() => profileStore.currentChat);
 const userID = computed(() => profileStore.user.id);
 
-let ws;
+let timer;
 const messageValue = ref('');
 
 const mainPhoto = computed(() => {
@@ -27,18 +29,23 @@ const mainPhoto = computed(() => {
 });
 const chatID = computed(() => {
   let id = 0;
+  console.log('lol')
   if (chatInfo.value.id) {
-    id = chatInfo.value.id
-    ws = new WebSocket(`wss://95-163-243-224.cloudvps.regruhosting.ru:10000/chat/${id}`);
-    ws.onopen = function() {
-      console.log('Connected to the chat');
-    };
-    ws.onmessage = function(event) {
-      profileStore.currentChatHistory.push(JSON.parse(event.data));
-      messageValue.value = '';
-    };
+    id = chatInfo.value.id;
+    profileStore.getMessages({
+      chat_id: id
+    });
+    timer = setInterval(() => {
+      profileStore.getMessages({
+        chat_id: id
+      });
+    }, 3000);
   }
   return id;
+});
+
+onUnmounted(() => {
+  clearInterval(timer);
 });
 
 const changeFile = (e) => {
@@ -59,31 +66,39 @@ const send = () => {
     is_read: false
   }
   profileStore.sendMessage(message).then(() => {
-    ws.send(JSON.stringify(message));
-  })
+    messageValue.value = '';
+    profileStore.getMessages({
+      chat_id: chatID.value
+    });
+  });
 }
 
 const goBack = () => {
-  router.push('/profile');
-  profileStore.content = 'messages';
-  mainStore.miniChat = false;
+  profileStore.currentChat = {};
+  if (route.name === 'profile') {
+    profileStore.content = 'messages';
+  }
 }
 </script>
 
 <template>
-  <section class="chat background_mainBg">
+  <section class="chat">
     <header class="chat__header">
       <div
           class="back"
           @click="goBack"
       >
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="icon-icon-JUE8Z" style="width: 24px; height: 24px;">
+        <svg
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            class="icon-icon-JUE8Z"
+            style="width: 24px; height: 24px;"
+        >
           <path d="m7.414 13 5.293 5.293a1 1 0 0 1-1.414 1.414l-7-7a1 1 0 0 1 0-1.414l7-7a1 1 0 1 1 1.414 1.414L7.414 11H19a1 1 0 1 1 0 2H7.414Z" fill="black"></path>
         </svg>
       </div>
       <div class="header-content">
         <div class="image">
-          <span style="display: none">{{ chatID }}</span>
           <img
               :src="mainPhoto"
               alt="main"
@@ -92,14 +107,14 @@ const goBack = () => {
         <div class="info">
           <div class="info__name">
             <span class="textMontserrat_bold">
-            {{ chatInfo.user_name }}
-          </span>
-            <span class="color_grayDarker">
-            В сети в 12:26
-          </span>
+              {{ chatInfo.user_name }}
+            </span>
+<!--            <span class="color_grayDarker">
+              В сети в 12:26
+            </span>-->
           </div>
           <div class="info__title">
-            {{ chatInfo.chat_name }}
+            {{ chatInfo.title }}
           </div>
         </div>
       </div>
@@ -155,6 +170,7 @@ const goBack = () => {
 <style scoped lang="scss">
 .chat {
   height: rem(360);
+  background-color: #FFFFFF;
 
   &.mini {
     height: rem(470);
@@ -193,6 +209,7 @@ const goBack = () => {
     .image {
       img {
         height: rem(35);
+        object-fit: cover;
       }
     }
   }

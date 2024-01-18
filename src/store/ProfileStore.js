@@ -163,12 +163,21 @@ export const useProfileStore = defineStore("profileStore", {
                     ElMessage({
                         message: 'Данные успешно обновлены!',
                         type: 'success',
+                        duration: 6000
                     });
                     mainStore.popup = '';
                 } else if (response.error) {
-                    ElMessage.error(response.message);
+                    ElMessage({
+                        message: response.message,
+                        type: 'error',
+                        duration: 6000
+                    });
                 } else {
-                    ElMessage.error('При обновлении даннных произошла ошибка! Повторите попытку позже.');
+                    ElMessage({
+                        message: 'При обновлении даннных произошла ошибка! Повторите попытку позже.',
+                        type: 'error',
+                        duration: 6000
+                    });
                 }
             } catch (error) {
                 console.log(error)
@@ -263,7 +272,6 @@ export const useProfileStore = defineStore("profileStore", {
             try {
                 mainStore.loader = true;
                 const response = await ChatsApi.getChat(data);
-                console.log(response)
                 this.currentChat = response.result[0];
             } catch (error) {
                 console.log(error)
@@ -284,15 +292,12 @@ export const useProfileStore = defineStore("profileStore", {
             }
         },
         async getMessages(data) {
-            const mainStore = useMainStore();
             try {
-                mainStore.loader = true;
                 const response = await ChatsApi.getMessages(data);
                 this.currentChatHistory = response.result;
+                console.log(response)
             } catch (error) {
                 console.log(error)
-            } finally {
-                mainStore.loader = false;
             }
         },
         async sendMessage(data) {

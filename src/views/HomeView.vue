@@ -153,7 +153,7 @@ const openGeo = () => {
               </path>
             </svg>
             <p class="textMontserrat_regular">
-              {{ location }}
+              {{ location === '' ? 'Выберете город' : location }}
             </p>
           </div>
           <div class="searchContainer">

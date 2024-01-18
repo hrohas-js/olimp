@@ -60,7 +60,11 @@ export const useAnnouncementStore = defineStore("announcementStore", {
                 if (response.result) {
                     this.newItem.gallery = [...this.newItem.gallery].filter(elem => elem.src !== data.url);
                 } else {
-                    ElMessage.error('При удалении изображения произошла ошибка');
+                    ElMessage({
+                        type: 'error',
+                        message: 'При удалении изображения произошла ошибка',
+                        duration: 6000
+                    });
                 }
             } catch (error) {
                 console.log(error)
@@ -78,12 +82,14 @@ export const useAnnouncementStore = defineStore("announcementStore", {
                     if (data.status === 'publish') {
                         ElMessage({
                             message: 'Ваше объявление опубликовано!',
-                            type: 'success'
+                            type: 'success',
+                            duration: 6000
                         });
                     } else {
                         ElMessage({
                             message: 'Ваше объявление сохранено в черновики!',
-                            type: 'success'
+                            type: 'success',
+                            duration: 6000
                         });
                     }
                     this.newItem = {
@@ -113,7 +119,8 @@ export const useAnnouncementStore = defineStore("announcementStore", {
                 if (response.result) {
                     ElMessage({
                         message: 'Изменения сохранены!',
-                        type: 'success'
+                        type: 'success',
+                        duration: 6000
                     });
                     this.newItem = {
                         title: '',
@@ -167,7 +174,8 @@ export const useAnnouncementStore = defineStore("announcementStore", {
                     await profileStore.getAnnouncementOfUser(data);
                     ElMessage({
                         message: 'Объявление перемещено в раздел ' + russianStatus,
-                        type: 'success'
+                        type: 'success',
+                        duration: 6000
                     });
                 }
             } catch (error) {

@@ -21,7 +21,11 @@ onMounted(() => {
 const emptyCheck = (key, message) => {
   if (mainStore.inputs[key].length === 0) {
     document.getElementById(key).classList.add('border_accent');
-    ElMessage.error(message);
+    ElMessage({
+      type: 'error',
+      message: message,
+      duration: 6000
+    });
     return true;
   }
 }
@@ -34,14 +38,30 @@ const editProfile = () => {
   if (errors.value.length > 0) {
     errors.value.forEach(elem => {
       document.getElementById(elem.id).classList.add('border_accent');
-      ElMessage.error(elem.error);
+      ElMessage({
+        type: 'error',
+        message: elem.error,
+        duration: 6000
+      });
     });
   } else if (0 < mainStore.inputs.password.length && mainStore.inputs.password.length < 6) {
-    ElMessage.error('Пароль должен содержать как минимум 6 символов!');
+    ElMessage({
+      type: 'error',
+      message: 'Пароль должен содержать как минимум 6 символов!',
+      duration: 6000
+    });
   } else if (mainStore.inputs.old_password.length > 0 && (mainStore.inputs.password.length === 0 || mainStore.inputs.confirm_password === 0)) {
-    ElMessage.error('Заполните все поля для изменения пароля');
+    ElMessage({
+      type: 'error',
+      message: 'Заполните все поля для изменения пароля',
+      duration: 6000
+    });
   } else if (mainStore.inputs.password !== mainStore.inputs.confirm_password) {
-    ElMessage.error('Пароли не совпадают!');
+    ElMessage({
+      type: 'error',
+      message: 'Пароли не совпадают!',
+      duration: 6000
+    });
   } else {
     empty = emptyCheck('email', 'Поле Email не может быть пустым');
     empty = emptyCheck('name', 'Поле Имя не может быть пустым');

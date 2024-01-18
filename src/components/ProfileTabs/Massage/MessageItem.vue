@@ -38,7 +38,7 @@ const changeContent = () => {
 
 <template>
   <article class="messageItem" @click="changeContent">
-    <div class="messageItem__check"/>
+<!--    <div class="messageItem__check"/>-->
     <div class="messageItem__information">
       <div class="image">
         <img :src="mainPhoto" alt="altText"/>
@@ -47,7 +47,10 @@ const changeContent = () => {
         <h2 class="textMontserrat_bold text__item">
           {{ item.user_name }}
         </h2>
-        <p class="textMontserrat_medium text__item">
+        <p
+            class="textMontserrat_medium text__item"
+            :class="{'textMontserrat_semiBold': props.item.new_messages === 1}"
+        >
           {{ item.title }}
         </p>
 <!--        <p class="textMontserrat_light text__item">

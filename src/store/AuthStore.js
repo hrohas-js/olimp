@@ -27,7 +27,11 @@ export const useAuthStore = defineStore("authStore", {
                 }
             } catch (error) {
                 console.log(error)
-                ElMessage.error(error.response.data.message)
+                ElMessage({
+                    type: 'error',
+                    message: error.response.data.message,
+                    duration: 6000
+                });
             } finally {
                 mainStore.loader = false;
             }
@@ -42,12 +46,17 @@ export const useAuthStore = defineStore("authStore", {
                     password: mainStore.inputs.password
                 });
                 if (response.error) {
-                    ElMessage.error(response.message);
+                    ElMessage({
+                        type: 'error',
+                        message: response.message,
+                        duration: 6000
+                    });
                 } else {
                     mainStore.popup = '';
                     ElMessage({
                         message: "Авторизация прошла успешно",
-                        type: "success"
+                        type: "success",
+                        duration: 6000
                     });
                     this.jwt = response.access_token;
                     localStorage.setItem('jwt', response.access_token);
@@ -90,7 +99,11 @@ export const useAuthStore = defineStore("authStore", {
                 console.log(error)
                 localStorage.clear();
                 this.jwt = null;
-                ElMessage.error('Сессия пользователя закончена в связи со сменой IP адреса');
+                ElMessage({
+                    type: 'error',
+                    message: 'Сессия пользователя закончена в связи со сменой IP адреса',
+                    duration: 6000
+                });
             } finally {
                 mainStore.loader = false;
             }

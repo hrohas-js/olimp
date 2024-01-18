@@ -17,7 +17,11 @@ const checkFileCount = (e) => {
   const files = e.target.files;
 
   if (files.length > maxFiles || files.length + gallery.value.length > maxFiles) {
-    ElMessage.error(`Вы можете загрузить не более ${maxFiles} файлов.`);
+    ElMessage({
+      type: 'error',
+      message: `Вы можете загрузить не более ${maxFiles} файлов.`,
+      duration: 6000
+    });
     e.target.value = '';
   } else {
     const formData = new FormData();

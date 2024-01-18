@@ -1,5 +1,12 @@
 <script setup>
-import {ref} from "vue";
+import {computed, ref} from "vue";
+import {useAuthStore} from "@/store/AuthStore";
+import {useMainStore} from "@/store/MainStore";
+
+const authStore = useAuthStore();
+const mainStore = useMainStore();
+
+const isAuth = computed(() => authStore.jwt !== null);
 
 const phoneShow = ref(false);
 
@@ -43,7 +50,11 @@ const props = defineProps({
 });
 
 const phoneShowTrigger = () => {
-  phoneShow.value = !phoneShow.value;
+  if (isAuth.value) {
+    phoneShow.value = !phoneShow.value;
+  } else {
+    mainStore.popup = 'auth';
+  }
 }
 </script>
 

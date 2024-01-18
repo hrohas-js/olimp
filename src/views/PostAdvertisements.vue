@@ -262,19 +262,35 @@ const create = (status) => {
   });
   announcementStore.newItem.status = status;
   if (title.value.length === 0) {
-    ElMessage.error('Название объявления обязательно для заполнения')
+    ElMessage({
+      type: 'error',
+      message: 'Название объявления обязательно для заполнения',
+      duration: 6000
+    });
     flag = true;
   }
   if (price.value.length === 0) {
-    ElMessage.error('Цена обязательна для заполнения')
+    ElMessage({
+      type: 'error',
+      message: 'Цена обязательна для заполнения',
+      duration: 6000
+    });
     flag = true;
   }
   if (location.value.length === 0) {
-    ElMessage.error('Локация обязательна для заполнения')
+    ElMessage({
+      type: 'error',
+      message: 'Локация обязательна для заполнения',
+      duration: 6000
+    });
     flag = true;
   }
   if (communication.value.length === 0) {
-    ElMessage.error('Выберете способ связи!')
+    ElMessage({
+      type: 'error',
+      message: 'Выберете способ связи!',
+      duration: 6000
+    });
     flag = true;
   }
   if (!flag) {

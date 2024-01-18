@@ -22,7 +22,11 @@ onMounted(() => {
 const emptyCheck = (key, message) => {
   if (mainStore.inputs[key].length === 0) {
     document.getElementById(key).classList.add('border_accent');
-    ElMessage.error(message);
+    ElMessage({
+      type: 'error',
+      message: message,
+      duration: 6000
+    });
     return true;
   }
 }
@@ -35,12 +39,24 @@ const login = () => {
   if (errors.value.length > 0) {
     errors.value.forEach(elem => {
       document.getElementById(elem.id).classList.add('border_accent');
-      ElMessage.error(elem.error);
+      ElMessage({
+        type: 'error',
+        message: elem.error,
+        duration: 6000
+      });
     });
   } else if (popup.value === 'register' && mainStore.inputs.password.length < 6) {
-    ElMessage.error('Пароль должен содержать как минимум 6 символов!');
+    ElMessage({
+      type: 'error',
+      message: 'Пароль должен содержать как минимум 6 символов!',
+      duration: 6000
+    });
   } else if (popup.value === 'register' && mainStore.inputs.password !== mainStore.inputs.confirm_password) {
-    ElMessage.error('Пароли не совпадают!');
+    ElMessage({
+      type: 'error',
+      message: 'Пароли не совпадают!',
+      duration: 6000
+    });
   } else if (popup.value === 'register') {
     empty = emptyCheck('name', 'Поле Имя не может быть пустым');
     empty = emptyCheck('email', 'Поле Email не может быть пустым');
@@ -144,14 +160,6 @@ const closeModal = () => {
             />
           </div>
           <div class="form-group color_black">
-            <label for="birth_datetime">Дата рождения:</label>
-            <input-border
-                id="birth_datetime"
-                input-type="date"
-                validate-i-d="birth_datetime"
-            />
-          </div>
-          <div class="form-group color_black">
             <label for="phone">Телефон:</label>
             <input-border
                 id="phone"
@@ -160,21 +168,19 @@ const closeModal = () => {
             />
           </div>
           <div class="form-group color_black">
-            <label for="email">Email:</label>
-            <input-border
-                id="email"
-                input-type="email"
-                validate-i-d="email"
-            />
-          </div>
-        </div>
-        <div class="form-col flex">
-          <div class="form-group color_black">
             <label for="password">Пароль:</label>
             <input-border
                 id="password"
                 input-type="password"
                 validate-i-d="password"
+            />
+          </div>
+          <div class="form-group color_black">
+            <label for="email">Email:</label>
+            <input-border
+                id="email"
+                input-type="email"
+                validate-i-d="email"
             />
           </div>
           <div class="form-group color_black">
