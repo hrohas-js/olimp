@@ -122,7 +122,7 @@ const closeMiniChat = () => {
           class="close"
           @click="closeMiniChat"
       >
-        <svg width="20" height="20" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="24" height="24" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="30" cy="30" r="30" fill="#E9605A"/>
           <path d="M16.8297 18.8295L28.7335 30.7333M28.7335 30.7333L40.6373 42.6371M28.7335 30.7333L41.563 17.9038M28.7335 30.7333L15.904 43.5628" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
@@ -376,9 +376,13 @@ button::-moz-focus-inner {
   background-color: white;
   box-shadow: 0 5px 17px 0 rgba(0, 0, 0, .15);
 
+  @media (max-width: em(768, 16)) {
+    bottom: rem(70);
+  }
+
   .close {
     position: absolute;
-    top: rem(10);
+    top: 5%;
     right: rem(10);
   }
 }

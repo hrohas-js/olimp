@@ -273,6 +273,7 @@ export const useProfileStore = defineStore("profileStore", {
                 mainStore.loader = true;
                 const response = await ChatsApi.getChat(data);
                 this.currentChat = response.result[0];
+                console.log(response)
             } catch (error) {
                 console.log(error)
             } finally {

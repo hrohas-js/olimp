@@ -30,6 +30,7 @@ const announcementStore = useAnnouncementStore();
 const width = computed(() => mainStore.display_width);
 const someItem = computed(() => mainStore.someItem);
 const isAuth = computed(() => authStore.jwt !== null);
+const chat = computed(() => profileStore.currentChat);
 
 const product = computed(() => {
   let prod = {};
@@ -177,6 +178,9 @@ const openChat = () => {
       announcement_id: product.value.id,
       category_id: categories.value[0].id
     }).then(() => {
+      profileStore.getMessages({
+        chat_id: chat.value.id
+      });
       mainStore.miniChat = true;
     });
   } else {
