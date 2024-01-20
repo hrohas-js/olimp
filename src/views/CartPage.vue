@@ -4,6 +4,7 @@ import ActionButton from "@/components/UI/Button/ActionButton";
 import ImageGallery from "@/components/CartPageComponents/ImageGalary";
 import MainButton from "@/components/UI/Button/MainButton";
 import GoodsItemReviews from "@/components/Goods/GoodsItemHit";
+import HeaderBannerMobile from "@/components/HeaderComponents/HeaderBannerMobile";
 import "vue3-carousel/dist/carousel.css";
 import {Carousel, Slide, Navigation} from "vue3-carousel";
 import GoodItem from "@/components/Goods/GoodItem";
@@ -191,6 +192,7 @@ const openChat = () => {
 
 <template>
   <section class="cartPage wrapper textMontserrat">
+    <header-banner-mobile v-if="width <= 768" />
     <search-header v-if="width > 1024"/>
     <p class="textMontserrat_medium">
       {{ breadcrumbs }}

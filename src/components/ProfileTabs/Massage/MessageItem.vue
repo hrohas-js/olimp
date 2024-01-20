@@ -34,14 +34,33 @@ const changeContent = () => {
     chat_id: props.item.chat_id
   });
 }
+
+const checkMessage = (e) => {
+  if (e.target.checked) {
+    profileStore.selectedMessages.push(e.target.id)
+  } else {
+    profileStore.selectedMessages = [...profileStore.selectedMessages].filter(elem => elem !== e.target.id)
+  }
+}
 </script>
 
 <template>
-  <article class="messageItem" @click="changeContent">
-<!--    <div class="messageItem__check"/>-->
-    <div class="messageItem__information">
+  <article class="messageItem">
+    <div class="messageItem__check">
+      <input
+          :id="props.item.chat_id"
+          type="checkbox"
+          name="message"
+          @change="checkMessage"
+      />
+    </div>
+    <div class="messageItem__information" @click="changeContent">
       <div class="image">
         <img :src="mainPhoto" alt="altText"/>
+        <div
+            v-if="props.item.important === 1"
+            class="important-mark background_accent"
+        />
       </div>
       <div class="text">
         <h2 class="textMontserrat_bold text__item">
@@ -98,11 +117,7 @@ const changeContent = () => {
   }
 
   &__check {
-    border-radius: 5px;
-    background: #D9D9D9;
-    width: 1rem;
-    height: 1rem;
-    grid-area: check;
+
   }
 
   &__information {
@@ -122,6 +137,22 @@ const changeContent = () => {
 
     .image {
       flex: 1 1 20%;
+      position: relative;
+
+      img {
+        width: 100%;
+        height: rem(75);
+        object-fit: cover;
+      }
+
+      .important-mark {
+        position: absolute;
+        width: rem(20);
+        height: rem(20);
+        top: rem(-10);
+        left: rem(-10);
+        border-radius: 50%;
+      }
     }
 
     .text {

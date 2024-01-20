@@ -16,6 +16,7 @@ import WalletTabs from "@/components/ProfileTabs/WalletTabs";
 import {computed, onMounted} from "vue";
 import {useMainStore} from "@/store/MainStore";
 import {useProfileStore} from "@/store/ProfileStore";
+import HeaderBannerMobile from "@/components/HeaderComponents/HeaderBannerMobile";
 
 const mainStore = useMainStore();
 const profileStore = useProfileStore();
@@ -74,6 +75,7 @@ const uploadImage = () => {
 
 <template>
   <section class="profilePage wrapper textMontserrat">
+    <header-banner-mobile v-if="width <= 768" />
     <search-header/>
     <div class="profilePage__name">
       <h2 class="textMontserrat_medium">

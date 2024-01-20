@@ -40,7 +40,8 @@ export const useProfileStore = defineStore("profileStore", {
         notifications: [],
         newNotificationsCount: 0,
         mySells: [],
-        sellsRelevance: 'active'
+        sellsRelevance: 'active',
+        selectedMessages: []
     }),
     getters: {
         userMainLetter: (state) => {
@@ -150,6 +151,7 @@ export const useProfileStore = defineStore("profileStore", {
             this.newNotificationsCount = 0;
             this.mySells = [];
             this.sellsRelevance = 'active';
+            this.selectedMessages = [];
         },
         async editProfileInfo() {
             const mainStore = useMainStore();
@@ -255,41 +257,29 @@ export const useProfileStore = defineStore("profileStore", {
             }
         },
         async getAllChats(data) {
-            const mainStore = useMainStore();
             try {
-                mainStore.loader = true;
                 const response = await ChatsApi.getAllChats(data);
                 console.log(response)
                 this.myChats = response.result;
             } catch (error) {
                 console.log(error)
-            } finally {
-                mainStore.loader = false;
             }
         },
         async getChat(data) {
-            const mainStore = useMainStore();
             try {
-                mainStore.loader = true;
                 const response = await ChatsApi.getChat(data);
                 this.currentChat = response.result[0];
                 console.log(response)
             } catch (error) {
                 console.log(error)
-            } finally {
-                mainStore.loader = false;
             }
         },
         async getChatsCategories(data) {
-            const mainStore = useMainStore();
             try {
-                mainStore.loader = true;
                 const response = await ChatsApi.getChatsCategories(data);
                 this.chatCategories = response.result;
             } catch (error) {
                 console.log(error)
-            } finally {
-                mainStore.loader = false;
             }
         },
         async getMessages(data) {
@@ -302,15 +292,11 @@ export const useProfileStore = defineStore("profileStore", {
             }
         },
         async sendMessage(data) {
-            const mainStore = useMainStore();
             try {
-                mainStore.loader = true;
                 const response = await ChatsApi.sendMessage(data);
                 console.log(response)
             } catch (error) {
                 console.log(error)
-            } finally {
-                mainStore.loader = false;
             }
         },
         async getNotifications(data) {
@@ -354,6 +340,28 @@ export const useProfileStore = defineStore("profileStore", {
                 console.log(error)
             } finally {
                 mainStore.loader = false;
+            }
+        },
+        async setImportant() {
+            try {
+                const response = await ChatsApi.setImportant({
+                    query: this.selectedMessages.join(',')
+                });
+                console.log(response);
+                this.selectedMessages = [];
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async remove() {
+            try {
+                const response = await ChatsApi.remove({
+                    query: this.selectedMessages.join(',')
+                });
+                console.log(response);
+                this.selectedMessages = [];
+            } catch (error) {
+                console.log(error)
             }
         }
     }

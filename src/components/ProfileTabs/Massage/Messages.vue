@@ -14,6 +14,9 @@ const chats = computed(() => profileStore.myFilteredChats);
 const allCount = computed(() => profileStore.myChats.length);
 const relevance = computed(() => profileStore.relevance);
 const miniChat = computed(() => mainStore.miniChat);
+const selectedMessages = computed(() => profileStore.selectedMessages);
+
+const showMenu = ref(false);
 
 onMounted(() => {
   profileStore.getChatsCategories({
@@ -27,6 +30,34 @@ onMounted(() => {
 const changeTab = (slug) => {
   profileStore.relevance = slug;
 }
+
+const showMenuTrigger = () => {
+  showMenu.value = !showMenu.value;
+}
+
+const selectedDelete = () => {
+  showMenu.value = false;
+  profileStore.remove().then(() => {
+    profileStore.getChatsCategories({
+      user_id: profileStore.user.id
+    });
+    profileStore.getAllChats({
+      user_id: profileStore.user.id
+    });
+  });
+}
+
+const selectedMark = () => {
+  showMenu.value = false;
+  profileStore.setImportant().then(() => {
+    profileStore.getChatsCategories({
+      user_id: profileStore.user.id
+    });
+    profileStore.getAllChats({
+      user_id: profileStore.user.id
+    });
+  });
+}
 </script>
 
 <template>
@@ -35,9 +66,34 @@ const changeTab = (slug) => {
       <h2 class="textMontserrat_medium">
         Сообщения
       </h2>
-<!--      <div class="activeMenu border_subBg">
-        ...
-      </div>-->
+      <div
+          v-if="selectedMessages.length > 0"
+          class="controls"
+      >
+        <div
+            class="activeMenu border_subBg"
+            @click="showMenuTrigger"
+        >
+          ...
+        </div>
+        <div
+            v-if="showMenu"
+            class="activeMenu-list border_subBg"
+        >
+          <div
+              class="textMontserrat_medium"
+              @click="selectedMark"
+          >
+            Пометить как важное
+          </div>
+          <div
+              class="textMontserrat_medium"
+              @click="selectedDelete"
+          >
+            Удалить
+          </div>
+        </div>
+      </div>
     </header>
     <main class="messages__main">
       <nav
@@ -85,14 +141,39 @@ const changeTab = (slug) => {
       font-size: rem(20);
     }
 
-    .activeMenu {
-      border-radius: 5px;
-      cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: rem(60);
-      height: rem(40);
+    .controls {
+      position: relative;
+
+      .activeMenu {
+        border-radius: 5px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: rem(40);
+        height: rem(30);
+        user-select: none;
+      }
+
+      .activeMenu-list {
+        position: absolute;
+        z-index: 99;
+        border-radius: 5px;
+        right: 0;
+        width: rem(200);
+        background: white;
+
+        .textMontserrat_medium {
+          cursor: pointer;
+          padding: rem(10);
+          transition: all 0.3s;
+          background: white;
+
+          &:hover {
+            background: $color_grayLight;
+          }
+        }
+      }
     }
   }
 

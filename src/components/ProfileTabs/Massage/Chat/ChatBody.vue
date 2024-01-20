@@ -82,7 +82,10 @@ const goBack = () => {
 </script>
 
 <template>
-  <section class="chat">
+  <section
+      class="chat"
+      :class="{'chat-profile': route.path === '/profile'}"
+  >
     <header class="chat__header">
       <div
           class="back"
@@ -296,5 +299,9 @@ const goBack = () => {
     font-weight: 500;
     margin: 0 rem(10);
   }
+}
+
+.chat-profile {
+  height: rem(650);
 }
 </style>

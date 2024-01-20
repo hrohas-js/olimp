@@ -8,6 +8,7 @@ import {useMainStore} from "@/store/MainStore";
 import {useCatalogStore} from "@/store/CatalogStore";
 import {useRoute, useRouter} from "vue-router";
 import {computed, onMounted, ref, watch} from "vue";
+import HeaderBannerMobile from "@/components/HeaderComponents/HeaderBannerMobile";
 
 const mainStore = useMainStore();
 const catalogStore = useCatalogStore();
@@ -64,6 +65,7 @@ const showFilters = () => {
 
 <template>
   <section class="catalogView wrapper textMontserrat">
+    <header-banner-mobile v-if="width <= 768" />
     <search-header/>
     <div class="categoryName">
       <h2 class="textMontserrat_medium">

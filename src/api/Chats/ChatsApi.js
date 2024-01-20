@@ -23,6 +23,28 @@ export class ChatsApi extends BaseApi {
             }
         })
     }
+    static async setImportant(data) {
+        return this.doRequest({
+            method: "POST",
+            url: "/chat/setImportant",
+            data: data,
+            headers: {
+                Authorization: `Bearer ${this.getJWT()}`,
+                'Content-Type': 'application/json'
+            }
+        })
+    }
+    static async remove(data) {
+        return this.doRequest({
+            method: "POST",
+            url: "/chat/remove",
+            data: data,
+            headers: {
+                Authorization: `Bearer ${this.getJWT()}`,
+                'Content-Type': 'application/json'
+            }
+        })
+    }
     static async getMessages(data) {
         return this.doRequest({
             method: "POST",
