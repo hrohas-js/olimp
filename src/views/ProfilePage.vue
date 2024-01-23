@@ -17,6 +17,7 @@ import {computed, onMounted} from "vue";
 import {useMainStore} from "@/store/MainStore";
 import {useProfileStore} from "@/store/ProfileStore";
 import HeaderBannerMobile from "@/components/HeaderComponents/HeaderBannerMobile";
+import Reviews from "@/components/ProfileTabs/Reviews";
 
 const mainStore = useMainStore();
 const profileStore = useProfileStore();
@@ -52,10 +53,16 @@ const changeTitle = computed(() => {
 
 onMounted(() => {
   profileStore.getLikes();
+  profileStore.getReviews();
+  profileStore.getNotifications();
 });
 
 const showNavigation = () => {
   profileStore.navigationMobile = !profileStore.navigationMobile;
+}
+
+const goToReviews = () => {
+  profileStore.content = 'reviews';
 }
 
 const uploadTrigger = () => {
@@ -78,9 +85,9 @@ const uploadImage = () => {
     <header-banner-mobile v-if="width <= 768" />
     <search-header/>
     <div class="profilePage__name">
-      <h2 class="textMontserrat_medium">
+<!--      <h2 class="textMontserrat_medium">
         {{ changeTitle }}
-      </h2>
+      </h2>-->
       <div
           v-if="width <= 1024"
           class="burger"
@@ -94,30 +101,32 @@ const uploadImage = () => {
         </svg>
       </div>
     </div>
-    <article class="person">
-      <div class="image">
-        <img
-            v-if="user.avatar_url"
-            :src="user.avatar_url"
-            :alt="user.name"
-        />
-        <img
-            v-else
-            src="@/assets/svg/avatar.svg"
-            alt="Аватар"
-        />
-        <div class="image-edit">
-          <input
-              type="file"
-              style="display:none"
-              accept="image/png, image/jpeg"
-              id="avatar"
-              @change="uploadImage"
-          />
-          <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-               width="14px" height="14px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve"
-               @click="uploadTrigger"
-          >
+    <main class="profilePage__main">
+      <div v-if="width > 1024" class="profile-nav">
+        <article class="person">
+          <div class="image">
+            <img
+                v-if="user.avatar_url"
+                :src="user.avatar_url"
+                :alt="user.name"
+            />
+            <img
+                v-else
+                src="@/assets/svg/avatar.svg"
+                alt="Аватар"
+            />
+            <div class="image-edit">
+              <input
+                  type="file"
+                  style="display:none"
+                  accept="image/png, image/jpeg"
+                  id="avatar"
+                  @change="uploadImage"
+              />
+              <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                   width="14px" height="14px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve"
+                   @click="uploadTrigger"
+              >
             <g>
               <path fill="#231F20" d="M60,10H49.656l-6.828-6.828C42.078,2.422,41.062,2,40,2H24c-1.062,0-2.078,0.422-2.828,1.172L14.344,10H4
                 c-2.211,0-4,1.789-4,4v44c0,2.211,1.789,4,4,4h56c2.211,0,4-1.789,4-4V14C64,11.789,62.211,10,60,10z M32,50
@@ -125,58 +134,58 @@ const uploadImage = () => {
               <circle fill="#231F20" cx="32" cy="34" r="8"/>
             </g>
           </svg>
-        </div>
-      </div>
-      <div class="text textMontserrat_semiBold">
-        <h3 class="userName textMontserrat_semiBold">
-          {{ user.name }}
-        </h3>
-        <!--        <p class="checkProfile color_green">-->
-        <!--          Профиль подтвержден-->
-        <!--        </p>-->
-<!--        <div class="rating">
-          <div class="score ">
-            <p class="Montserrat_semiBold">
-              5,0
-            </p>
-            <div class="stars">
-              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="25" viewBox="0 0 28 25" fill="none">
-                <path
-                    d="M9.53823 7.94355L12.905 1.60982C13.3372 0.796728 14.5859 0.796728 15.018 1.60982L18.3848 7.94355L25.914 8.96548C26.88 9.09659 27.265 10.1993 26.5657 10.8318L21.1185 15.7585L22.404 22.7186C22.5691 23.6124 21.5588 24.2939 20.6944 23.8718L13.9615 20.5839L7.22862 23.8718C6.36425 24.2939 5.35389 23.6124 5.51897 22.7186L6.80449 15.7585L1.35742 10.8318C0.658039 10.1993 1.04306 9.09659 2.00908 8.96548L9.53823 7.94355Z"
-                    fill="#E9605A" stroke="#E9605A" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="25" viewBox="0 0 28 25" fill="none">
-                <path
-                    d="M9.53823 7.94355L12.905 1.60982C13.3372 0.796728 14.5859 0.796728 15.018 1.60982L18.3848 7.94355L25.914 8.96548C26.88 9.09659 27.265 10.1993 26.5657 10.8318L21.1185 15.7585L22.404 22.7186C22.5691 23.6124 21.5588 24.2939 20.6944 23.8718L13.9615 20.5839L7.22862 23.8718C6.36425 24.2939 5.35389 23.6124 5.51897 22.7186L6.80449 15.7585L1.35742 10.8318C0.658039 10.1993 1.04306 9.09659 2.00908 8.96548L9.53823 7.94355Z"
-                    fill="#E9605A" stroke="#E9605A" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="25" viewBox="0 0 28 25" fill="none">
-                <path
-                    d="M9.53823 7.94355L12.905 1.60982C13.3372 0.796728 14.5859 0.796728 15.018 1.60982L18.3848 7.94355L25.914 8.96548C26.88 9.09659 27.265 10.1993 26.5657 10.8318L21.1185 15.7585L22.404 22.7186C22.5691 23.6124 21.5588 24.2939 20.6944 23.8718L13.9615 20.5839L7.22862 23.8718C6.36425 24.2939 5.35389 23.6124 5.51897 22.7186L6.80449 15.7585L1.35742 10.8318C0.658039 10.1993 1.04306 9.09659 2.00908 8.96548L9.53823 7.94355Z"
-                    fill="#E9605A" stroke="#E9605A" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="25" viewBox="0 0 28 25" fill="none">
-                <path
-                    d="M9.53823 7.94355L12.905 1.60982C13.3372 0.796728 14.5859 0.796728 15.018 1.60982L18.3848 7.94355L25.914 8.96548C26.88 9.09659 27.265 10.1993 26.5657 10.8318L21.1185 15.7585L22.404 22.7186C22.5691 23.6124 21.5588 24.2939 20.6944 23.8718L13.9615 20.5839L7.22862 23.8718C6.36425 24.2939 5.35389 23.6124 5.51897 22.7186L6.80449 15.7585L1.35742 10.8318C0.658039 10.1993 1.04306 9.09659 2.00908 8.96548L9.53823 7.94355Z"
-                    fill="#E9605A" stroke="#E9605A" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="25" viewBox="0 0 28 25" fill="none">
-                <path
-                    d="M9.53823 7.94355L12.905 1.60982C13.3372 0.796728 14.5859 0.796728 15.018 1.60982L18.3848 7.94355L25.914 8.96548C26.88 9.09659 27.265 10.1993 26.5657 10.8318L21.1185 15.7585L22.404 22.7186C22.5691 23.6124 21.5588 24.2939 20.6944 23.8718L13.9615 20.5839L7.22862 23.8718C6.36425 24.2939 5.35389 23.6124 5.51897 22.7186L6.80449 15.7585L1.35742 10.8318C0.658039 10.1993 1.04306 9.09659 2.00908 8.96548L9.53823 7.94355Z"
-                    fill="#E9605A" stroke="#E9605A" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
             </div>
           </div>
-          <div class="revues">
-            <p class="textMontserrat_medium">
-              Отзывы (100)
-            </p>
+          <div class="text textMontserrat_semiBold">
+            <h3 class="userName textMontserrat_semiBold">
+              {{ user.name }}
+            </h3>
+            <div class="rating">
+              <div class="score ">
+                <p class="Montserrat_semiBold">
+                  {{ user.avarage_rating }}
+                </p>
+                <div class="stars">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="25" viewBox="0 0 28 25" fill="none">
+                    <path
+                        d="M9.53823 7.94355L12.905 1.60982C13.3372 0.796728 14.5859 0.796728 15.018 1.60982L18.3848 7.94355L25.914 8.96548C26.88 9.09659 27.265 10.1993 26.5657 10.8318L21.1185 15.7585L22.404 22.7186C22.5691 23.6124 21.5588 24.2939 20.6944 23.8718L13.9615 20.5839L7.22862 23.8718C6.36425 24.2939 5.35389 23.6124 5.51897 22.7186L6.80449 15.7585L1.35742 10.8318C0.658039 10.1993 1.04306 9.09659 2.00908 8.96548L9.53823 7.94355Z"
+                        :fill="user.avarage_rating >= 1 ? '#E9605A' : ''" stroke="#E9605A" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="25" viewBox="0 0 28 25" fill="none">
+                    <path
+                        d="M9.53823 7.94355L12.905 1.60982C13.3372 0.796728 14.5859 0.796728 15.018 1.60982L18.3848 7.94355L25.914 8.96548C26.88 9.09659 27.265 10.1993 26.5657 10.8318L21.1185 15.7585L22.404 22.7186C22.5691 23.6124 21.5588 24.2939 20.6944 23.8718L13.9615 20.5839L7.22862 23.8718C6.36425 24.2939 5.35389 23.6124 5.51897 22.7186L6.80449 15.7585L1.35742 10.8318C0.658039 10.1993 1.04306 9.09659 2.00908 8.96548L9.53823 7.94355Z"
+                        :fill="user.avarage_rating >= 2 ? '#E9605A' : ''" stroke="#E9605A" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="25" viewBox="0 0 28 25" fill="none">
+                    <path
+                        d="M9.53823 7.94355L12.905 1.60982C13.3372 0.796728 14.5859 0.796728 15.018 1.60982L18.3848 7.94355L25.914 8.96548C26.88 9.09659 27.265 10.1993 26.5657 10.8318L21.1185 15.7585L22.404 22.7186C22.5691 23.6124 21.5588 24.2939 20.6944 23.8718L13.9615 20.5839L7.22862 23.8718C6.36425 24.2939 5.35389 23.6124 5.51897 22.7186L6.80449 15.7585L1.35742 10.8318C0.658039 10.1993 1.04306 9.09659 2.00908 8.96548L9.53823 7.94355Z"
+                        :fill="user.avarage_rating >= 3 ? '#E9605A' : ''" stroke="#E9605A" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="25" viewBox="0 0 28 25" fill="none">
+                    <path
+                        d="M9.53823 7.94355L12.905 1.60982C13.3372 0.796728 14.5859 0.796728 15.018 1.60982L18.3848 7.94355L25.914 8.96548C26.88 9.09659 27.265 10.1993 26.5657 10.8318L21.1185 15.7585L22.404 22.7186C22.5691 23.6124 21.5588 24.2939 20.6944 23.8718L13.9615 20.5839L7.22862 23.8718C6.36425 24.2939 5.35389 23.6124 5.51897 22.7186L6.80449 15.7585L1.35742 10.8318C0.658039 10.1993 1.04306 9.09659 2.00908 8.96548L9.53823 7.94355Z"
+                        :fill="user.avarage_rating >= 4 ? '#E9605A' : ''" stroke="#E9605A" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="25" viewBox="0 0 28 25" fill="none">
+                    <path
+                        d="M9.53823 7.94355L12.905 1.60982C13.3372 0.796728 14.5859 0.796728 15.018 1.60982L18.3848 7.94355L25.914 8.96548C26.88 9.09659 27.265 10.1993 26.5657 10.8318L21.1185 15.7585L22.404 22.7186C22.5691 23.6124 21.5588 24.2939 20.6944 23.8718L13.9615 20.5839L7.22862 23.8718C6.36425 24.2939 5.35389 23.6124 5.51897 22.7186L6.80449 15.7585L1.35742 10.8318C0.658039 10.1993 1.04306 9.09659 2.00908 8.96548L9.53823 7.94355Z"
+                        :fill="user.avarage_rating >= 5 ? '#E9605A' : ''" stroke="#E9605A" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+              <div
+                  class="reviews"
+                  @click="goToReviews"
+              >
+                <p class="textMontserrat_medium">
+                  Отзывы ({{ user.total_reviews }})
+                </p>
+              </div>
+            </div>
           </div>
-        </div>-->
+        </article>
+        <profile-navigator />
       </div>
-    </article>
-    <main class="profilePage__main">
-      <profile-navigator v-if="width > 1024"/>
       <div class="content">
         <profile-info v-if="content === 'profileInfo'"/>
         <my-announcements v-if="content === 'myAnnouncements'"/>
@@ -189,6 +198,7 @@ const uploadImage = () => {
         <my-orders v-if="content === 'orders'"/>
         <setting-tabs v-if="content === 'settings'"/>
         <wallet-tabs v-if="content === 'wallet'"/>
+        <reviews v-if="content === 'reviews'" />
       </div>
     </main>
   </section>
@@ -205,8 +215,6 @@ const uploadImage = () => {
   }
 
   .person {
-    margin-top: rem(50);
-    //padding-left: 26px;
     max-width: rem(530);
     display: flex;
     flex-direction: column;
@@ -245,8 +253,9 @@ const uploadImage = () => {
       //margin-bottom: rem(10);
     }
 
-    .revues {
+    .reviews {
       margin-left: rem(5);
+      cursor: pointer;
 
       .textMontserrat_medium {
         font-size: rem(16);
@@ -297,10 +306,9 @@ const uploadImage = () => {
   &__main {
     margin-top: rem(26);
     display: flex;
-    //justify-content: space-between;
     gap: rem(50);
 
-    .profileNavigator {
+    .profile-nav {
       flex: 0 0 30%;
       max-width: rem(250);
     }
@@ -323,7 +331,7 @@ const uploadImage = () => {
         font-size: calc(12rem / 16 + (16 - 12) * ((100vw - 390rem / 16) / (1920 - 390)));
       }
 
-      .revues {
+      .reviews {
         .textMontserrat_medium {
           font-size: calc(14rem / 16 + (16 - 14) * ((100vw - 390rem / 16) / (1920 - 390)));
         }

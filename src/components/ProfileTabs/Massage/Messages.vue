@@ -14,16 +14,23 @@ const chats = computed(() => profileStore.myFilteredChats);
 const allCount = computed(() => profileStore.myChats.length);
 const relevance = computed(() => profileStore.relevance);
 const miniChat = computed(() => mainStore.miniChat);
-const selectedMessages = computed(() => profileStore.selectedMessages);
+const selectedMessages = computed(() => profileStore.selectedMessages.length > 0);
 
 const showMenu = ref(false);
 
+const props = defineProps({
+  mini: {
+    type: Boolean,
+    default: false
+  }
+});
+
 onMounted(() => {
-  profileStore.getChatsCategories({
-    user_id: profileStore.user.id
-  });
-  profileStore.getAllChats({
-    user_id: profileStore.user.id
+  refresh();
+  document.addEventListener('click', (e) => {
+    if (showMenu.value && !e.target.classList.contains('activeMenu')) {
+      showMenu.value = false;
+    }
   });
 });
 
@@ -35,41 +42,71 @@ const showMenuTrigger = () => {
   showMenu.value = !showMenu.value;
 }
 
-const selectedDelete = () => {
-  showMenu.value = false;
-  profileStore.remove().then(() => {
-    profileStore.getChatsCategories({
-      user_id: profileStore.user.id
-    });
-    profileStore.getAllChats({
-      user_id: profileStore.user.id
-    });
+const refresh = () => {
+  profileStore.getChatsCategories({
+    user_id: profileStore.user.id
+  });
+  profileStore.getAllChats({
+    user_id: profileStore.user.id
   });
 }
 
+const selectedDelete = () => {
+  if (selectedMessages.value) {
+    showMenu.value = false;
+    profileStore.remove().then(() => {
+      refresh();
+    });
+  }
+}
+
 const selectedMark = () => {
-  showMenu.value = false;
-  profileStore.setImportant().then(() => {
-    profileStore.getChatsCategories({
-      user_id: profileStore.user.id
+  if (selectedMessages.value) {
+    showMenu.value = false;
+    profileStore.setImportant().then(() => {
+      refresh();
     });
-    profileStore.getAllChats({
-      user_id: profileStore.user.id
+  }
+}
+
+const selectedMarkDown = () => {
+  if (selectedMessages.value) {
+    showMenu.value = false;
+    profileStore.setDownImportant().then(() => {
+      refresh();
     });
-  });
+  }
+}
+
+const selectedBlacklist = () => {
+  if (selectedMessages.value) {
+    showMenu.value = false;
+    profileStore.setBlacklist().then(() => {
+      refresh();
+    });
+  }
+}
+
+const selectedDownBlacklist = () => {
+  if (selectedMessages.value) {
+    showMenu.value = false;
+    profileStore.setDownBlacklist().then(() => {
+      refresh();
+    });
+  }
 }
 </script>
 
 <template>
-  <section class="messages textMontserrat">
+  <section
+      class="messages textMontserrat"
+      :class="{'messages-mini': props.mini}"
+  >
     <header class="messages__header">
       <h2 class="textMontserrat_medium">
         Сообщения
       </h2>
-      <div
-          v-if="selectedMessages.length > 0"
-          class="controls"
-      >
+      <div class="controls">
         <div
             class="activeMenu border_subBg"
             @click="showMenuTrigger"
@@ -84,7 +121,25 @@ const selectedMark = () => {
               class="textMontserrat_medium"
               @click="selectedMark"
           >
-            Пометить как важное
+            Отметить как важное
+          </div>
+          <div
+              class="textMontserrat_medium"
+              @click="selectedMarkDown"
+          >
+            Отменить важное
+          </div>
+          <div
+              class="textMontserrat_medium"
+              @click="selectedBlacklist"
+          >
+            Заблокировать
+          </div>
+          <div
+              class="textMontserrat_medium"
+              @click="selectedDownBlacklist"
+          >
+            Разблокировать
           </div>
           <div
               class="textMontserrat_medium"
@@ -195,5 +250,8 @@ const selectedMark = () => {
     margin-top: rem(20);
   }
 }
-
+.messages-mini {
+  margin-top: rem(60);
+  padding: 0 rem(10);
+}
 </style>

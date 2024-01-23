@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useMainStore } from "@/store/MainStore";
 
 const routes = [
   {
@@ -44,6 +45,12 @@ const router = createRouter({
   scrollBehavior(to, from, savedPosition) {
     return { top: 0, behavior: 'smooth' };
   }
+})
+
+router.beforeEach((to, from, next) => {
+  const mainStore = useMainStore();
+  mainStore.miniChat = false;
+  next();
 })
 
 export default router

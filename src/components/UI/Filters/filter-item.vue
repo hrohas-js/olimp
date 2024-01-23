@@ -24,14 +24,34 @@ const props = defineProps({
   }
 });
 
-const setCurrentFilter = (filID, filconID) => {
+const setCurrentFilter = (e, filID, filconID) => {
   if (props.filterType === 'sex') {
-    catalogStore.filterParams.selectedSex = filconID;
+    if (e.target.checked) {
+      catalogStore.filterParams.selectedSex.push(filconID);
+    } else {
+      catalogStore.filterParams.selectedSex = [...catalogStore.filterParams.selectedSex].filter(elem => elem.id !== filconID.id);
+    }
   } else if (props.filterType === 'type') {
-    catalogStore.filterParams.selectedType = filconID;
+    if (e.target.checked) {
+      catalogStore.filterParams.selectedType.push(filconID);
+    } else {
+      catalogStore.filterParams.selectedType = [...catalogStore.filterParams.selectedType].filter(elem => elem.id !== filconID.id);
+    }
   } else {
-    catalogStore.filterID = filID;
-    catalogStore.filterContentID = filconID;
+    if (e.target.checked) {
+      catalogStore.filterID.push(filID);
+      catalogStore.filterContentID.push(filconID);
+    } else {
+      let found = false;
+      catalogStore.filterID = [...catalogStore.filterID].filter(elem => {
+        if (elem.id === filID.id && !found) {
+          found = true;
+          return false;
+        }
+        return true;
+      });
+      catalogStore.filterContentID = [...catalogStore.filterContentID].filter(elem => elem.id !== filconID.id);
+    }
   }
 }
 </script>
@@ -43,10 +63,10 @@ const setCurrentFilter = (filID, filconID) => {
         :key="item.id"
     >
       <input
-          type="radio"
+          type="checkbox"
           :id="item.id"
           :name="props.id.id"
-          @click="setCurrentFilter(props.id, item)"
+          @change="setCurrentFilter($event, props.id, item)"
       />
       <label :for="item.id">
         {{ item.name }}

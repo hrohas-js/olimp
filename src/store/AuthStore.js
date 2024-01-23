@@ -75,6 +75,8 @@ export const useAuthStore = defineStore("authStore", {
                     profileStore.user.password = '';
                     profileStore.user.old_password = '';
                     profileStore.user.confirm_password = '';
+                    profileStore.user.avarage_rating = response.user.avarage_rating;
+                    profileStore.user.total_reviews = response.user.total_reviews;
                     localStorage.setItem('user', JSON.stringify(profileStore.user));
                     for (const prop in mainStore.inputs) {
                         mainStore.inputs[prop] = '';

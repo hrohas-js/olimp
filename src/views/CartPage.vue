@@ -179,9 +179,6 @@ const openChat = () => {
       announcement_id: product.value.id,
       category_id: categories.value[0].id
     }).then(() => {
-      profileStore.getMessages({
-        chat_id: chat.value.id
-      });
       mainStore.miniChat = true;
     });
   } else {

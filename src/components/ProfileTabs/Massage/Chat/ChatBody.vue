@@ -3,7 +3,7 @@ import InputAnnouncement from "@/components/UI/Inputs/InputAnnouncement";
 import MessageItem from "@/components/ProfileTabs/Massage/Chat/MessageItem.vue";
 import {useProfileStore} from "@/store/ProfileStore";
 import {useMainStore} from "@/store/MainStore";
-import {computed, onUnmounted, ref} from "vue";
+import {computed, onUnmounted, ref, onMounted, watch} from "vue";
 import {useRouter} from "vue-router";
 import {useRoute} from "vue-router";
 import {getCurrentDateTime} from "@/plugins/validator";
@@ -15,10 +15,12 @@ const route = useRoute();
 
 const chat = computed(() => profileStore.currentChatHistory);
 const chatInfo = computed(() => profileStore.currentChat);
-const userID = computed(() => profileStore.user.id);
+const userID = computed(() => parseInt(profileStore.user.id));
+const uploadedImage = computed(() => profileStore.currentChatImageUploaded);
 
 let timer;
 const messageValue = ref('');
+const showMenu = ref(false);
 
 const mainPhoto = computed(() => {
   let res = '';
@@ -27,48 +29,79 @@ const mainPhoto = computed(() => {
   }
   return res;
 });
-const chatID = computed(() => {
-  let id = 0;
-  console.log('lol')
-  if (chatInfo.value.id) {
-    id = chatInfo.value.id;
+
+onMounted(() => {
+  document.addEventListener('click', (e) => {
+    if (showMenu.value && !e.target.classList.contains('activeMenu')) {
+      showMenu.value = false;
+    }
+  });
+  profileStore.getMessages({
+    chat_id: chatInfo.value.id
+  }).then(() => {
+    const element = document.querySelector('.chat__main');
+    element.scrollTop = element.scrollHeight;
+  });
+  timer = setInterval(() => {
     profileStore.getMessages({
-      chat_id: id
+      chat_id: chatInfo.value.id
     });
-    timer = setInterval(() => {
-      profileStore.getMessages({
-        chat_id: id
-      });
-    }, 3000);
-  }
-  return id;
+  }, 3000);
 });
 
 onUnmounted(() => {
   clearInterval(timer);
 });
 
+watch(uploadedImage, (newValue) => {
+  if (newValue.length > 0) {
+    console.log(newValue)
+    send(newValue, 'image');
+  }
+});
+
+const showMenuTrigger = () => {
+  showMenu.value = !showMenu.value;
+}
+
+const showReviewForm = () => {
+  mainStore.popup = 'review';
+  showMenu.value = false;
+}
+
 const changeFile = (e) => {
   e.stopPropagation();
   e.preventDefault();
+  const files = e.target.files;
+  const formData = new FormData();
+  formData.append('photo', files[0]);
+  formData.append('id', chatInfo.value.id);
+  profileStore.uploadChatImage(formData).then(() => {
+    send(uploadedImage.value, 'image');
+  });
 };
 
 const clickFile = () => {
   document.getElementById("file-input")?.click();
 }
 
-const send = () => {
+const send = (text, type = 'message') => {
   const message = {
-    chat_id: chatID.value,
+    chat_id: chatInfo.value.id,
     user_id: userID.value,
-    message_text: messageValue.value,
+    message_text: text,
     dt_created: getCurrentDateTime(),
-    is_read: false
+    is_read: false,
+    type: type
   }
   profileStore.sendMessage(message).then(() => {
     messageValue.value = '';
     profileStore.getMessages({
-      chat_id: chatID.value
+      chat_id: chatInfo.value.id
+    }).then(() => {
+      const element = document.querySelector('.chat__main');
+      element.scrollTop = element.scrollHeight;
+      profileStore.currentChatImageUploaded = '';
     });
   });
 }
@@ -97,7 +130,10 @@ const goBack = () => {
             class="icon-icon-JUE8Z"
             style="width: 24px; height: 24px;"
         >
-          <path d="m7.414 13 5.293 5.293a1 1 0 0 1-1.414 1.414l-7-7a1 1 0 0 1 0-1.414l7-7a1 1 0 1 1 1.414 1.414L7.414 11H19a1 1 0 1 1 0 2H7.414Z" fill="black"></path>
+          <path
+              d="m7.414 13 5.293 5.293a1 1 0 0 1-1.414 1.414l-7-7a1 1 0 0 1 0-1.414l7-7a1 1 0 1 1 1.414 1.414L7.414 11H19a1 1 0 1 1 0 2H7.414Z"
+              fill="black"
+          />
         </svg>
       </div>
       <div class="header-content">
@@ -120,6 +156,28 @@ const goBack = () => {
             {{ chatInfo.title }}
           </div>
         </div>
+        <div
+            v-if="userID !== chatInfo.author_id"
+            class="controls"
+        >
+          <div
+              class="activeMenu border_subBg"
+              @click="showMenuTrigger"
+          >
+            ...
+          </div>
+          <div
+              v-if="showMenu"
+              class="activeMenu-list border_subBg"
+          >
+            <div
+                class="textMontserrat_medium"
+                @click="showReviewForm"
+            >
+              Оставить отзыв
+            </div>
+          </div>
+        </div>
       </div>
     </header>
     <main class="chat__main">
@@ -134,7 +192,7 @@ const goBack = () => {
       </div>
     </main>
     <footer class="chat__footer background_colorWhite">
-<!--      <svg
+      <svg
           class="addFile"
           xmlns="http://www.w3.org/2000/svg"
           width="37"
@@ -152,7 +210,7 @@ const goBack = () => {
           id="file-input"
           type="file"
           @change="changeFile"
-      />-->
+      />
       <input-announcement
           v-model="messageValue"
           input-placeholder="Текст сообщения..."
@@ -162,7 +220,7 @@ const goBack = () => {
           xmlns="http://www.w3.org/2000/svg"
           class="icon-submit"
           style="width: 24px; height: 24px;"
-          @click="send"
+          @click="send(messageValue)"
       >
         <path d="M22 12a1 1 0 0 1-.574.905l-17 8a1 1 0 0 1-1.39-1.168l1.5-5.5a1 1 0 0 1 .605-.67L9.214 12l-4.073-1.567a1 1 0 0 1-.606-.67l-1.5-5.5a1 1 0 0 1 1.39-1.168l17 8A1 1 0 0 1 22 12Z" fill="currentColor"></path>
       </svg>
@@ -172,6 +230,7 @@ const goBack = () => {
 
 <style scoped lang="scss">
 .chat {
+  max-width: rem(630);
   height: rem(360);
   background-color: #FFFFFF;
 
@@ -198,6 +257,41 @@ const goBack = () => {
       display: flex;
       align-items: center;
       gap: rem(10);
+
+      .controls {
+        position: relative;
+
+        .activeMenu {
+          border-radius: 5px;
+          cursor: pointer;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: rem(40);
+          height: rem(30);
+          user-select: none;
+        }
+
+        .activeMenu-list {
+          position: absolute;
+          z-index: 99;
+          border-radius: 5px;
+          right: 0;
+          width: rem(200);
+          background: white;
+
+          .textMontserrat_medium {
+            cursor: pointer;
+            padding: rem(10);
+            transition: all 0.3s;
+            background: white;
+
+            &:hover {
+              background: $color_grayLight;
+            }
+          }
+        }
+      }
     }
 
     .back {

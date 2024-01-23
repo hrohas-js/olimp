@@ -34,22 +34,10 @@ export class ProfileApi extends BaseApi {
             }
         })
     }
-    static async getNotifications(data) {
+    static async getNotifications() {
         return this.doRequest({
             method: "POST",
             url: "/requests/getNotifications",
-            data: data,
-            headers: {
-                Authorization: `Bearer ${this.getJWT()}`,
-                'Content-Type': 'application/json'
-            }
-        })
-    }
-    static async addNotification(data) {
-        return this.doRequest({
-            method: "POST",
-            url: "/requests/addNotification",
-            data: data,
             headers: {
                 Authorization: `Bearer ${this.getJWT()}`,
                 'Content-Type': 'application/json'
@@ -104,6 +92,39 @@ export class ProfileApi extends BaseApi {
         return this.doRequest({
             method: "POST",
             url: "/requests/getSellAnnouncements",
+            data: data,
+            headers: {
+                Authorization: `Bearer ${this.getJWT()}`,
+                'Content-Type': 'application/json'
+            }
+        })
+    }
+    static async uploadChatImage(data) {
+        return this.doRequest({
+            method: "POST",
+            url: "/user/uploadChatImage",
+            data: data,
+            headers: {
+                Authorization: `Bearer ${this.getJWT()}`,
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+    }
+    static async addReview(data) {
+        return this.doRequest({
+            method: "POST",
+            url: "/user/addReview",
+            data: data,
+            headers: {
+                Authorization: `Bearer ${this.getJWT()}`,
+                'Content-Type': 'application/json'
+            }
+        })
+    }
+    static async getReviews(data) {
+        return this.doRequest({
+            method: "POST",
+            url: "/user/getReviews",
             data: data,
             headers: {
                 Authorization: `Bearer ${this.getJWT()}`,

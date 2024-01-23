@@ -4,11 +4,16 @@ import {useMainStore} from "@/store/MainStore";
 import {useProductStore} from "@/store/ProductStore";
 import {useRouter} from "vue-router";
 import {useProfileStore} from "@/store/ProfileStore";
+import {useAuthStore} from "@/store/AuthStore";
 
 const router = useRouter();
 const mainStore = useMainStore();
 const productStore = useProductStore();
 const profileStore = useProfileStore();
+const authStore = useAuthStore();
+
+const width = computed(() => mainStore.display_width);
+const isAuth = computed(() => authStore.jwt !== null);
 
 const props = defineProps({
   item: {
@@ -36,8 +41,6 @@ const props = defineProps({
     }
   }
 });
-
-const width = computed(() => mainStore.display_width);
 
 const mainPhoto = computed(() => {
   const gal = JSON.parse(props.item.gallery);
@@ -138,6 +141,7 @@ const setLike = () => {
           </h2>
         </router-link>
         <div
+            v-if="isAuth"
             class="wishButton"
             @click="setLike"
         >

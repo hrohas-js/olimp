@@ -11,17 +11,12 @@ const props = defineProps({
   <section class="notificationItem textMontserrat tabs">
     <header class="notificationItem__header">
       <h3 class="textMontserrat_medium">
-        В ваш профиль зашли с нового устройства
+        {{ props.item.text }}
       </h3>
       <time class="textMontserrat_light" datetime="Вчера 21:00">
         {{ props.item.dt_created }}
       </time>
     </header>
-    <footer class="notificationItem__footer fraction">
-      <p class="textMontserrat_light">
-        Если это не вы, смените пароль
-      </p>
-    </footer>
   </section>
 </template>
 

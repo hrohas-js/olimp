@@ -26,7 +26,9 @@ export const useProfileStore = defineStore("profileStore", {
             entrance: "",
             house: "",
             birth_datetime: "",
-            avatar_url: ""
+            avatar_url: "",
+            avarage_rating: 0.0,
+            total_reviews: 0
         },
         myAnnouncements: [],
         myLikes: localStorage.getItem('myLikes') !== null ? JSON.parse(localStorage.getItem('myLikes')) : [],
@@ -41,7 +43,9 @@ export const useProfileStore = defineStore("profileStore", {
         newNotificationsCount: 0,
         mySells: [],
         sellsRelevance: 'active',
-        selectedMessages: []
+        selectedMessages: [],
+        currentChatImageUploaded: '',
+        myReviews: []
     }),
     getters: {
         userMainLetter: (state) => {
@@ -134,7 +138,9 @@ export const useProfileStore = defineStore("profileStore", {
                 entrance: "",
                 house: "",
                 birth_datetime: "",
-                avatar_url: ""
+                avatar_url: "",
+                avarage_rating: 0.0,
+                total_reviews: 0
             };
 
             // Сброс массивов
@@ -152,6 +158,8 @@ export const useProfileStore = defineStore("profileStore", {
             this.mySells = [];
             this.sellsRelevance = 'active';
             this.selectedMessages = [];
+            this.currentChatImageUploaded = '';
+            this.myReviews = [];
         },
         async editProfileInfo() {
             const mainStore = useMainStore();
@@ -299,29 +307,12 @@ export const useProfileStore = defineStore("profileStore", {
                 console.log(error)
             }
         },
-        async getNotifications(data) {
+        async getNotifications() {
             const mainStore = useMainStore();
             try {
                 mainStore.loader = true;
-                const response = await ProfileApi.getNotifications(data);
+                const response = await ProfileApi.getNotifications();
                 this.notifications = response.result;
-            } catch (error) {
-                console.log(error)
-            } finally {
-                mainStore.loader = false;
-            }
-        },
-        async addNotification(data) {
-            const mainStore = useMainStore();
-            try {
-                mainStore.loader = true;
-                const response = await ProfileApi.addNotification(data);
-                if (response.result) {
-                    this.notifications.push({
-                        user_id: this.user.id,
-                        dt_created: getCurrentDateTime()
-                    });
-                }
             } catch (error) {
                 console.log(error)
             } finally {
@@ -353,6 +344,41 @@ export const useProfileStore = defineStore("profileStore", {
                 console.log(error)
             }
         },
+        async setDownImportant() {
+            try {
+                const response = await ChatsApi.setDownImportant({
+                    query: this.selectedMessages.join(',')
+                });
+                console.log(response);
+                this.selectedMessages = [];
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async setBlacklist() {
+            try {
+                const response = await ChatsApi.setBlacklist({
+                    query: this.selectedMessages.join(','),
+                    creator_id: this.user.id
+                });
+                console.log(response);
+                this.selectedMessages = [];
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async setDownBlacklist() {
+            try {
+                const response = await ChatsApi.setDownBlacklist({
+                    query: this.selectedMessages.join(','),
+                    creator_id: this.user.id
+                });
+                console.log(response);
+                this.selectedMessages = [];
+            } catch (error) {
+                console.log(error)
+            }
+        },
         async remove() {
             try {
                 const response = await ChatsApi.remove({
@@ -360,6 +386,40 @@ export const useProfileStore = defineStore("profileStore", {
                 });
                 console.log(response);
                 this.selectedMessages = [];
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async uploadChatImage(data) {
+            try {
+                const response = await ProfileApi.uploadChatImage(data);
+                this.currentChatImageUploaded = response.url;
+                console.log(response);
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async addReview(data) {
+            try {
+                const response = await ProfileApi.addReview(data);
+                console.log(response);
+                if (response.result) {
+                    ElMessage({
+                        type: 'success',
+                        message: 'Отзыв успешно добавлен',
+                        duration: 6000
+                    });
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async getReviews() {
+            try {
+                const response = await ProfileApi.getReviews({
+                    id: this.user.id
+                });
+                this.myReviews = response.result;
             } catch (error) {
                 console.log(error)
             }

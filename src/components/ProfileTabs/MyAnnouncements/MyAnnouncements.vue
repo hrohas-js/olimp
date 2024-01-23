@@ -112,7 +112,6 @@ const changeTabs = (tab) => {
 
 <style scoped lang="scss">
 .myAnnouncements {
-  //width: fit-content;
   .profileNavigation {
     li {
       cursor: pointer;

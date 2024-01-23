@@ -1,6 +1,7 @@
 <script setup>
 import {useProfileStore} from "@/store/ProfileStore";
 import {computed} from "vue";
+import {ElMessage} from "element-plus";
 
 const profileStore = useProfileStore();
 
@@ -28,11 +29,19 @@ const mainPhoto = computed(() => {
 });
 
 const changeContent = () => {
-  profileStore.currentChat = props.item;
-  profileStore.content = "chat";
-  profileStore.getMessages({
-    chat_id: props.item.chat_id
-  });
+  if (props.item.blocker_id === profileStore.user.id || props.item.blocker_id === 0) {
+    profileStore.currentChat = props.item;
+    profileStore.content = "chat";
+    profileStore.getMessages({
+      chat_id: props.item.chat_id
+    });
+  } else {
+    ElMessage({
+      type: 'error',
+      message: 'Вы не можете написать этому человеку',
+      duration: 6000
+    });
+  }
 }
 
 const checkMessage = (e) => {

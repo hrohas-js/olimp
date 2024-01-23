@@ -1,6 +1,4 @@
 <script setup>
-import ActionButton from "@/components/UI/Button/ActionButton";
-import MainButton from "@/components/UI/Button/MainButton";
 import {ref, computed} from "vue";
 import {useMainStore} from "@/store/MainStore";
 import {useProfileStore} from "@/store/ProfileStore";
@@ -21,10 +19,6 @@ const maskPhone = computed(() => {
 
 const changeSex = (value) => {
   sex.value = value
-}
-
-const openEditPersonalForm = () => {
-  mainStore.popup = 'edit-personal';
 }
 </script>
 
@@ -57,66 +51,11 @@ const openEditPersonalForm = () => {
             </p>
           </li>
         </ul>
-        <ul
-            class="userInfo__table textMontserrat_regular"
-        >
+        <div class="userInfo__table textMontserrat_regular">
           <time :datetime="user.birth_datetime">
             {{ user.birth_datetime }}
           </time>
-          <!--          <li>-->
-          <!--            Женский-->
-          <!--          </li>-->
-        </ul>
-<!--        <div
-            v-if="width < 768"
-            class="profileInfo__birthDay"
-        >
-          <div class="day birthDay__item border_subBg">
-            <p class="textMontserrat_regular">
-              31
-            </p>
-          </div>
-          <div class="muns birthDay__item border_subBg">
-            <p class="textMontserrat_regular">
-              Август
-            </p>
-            <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                 x="0px" y="0px"
-                 width="30px" height="30px" viewBox="0 0 960 560" enable-background="new 0 0 960 560"
-                 xml:space="preserve">
-                  <g id="Rounded_Rectangle_33_copy_4_1_">
-	                  <path d="M480,344.181L268.869,131.889c-15.756-15.859-41.3-15.859-57.054,0c-15.754,15.857-15.754,41.57,0,57.431l237.632,238.937
-		                   c8.395,8.451,19.562,12.254,30.553,11.698c10.993,0.556,22.159-3.247,30.555-11.698l237.631-238.937
-		                  c15.756-15.86,15.756-41.571,0-57.431s-41.299-15.859-57.051,0L480,344.181z"/>
-                </g>
-            </svg>
-
-          </div>
-          <div class="years birthDay__item border_subBg">
-            <p class="textMontserrat_regular">
-              2000
-            </p>
-          </div>
-        </div>-->
-<!--        <div
-            v-if="width < 768"
-            class="sex"
-        >
-          <div
-              class="sex__item border_subBg"
-              :class="{'background_accent color_colorBg':sex === 'female'}"
-              @click="changeSex('female')"
-          >
-            Ж
-          </div>
-          <div
-              :class="{'background_accent color_colorBg':sex === 'male'}"
-              class="sex__item border_subBg"
-              @click="changeSex('male')"
-          >
-            М
-          </div>
-        </div>-->
+        </div>
       </div>
       <div
           :class="{'profileInfo__mobile':width < 768}"
@@ -154,14 +93,6 @@ const openEditPersonalForm = () => {
         </div>
       </div>
     </main>
-    <footer class="profileInfo__footer">
-      <div class="buttonContainer">
-        <main-button
-            button-text="Редактировать"
-            @click="openEditPersonalForm"
-        />
-      </div>
-    </footer>
   </section>
 </template>
 
@@ -177,10 +108,6 @@ const openEditPersonalForm = () => {
   }
 
   &__userData {
-    //max-width: rem(885);
-    //border-bottom: 1px solid #2963a44a;
-    //padding-bottom: rem(20);
-
     button {
       max-width: rem(200);
       margin-top: rem(10);
@@ -199,12 +126,10 @@ const openEditPersonalForm = () => {
   }
 
   &__region {
-    //border-bottom: 1px solid $color_subBg;
     margin-top: rem(12);
 
     .takeYourCounty {
       margin-top: rem(20);
-      //padding: rem(13) rem(20);
     }
 
     .enterManually {
@@ -236,9 +161,6 @@ const openEditPersonalForm = () => {
   }
 
   .contentField {
-    //border-bottom: 1px solid $color_subBg;
-    //padding-bottom: rem(20);
-
     &__item {
       max-width: rem(600);
       margin-top: rem(20);

@@ -32,6 +32,10 @@ const previousMessageDate = computed(() => {
   }
   return date;
 })
+const currentTime = computed(() => {
+  const current = props.messageItem.dt_created.split(" ")[1].split(":");
+  return current[0] + ':' + current[1];
+});
 const currentDate = computed(() => {
   let date = "";
   const current = props.messageItem.dt_created.split(" ")[0].split("-");
@@ -90,12 +94,13 @@ const openFile = () => {
         :class="{
           'last-message': index === length - 1,
           'is-file': messageItem.type === 'file',
-          'background_avito': props.messageItem.user_id === parseInt(user.id),
-          'background_grayLight': props.messageItem.user_id !== parseInt(user.id)
         }"
         @click="openFile"
     >
       {{ messageItem.message_text }}
+      <span>
+        {{ currentTime }}
+      </span>
     </div>
   </div>
 </template>
@@ -119,9 +124,17 @@ const openFile = () => {
   max-width: 65%;
   padding: rem(20) rem(28);
   border-radius: rem(42);
+  position: relative;
+
   @media (max-width: em(768, 16)) {
     padding: rem(16);
     width: 90%;
+  }
+
+  span {
+    position: absolute;
+    bottom: 0;
+    font-size: rem(10);
   }
 }
 
@@ -153,6 +166,10 @@ const openFile = () => {
   align-items: flex-end;
   .message-content {
     border-bottom-right-radius: unset;
+    background-color: $color_subBgOpacity;
+    span {
+      right: 0;
+    }
   }
 }
 
@@ -160,6 +177,10 @@ const openFile = () => {
   align-items: flex-start;
   .message-content {
     border-bottom-left-radius: unset;
+    background-color: $color_grayLight;
+    span {
+      left: 0;
+    }
   }
 }
 

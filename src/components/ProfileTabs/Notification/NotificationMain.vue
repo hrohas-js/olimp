@@ -1,17 +1,11 @@
 <script setup>
 import NotificationItem from "@/components/ProfileTabs/Notification/NotificationItem";
 import {useProfileStore} from "@/store/ProfileStore";
-import {onMounted, computed} from "vue";
+import {computed} from "vue";
 
 const profileStore = useProfileStore();
 
 const notifications = computed(() => profileStore.notifications)
-
-onMounted(() => {
-  profileStore.getNotifications({
-    user_id: profileStore.user.id
-  });
-});
 </script>
 
 <template>

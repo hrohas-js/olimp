@@ -13,8 +13,8 @@ export const useCatalogStore = defineStore("catalogStore", {
         filters: [],
         catalog: [],
         subCategoryID: {},
-        filterID: {},
-        filterContentID: {},
+        filterID: [],
+        filterContentID: [],
         search: '',
         createdCategories: [],
         filterParams: {
@@ -24,24 +24,16 @@ export const useCatalogStore = defineStore("catalogStore", {
             },
             sex: {},
             type: {},
-            selectedSex: {},
-            selectedType: {}
+            selectedSex: [],
+            selectedType: []
         }
     }),
     getters: {
         modelFlag: (state) => {
-            let res = false;
-            if ((state.filterID.id === 30 || state.filterID.id === 51) && state.filterContentID.id === 6) {
-                res = true
-            }
-            return res;
+            return (state.filterID.some(elem => elem.id === 30) || state.filterID.some(elem => elem.id === 51)) && state.filterContentID.some(elem => elem.id === 6)
         },
         actorFlag: (state) => {
-            let res = false;
-            if ((state.filterID.id === 30 || state.filterID.id === 51) && (state.filterContentID.id === 1 || state.filterContentID.id === 2)) {
-                res = true
-            }
-            return res;
+            return (state.filterID.some(elem => elem.id === 30) || state.filterID.some(elem => elem.id === 51)) && (state.filterContentID.some(elem => elem.id === 1) || state.filterContentID.some(elem => elem.id === 2))
         },
         currentCategoryName: (state) => {
             let res = '';
@@ -67,17 +59,17 @@ export const useCatalogStore = defineStore("catalogStore", {
                     return cats[1].id === parseInt(route.params.subCategory);
                 });
             }
-            if (Object.keys(state.filterID).length > 0 && Object.keys(state.filterContentID).length > 0) {
+            if (state.filterID.length > 0 && state.filterContentID.length > 0) {
                 res = res.filter(elem => {
                     const cats = JSON.parse(elem.categories);
-                    return cats[2].id === state.filterID.id && cats[3].id === state.filterContentID.id;
+                    return state.filterID.some(elem => elem.id === cats[2].id) && state.filterContentID.some(elem => elem.id === cats[3].id)
                 });
             }
-            if (Object.keys(state.filterParams.selectedSex).length > 0) {
+            if (state.filterParams.selectedSex.length > 0) {
                 res = res.filter(elem => {
                     let tmp = false;
                     JSON.parse(elem.parameters).forEach(elem => {
-                        if (state.filterParams.selectedSex.name === elem.name) {
+                        if (state.filterParams.selectedSex.some(item => item.name === elem.name)) {
                             tmp = true;
                         }
                     });
@@ -125,7 +117,6 @@ export const useCatalogStore = defineStore("catalogStore", {
                 arr = response.result.filter(elem => elem.name !== 'Поиск специалистов');
                 arr.forEach(elem => {
                     if (elem.name === 'Работа (вакансии)') {
-                        elem.name = 'Работа';
                         elem.subs = [
                             {
                                 id: 1,

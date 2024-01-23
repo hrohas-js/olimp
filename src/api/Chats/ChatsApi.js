@@ -34,6 +34,39 @@ export class ChatsApi extends BaseApi {
             }
         })
     }
+    static async setDownImportant(data) {
+        return this.doRequest({
+            method: "POST",
+            url: "/chat/setDownImportant",
+            data: data,
+            headers: {
+                Authorization: `Bearer ${this.getJWT()}`,
+                'Content-Type': 'application/json'
+            }
+        })
+    }
+    static async setBlacklist(data) {
+        return this.doRequest({
+            method: "POST",
+            url: "/chat/setBlacklist",
+            data: data,
+            headers: {
+                Authorization: `Bearer ${this.getJWT()}`,
+                'Content-Type': 'application/json'
+            }
+        })
+    }
+    static async setDownBlacklist(data) {
+        return this.doRequest({
+            method: "POST",
+            url: "/chat/setDownBlacklist",
+            data: data,
+            headers: {
+                Authorization: `Bearer ${this.getJWT()}`,
+                'Content-Type': 'application/json'
+            }
+        })
+    }
     static async remove(data) {
         return this.doRequest({
             method: "POST",

@@ -13,12 +13,13 @@ import {useCatalogStore} from "@/store/CatalogStore";
 import {useAuthStore} from "@/store/AuthStore";
 import {useRouter} from "vue-router";
 import {onMounted, onBeforeMount, computed, watch, nextTick} from "vue";
-import EditPersonalForm from "@/components/UI/Modals/EditPersonalForm";
 import GeoForm from "@/components/UI/Modals/GeoForm";
 import GeoAnnouncementForm from "@/components/UI/Modals/GeoAnnouncementForm";
 import ChatBody from "@/components/ProfileTabs/Massage/Chat/ChatBody";
 import Filter from "@/components/UI/Filters/Filter";
 import Messages from "@/components/ProfileTabs/Massage/Messages";
+import ReviewForm from "@/components/UI/Modals/ReviewForm";
+import ResetPassword from "@/components/UI/Modals/ResetPassword";
 
 const mainStore = useMainStore();
 const profileStore = useProfileStore();
@@ -111,9 +112,10 @@ const closeMiniChat = () => {
     <profile-navigation-mobile v-if="navigation"/>
     <loader v-if="load" />
     <auth-form v-if="popup === 'auth' || popup === 'register'" />
-    <edit-personal-form v-if="popup === 'edit-personal'" />
     <geo-form v-if="popup === 'location'" />
     <geo-announcement-form v-if="popup === 'deal-location'" />
+    <review-form v-if="popup === 'review'" />
+    <reset-password v-if="popup === 'reset'" />
     <div
         v-if="miniChat"
         class="widget"
@@ -131,7 +133,10 @@ const closeMiniChat = () => {
           v-if="Object.keys(currentChat).length > 0"
           class="mini"
       />
-      <messages v-else />
+      <messages
+          v-else
+          mini
+      />
     </div>
   </section>
 </template>

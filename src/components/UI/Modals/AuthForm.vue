@@ -72,9 +72,6 @@ const login = () => {
       authStore.auth().then(() => {
         profileStore.getLikes();
         mainStore.clearInputs();
-        profileStore.addNotification({
-          user_id: profileStore.user.id
-        });
       });
     }
   }
@@ -87,6 +84,10 @@ const showRegistrationForm = () => {
 const showAuthForm = () => {
   mainStore.popup = 'auth';
 };
+
+const showResetPasswordForm = () => {
+  mainStore.popup = 'reset';
+}
 
 const closeModal = () => {
   mainStore.popup = '';
@@ -128,7 +129,12 @@ const closeModal = () => {
       >
         Зарегистрироваться
       </button>
-      <p class="forgot-password">Забыли пароль?</p>
+      <p
+          class="forgot-password"
+          @click="showResetPasswordForm"
+      >
+        Забыли пароль?
+      </p>
       <button
           class="close"
           @click="closeModal"
