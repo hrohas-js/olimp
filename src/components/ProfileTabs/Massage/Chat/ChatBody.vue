@@ -76,9 +76,7 @@ const changeFile = (e) => {
   const formData = new FormData();
   formData.append('photo', files[0]);
   formData.append('id', chatInfo.value.id);
-  profileStore.uploadChatImage(formData).then(() => {
-    send(uploadedImage.value, 'image');
-  });
+  profileStore.uploadChatImage(formData);
 };
 
 const clickFile = () => {

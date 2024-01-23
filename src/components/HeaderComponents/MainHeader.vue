@@ -351,6 +351,7 @@ const goToProfile = (mode) => {
   padding: 0 rem(20);
   position: absolute;
   top: rem(44);
+  right: 0;
   z-index: 99000;
   box-shadow: 0 10px 10px 5px rgb(221, 221, 221);
 }

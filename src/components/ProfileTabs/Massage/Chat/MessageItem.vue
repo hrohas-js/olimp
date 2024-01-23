@@ -71,9 +71,7 @@ const currentDate = computed(() => {
 });
 
 const openFile = () => {
-  /*if (props.messageItem.type === "file") {
-    window.open(props.messageItem.link, "_blank");
-  }*/
+  window.open(props.messageItem.message_text, "_blank");
 }
 </script>
 
@@ -93,12 +91,19 @@ const openFile = () => {
         class="message-content text_mediumTh"
         :class="{
           'last-message': index === length - 1,
-          'is-file': messageItem.type === 'file',
+          'is-file': messageItem.type === 'image',
         }"
-        @click="openFile"
     >
-      {{ messageItem.message_text }}
-      <span>
+      <span v-if="messageItem.type !== 'image'">
+        {{ messageItem.message_text }}
+      </span>
+      <img
+          v-else
+          :src="messageItem.message_text"
+          alt="photo"
+          @click="openFile"
+      />
+      <span class="time">
         {{ currentTime }}
       </span>
     </div>
@@ -131,7 +136,7 @@ const openFile = () => {
     width: 90%;
   }
 
-  span {
+  .time {
     position: absolute;
     bottom: 0;
     font-size: rem(10);
@@ -167,7 +172,7 @@ const openFile = () => {
   .message-content {
     border-bottom-right-radius: unset;
     background-color: $color_subBgOpacity;
-    span {
+    .time {
       right: 0;
     }
   }
@@ -178,7 +183,7 @@ const openFile = () => {
   .message-content {
     border-bottom-left-radius: unset;
     background-color: $color_grayLight;
-    span {
+    .time {
       left: 0;
     }
   }

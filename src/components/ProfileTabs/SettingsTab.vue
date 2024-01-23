@@ -158,6 +158,10 @@ const editProfile = () => {
     margin-top: rem(20);
     width: 60%;
 
+    @media (max-width: em(768, 16)) {
+      width: 100%;
+    }
+
     form {
       .form-col {
         display: grid;

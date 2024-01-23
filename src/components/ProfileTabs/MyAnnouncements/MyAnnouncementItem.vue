@@ -646,7 +646,6 @@ const announcementAction = (id) => {
       flex: 1 1 40%;
 
       img {
-        height: 100%;
         object-fit: cover;
       }
     }

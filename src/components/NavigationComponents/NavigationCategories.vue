@@ -24,7 +24,7 @@ const categories = computed(() => catalogStore.categories);
       >
         <router-link :to="`/catalog/${category.id}/all`">
           <p class="textMontserrat_semiBold color_black">
-            {{ category.name }}
+            {{ category.name }} {{ category.name === 'Работа' ? '(вакансии)' : '' }}
           </p>
           <div class="image">
             <img

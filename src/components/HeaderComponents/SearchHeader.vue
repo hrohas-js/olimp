@@ -5,15 +5,31 @@ import {useRouter} from "vue-router";
 import {useRoute} from "vue-router";
 import {useMainStore} from "@/store/MainStore";
 import {computed} from "vue";
+import {useProfileStore} from "@/store/ProfileStore";
+import {useAuthStore} from "@/store/AuthStore";
 
 const router = useRouter();
 const route = useRoute();
 const mainStore = useMainStore();
+const profileStore = useProfileStore();
+const authStore = useAuthStore();
 
 const width = computed(() => mainStore.display_width);
+const jwt = computed(() => authStore.jwt);
 
 const goBack = () => {
   router.back();
+}
+
+const profileRouter = (to, param = '') => {
+  if (jwt.value) {
+    router.push(to);
+    if (param.length > 0) {
+      profileStore.content = param;
+    }
+  } else {
+    mainStore.popup = 'auth';
+  }
 }
 </script>
 
@@ -56,9 +72,6 @@ const goBack = () => {
               alt="logo"
           />
         </div>
-        <!--      <p class="textMontserrat_regular">
-                Центр творчества
-              </p>-->
       </div>
     </router-link>
     <div
@@ -70,6 +83,7 @@ const goBack = () => {
     <div
         v-if="width <= 768"
         class="image"
+        @click="profileRouter('/profile', 'notification')"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="28" height="31" viewBox="0 0 28 31" fill="none">
         <path

@@ -4,9 +4,11 @@ import {ref, computed} from "vue";
 import {useMainStore} from "@/store/MainStore";
 import {useAuthStore} from "@/store/AuthStore";
 import {useRouter} from "vue-router";
+import {useProfileStore} from "@/store/ProfileStore";
 
 const mainStore = useMainStore();
 const authStore = useAuthStore();
+const profileStore = useProfileStore();
 const router = useRouter();
 
 const jwt = computed(() => authStore.jwt);
@@ -17,9 +19,12 @@ const changeSearchShow = () => {
   searchShow.value = !searchShow.value;
 }
 
-const profileRouter = (to) => {
+const profileRouter = (to, param = '') => {
   if (jwt.value) {
     router.push(to);
+    if (param.length > 0) {
+      profileStore.content = param;
+    }
   } else {
     mainStore.popup = 'auth';
   }
@@ -41,7 +46,7 @@ const profileRouter = (to) => {
           Поиск
         </p>
       </li>
-      <li>
+      <li @click="profileRouter('/profile', 'wishList')">
         <div class="image">
           <svg xmlns="http://www.w3.org/2000/svg" width="27" height="24" viewBox="0 0 27 24" fill="none">
             <path d="M26.3846 8.16494C26.3846 10.0551 25.6309 11.8706 24.2851 13.2136C21.187 16.3059 18.1821 19.5305 14.9683 22.5108C14.2316 23.184 13.063 23.1594 12.3581 22.4558L3.099 13.2136C0.300333 10.4199 0.300333 5.90995 3.099 3.11636C5.92517 0.295327 10.5293 0.295327 13.3555 3.11636L13.6921 3.45229L14.0284 3.11656C15.3834 1.76328 17.2289 1 19.1567 1C21.0846 1 22.9299 1.7632 24.2851 3.11636C25.6311 4.45944 26.3846 6.27483 26.3846 8.16494Z" stroke="white" stroke-linejoin="round"/>
@@ -62,7 +67,7 @@ const profileRouter = (to) => {
           Объявления
         </p>
       </li>
-      <li>
+      <li @click="profileRouter('/profile', 'messages')">
         <div class="image">
           <svg xmlns="http://www.w3.org/2000/svg" width="31" height="22" viewBox="0 0 31 22" fill="none">
             <path d="M8.25 6.7998L15.5 11.8748L22.75 6.7998" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
