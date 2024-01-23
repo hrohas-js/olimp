@@ -114,15 +114,19 @@ export const useAuthStore = defineStore("authStore", {
             const mainStore = useMainStore();
             try {
                 mainStore.loader = true;
-                const response = await AuthApi.resetPassword(data);
-                console.log(response)
+                await AuthApi.resetPassword(data);
+                ElMessage({
+                    type: 'success',
+                    message: 'Ваш вароль направлен на указанную вами почту!',
+                    duration: 6000
+                });
             } catch (error) {
                 console.log(error)
-                /*ElMessage({
+                ElMessage({
                     type: 'error',
-                    message: 'Сессия пользователя закончена в связи со сменой IP адреса',
+                    message: 'Некорректный email!',
                     duration: 6000
-                });*/
+                });
             } finally {
                 mainStore.loader = false;
             }

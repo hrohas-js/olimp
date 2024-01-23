@@ -27,7 +27,10 @@ const closeModal = () => {
 const sendEmail = () => {
   authStore.resetPassword({
     email: resetEmail.value
-  })
+  }).then(() => {
+    mainStore.popup = 'auth';
+
+  });
 }
 </script>
 
