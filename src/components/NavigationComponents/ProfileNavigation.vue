@@ -46,37 +46,35 @@ const exit = () => {
         Мои объявления
       </li>
       <li
-          v-if="props.position !== 'header'"
           :class="{'active':content === 'messages'}"
           @click="changeContent('messages')"
       >
         Мои сообщения
       </li>
       <li
-          v-if="props.position !== 'header'"
+          :class="{'active':content === 'orders'}"
+          @click="changeContent('orders')"
+      >
+        Мои заказы
+      </li>
+      <li
           :class="{'active':content === 'wishList'}"
           @click="changeContent('wishList')"
       >
         Избранное
       </li>
       <li
-          :class="{'active':content === 'orders'}"
-          @click="changeContent('orders')"
-      >
-        Заказы
-      </li>
-      <li
-          :class="{'active':content === 'resume'}"
-          @click="changeContent('resume')"
-      >
-        Резюме
-      </li>
-      <li
-          v-if="props.position !== 'header'"
           :class="{'active':content === 'notification' || content === 'notificationBody'}"
           @click="changeContent('notification')"
       >
         Уведомления
+      </li>
+      <li
+          v-if="props.position !== 'header'"
+          :class="{'active':content === 'resume'}"
+          @click="changeContent('resume')"
+      >
+        Резюме
       </li>
     </ul>
     <ul class="fraction">
@@ -86,16 +84,10 @@ const exit = () => {
       >
         Кошелёк
       </li>
-<!--      <li
-          :class="{'active':content === 'profileProtect'}"
-          @click="changeContent('profileProtect')"
-      >
-        Защита профиля
-      </li>-->
       <li
           :class="{'active':content === 'settings'}"
           @click="changeContent('settings')">
-        Настройки
+        Настройки профиля
       </li>
     </ul>
     <ul

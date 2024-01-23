@@ -36,7 +36,7 @@ const changeContent = (value) => {
               @click="changeContent('orders')"
           >
             <p class="textMontserrat_semiBold">
-              Заказы
+              Мои заказы
             </p>
           </li>
           <li
@@ -76,13 +76,6 @@ const changeContent = (value) => {
           >
             <p class="textMontserrat_semiBold">
               Кошелёк
-            </p>
-          </li>
-          <li
-              @click="changeContent('profileProtect')"
-          >
-            <p class="textMontserrat_semiBold">
-              Защита профиля
             </p>
           </li>
           <li

@@ -20,7 +20,10 @@ const categories = computed(() => catalogStore.categories);
               alt="logo"
           />
         </router-link>
-        <h2 class="textMontserrat_medium color_colorBg">
+        <h2
+            v-if="width >= 768"
+            class="textMontserrat_medium color_colorBg"
+        >
           Центр Творчества
         </h2>
       </header>
@@ -52,29 +55,12 @@ const categories = computed(() => catalogStore.categories);
             </li>
             <li class="textMontserrat">
               <p class="textMontserrat_regular color_colorBg">
+                Правила сайта
+              </p>
+            </li>
+            <li class="textMontserrat">
+              <p class="textMontserrat_regular color_colorBg">
                 Вопрос - ответ
-              </p>
-            </li>
-            <li class="textMontserrat">
-              <p class="textMontserrat_regular color_colorBg">
-                Вакансии
-              </p>
-            </li>
-          </ul>
-          <ul>
-            <li class="textMontserrat">
-              <p class="textMontserrat_regular color_colorBg">
-                Личный кабинет
-              </p>
-            </li>
-            <li class="textMontserrat">
-              <p class="textMontserrat_regular color_colorBg">
-                Сообщения
-              </p>
-            </li>
-            <li class="textMontserrat">
-              <p class="textMontserrat_regular color_colorBg">
-                Корзина
               </p>
             </li>
           </ul>
@@ -86,12 +72,17 @@ const categories = computed(() => catalogStore.categories);
             </li>
             <li class="textMontserrat">
               <p class="textMontserrat_regular color_colorBg">
-                Правила сайта
+                Вакансии
               </p>
             </li>
             <li class="textMontserrat">
               <p class="textMontserrat_regular color_colorBg">
                 Реклама на сайте
+              </p>
+            </li>
+            <li class="textMontserrat">
+              <p class="textMontserrat_regular color_colorBg">
+                Предложения о сотрудничестве
               </p>
             </li>
           </ul>
