@@ -30,4 +30,12 @@ export class AuthApi extends BaseApi {
             }
         })
     }
+    static async resetPassword(data) {
+        return this.doRequest({
+            method: "POST",
+            url: "/auth/resetPassword",
+            data: data,
+            headers: this.headers
+        })
+    }
 }

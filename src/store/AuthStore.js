@@ -109,6 +109,23 @@ export const useAuthStore = defineStore("authStore", {
             } finally {
                 mainStore.loader = false;
             }
+        },
+        async resetPassword(data) {
+            const mainStore = useMainStore();
+            try {
+                mainStore.loader = true;
+                const response = await AuthApi.resetPassword(data);
+                console.log(response)
+            } catch (error) {
+                console.log(error)
+                /*ElMessage({
+                    type: 'error',
+                    message: 'Сессия пользователя закончена в связи со сменой IP адреса',
+                    duration: 6000
+                });*/
+            } finally {
+                mainStore.loader = false;
+            }
         }
     }
 })

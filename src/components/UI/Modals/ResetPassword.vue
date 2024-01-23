@@ -3,9 +3,11 @@ import {onMounted, computed, ref} from "vue";
 import {useMainStore} from "@/store/MainStore";
 import {useProfileStore} from "@/store/ProfileStore";
 import InputAnnouncement from "@/components/UI/Inputs/InputAnnouncement";
+import {useAuthStore} from "@/store/AuthStore";
 
 const mainStore = useMainStore();
 const profileStore = useProfileStore();
+const authStore = useAuthStore();
 
 const user = computed(() => profileStore.user);
 
@@ -21,6 +23,12 @@ onMounted(() => {
 const closeModal = () => {
   mainStore.popup = '';
 };
+
+const sendEmail = () => {
+  authStore.resetPassword({
+    email: resetEmail.value
+  })
+}
 </script>
 
 <template>
@@ -29,7 +37,10 @@ const closeModal = () => {
       <h2 class="textMontserrat_medium color_black">
         Восстановление пароля
       </h2>
-      <form class="textMontserrat_regular">
+      <form
+          class="textMontserrat_regular"
+          @submit.prevent="sendEmail"
+      >
         <div class="form-group color_black">
           <label for="email">Введите ваш Email:</label>
           <input-announcement v-model="resetEmail" />
