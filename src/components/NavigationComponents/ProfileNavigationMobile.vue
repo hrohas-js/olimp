@@ -19,17 +19,17 @@ const changeContent = (value) => {
       <nav>
         <ul>
           <li
-              @click="changeContent('profileInfo')"
-          >
-            <p class="textMontserrat_semiBold">
-              Личная информация
-            </p>
-          </li>
-          <li
               @click="changeContent('myAnnouncements')"
           >
             <p class="textMontserrat_semiBold">
               Мои объявления
+            </p>
+          </li>
+          <li
+              @click="changeContent('messages')"
+          >
+            <p class="textMontserrat_semiBold">
+              Мои сообщения
             </p>
           </li>
           <li
@@ -46,22 +46,8 @@ const changeContent = (value) => {
               Избранное
             </p>
           </li>
-          <li
-              @click="changeContent('resume')"
-          >
-            <p class="textMontserrat_semiBold">
-              Резюме
-            </p>
-          </li>
         </ul>
         <ul>
-          <li
-              @click="changeContent('messages')"
-          >
-            <p class="textMontserrat_semiBold">
-              Сообщения
-            </p>
-          </li>
           <li
               @click="changeContent('notification')"
           >
@@ -82,7 +68,7 @@ const changeContent = (value) => {
               @click="changeContent('settings')"
           >
             <p class="textMontserrat_semiBold">
-              Настройки
+              Настройки профиля
             </p>
           </li>
           <li

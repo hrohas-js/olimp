@@ -43,7 +43,7 @@ let chatsTimer;
 
 watch(jwt, (newValue, oldValue) => {
   if (newValue !== null && oldValue === null) {
-    router.push('/profile');
+    router.push('/');
     chatsTimer = setInterval(() => {
       profileStore.getAllChats({
         user_id: profileStore.user.id

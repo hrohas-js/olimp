@@ -34,12 +34,6 @@ const exit = () => {
   <nav class="profileNavigator textMontserrat textMontserrat_medium background_elements">
     <ul class="fraction">
       <li
-          :class="{'active':content === 'profileInfo'}"
-          @click="changeContent('profileInfo')"
-      >
-        Личный кабинет
-      </li>
-      <li
           :class="{'active':content === 'myAnnouncements'}"
           @click="changeContent('myAnnouncements')"
       >

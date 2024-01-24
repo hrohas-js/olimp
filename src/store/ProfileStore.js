@@ -391,12 +391,16 @@ export const useProfileStore = defineStore("profileStore", {
             }
         },
         async uploadChatImage(data) {
+            const mainStore = useMainStore();
             try {
+                mainStore.loader = true;
                 const response = await ProfileApi.uploadChatImage(data);
                 this.currentChatImageUploaded = response.url;
                 console.log(response);
             } catch (error) {
                 console.log(error)
+            } finally {
+                mainStore.loader = false;
             }
         },
         async addReview(data) {

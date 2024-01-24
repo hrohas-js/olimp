@@ -44,11 +44,11 @@ const changeContent = () => {
   }
 }
 
-const checkMessage = (e) => {
+const checkMessage = (e, id) => {
   if (e.target.checked) {
-    profileStore.selectedMessages.push(e.target.id)
+    profileStore.selectedMessages.push(id)
   } else {
-    profileStore.selectedMessages = [...profileStore.selectedMessages].filter(elem => elem !== e.target.id)
+    profileStore.selectedMessages = [...profileStore.selectedMessages].filter(elem => elem !== id)
   }
 }
 </script>
@@ -57,10 +57,9 @@ const checkMessage = (e) => {
   <article class="messageItem">
     <div class="messageItem__check">
       <input
-          :id="props.item.chat_id"
           type="checkbox"
           name="message"
-          @change="checkMessage"
+          @change="checkMessage($event, props.item.id)"
       />
     </div>
     <div class="messageItem__information" @click="changeContent">
