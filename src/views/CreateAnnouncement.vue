@@ -28,6 +28,10 @@ onMounted(() => {
 });
 
 const getCategoriesTree = (slug, category, filter = null) => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
   switch (slug) {
     case 'category':
       catalogStore.subCategories = [];
