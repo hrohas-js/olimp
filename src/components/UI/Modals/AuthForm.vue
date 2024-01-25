@@ -146,7 +146,9 @@ const closeModal = () => {
       </button>
     </div>
     <div v-if="popup === 'register'" class="modal-content">
-      <h2 class="textMontserrat_medium color_black">Регистрация</h2>
+      <h2 class="textMontserrat_medium color_black">
+        Регистрация
+      </h2>
       <form @submit.prevent="login" class="textMontserrat_regular">
         <div class="form-col">
           <div class="form-group color_black">
@@ -166,7 +168,9 @@ const closeModal = () => {
             />
           </div>
           <div class="form-group color_black">
-            <label for="phone">Телефон:</label>
+            <label for="phone">
+              Телефон:
+            </label>
             <input-border
                 id="phone"
                 input-type="tel"
@@ -174,7 +178,9 @@ const closeModal = () => {
             />
           </div>
           <div class="form-group color_black">
-            <label for="password">Пароль:</label>
+            <label for="password">
+              Пароль:
+            </label>
             <input-border
                 id="password"
                 input-type="password"
@@ -182,7 +188,9 @@ const closeModal = () => {
             />
           </div>
           <div class="form-group color_black">
-            <label for="email">Email:</label>
+            <label for="email">
+              Email:
+            </label>
             <input-border
                 id="email"
                 input-type="email"
@@ -232,6 +240,9 @@ const closeModal = () => {
   .background_red {
     width: 57%;
     margin: 0 auto;
+    -webkit-box-sizing: border-box; /* Для старых версий Safari и Chrome */
+    -moz-box-sizing: border-box;    /* Для старых версий Firefox */
+    box-sizing: border-box;         /* Стандартный способ */
   }
 }
 .textMontserrat {
@@ -246,6 +257,8 @@ const closeModal = () => {
   background: #fff;
   padding: 20px;
   border-radius: 8px;
+  -webkit-border-radius: 8px; /* Для старых версий Safari и Chrome */
+  -moz-border-radius: 8px;    /* Для старых версий Firefox */
   text-align: center;
   position: relative;
   min-width: rem(370);
@@ -287,7 +300,9 @@ const closeModal = () => {
       input {
         width: 100%;
         padding: 8px;
-        box-sizing: border-box;
+        -webkit-box-sizing: border-box; /* Для старых версий Safari и Chrome */
+        -moz-box-sizing: border-box;    /* Для старых версий Firefox */
+        box-sizing: border-box;         /* Стандартный способ */
       }
     }
 
@@ -295,6 +310,9 @@ const closeModal = () => {
       grid-column: 1 / 3;
       width: 57%;
       margin: 0 auto;
+      -webkit-box-sizing: border-box; /* Для старых версий Safari и Chrome */
+      -moz-box-sizing: border-box;    /* Для старых версий Firefox */
+      box-sizing: border-box;         /* Стандартный способ */
     }
   }
 
@@ -310,6 +328,9 @@ const closeModal = () => {
     top: rem(6);
     right: rem(6);
   }
+}
+.border_accent{
+  border-radius: rem(8);
 }
 </style>
 

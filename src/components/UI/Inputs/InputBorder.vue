@@ -59,6 +59,7 @@ const setShowPasswordDefault = () => {
 
 <template>
     <div
+        class="inputBorder"
         tabindex="1"
         @blur="setShowPasswordDefault"
     >
@@ -88,15 +89,19 @@ const setShowPasswordDefault = () => {
 </template>
 
 <style scoped lang="scss">
+.inputBorder{
+  position:relative;
+  svg {
+    position: absolute;
+    right: rem(10);
+    top: rem(30);
+    cursor: pointer;
+  }
+}
 input{
   width: 100%;
   border-radius: 5px;
   padding: rem(8) rem(20);
 }
-svg {
-  position: absolute;
-  right: rem(10);
-  top: rem(30);
-  cursor: pointer;
-}
+
 </style>

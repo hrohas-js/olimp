@@ -370,6 +370,7 @@ button::-moz-focus-inner {
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow:auto;
 }
 
 .widget {
