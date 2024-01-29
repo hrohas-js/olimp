@@ -54,8 +54,12 @@ const daysLeftWords = computed(() => {
 });
 const daysLeftPercent = computed(() => (daysLeft.value / 20) * 100);
 const mainImage = computed(() => {
-  const gal = JSON.parse(props.item.gallery);
-  return gal[0].src;
+  if (props.item.gallery !== '[]') {
+    const gal = JSON.parse(props.item.gallery);
+    return gal[0].src;
+  } else {
+    return '';
+  }
 });
 
 onMounted(() => {

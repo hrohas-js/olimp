@@ -94,7 +94,7 @@ const setShowPasswordDefault = () => {
   svg {
     position: absolute;
     right: rem(10);
-    top: rem(30);
+    top: rem(6);
     cursor: pointer;
   }
 }

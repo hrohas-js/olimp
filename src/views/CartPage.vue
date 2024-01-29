@@ -240,7 +240,7 @@ const openChat = () => {
               v-if="width <= 1024"
               class="buttonActionContainer"
           >
-            <SaleInformation/>
+            <SaleInformation v-if="!isActor && isAuth"/>
 <!--            <div
                 v-if="someItem === 'technics' && width > 1024"
                 class="buttonContainer"
@@ -476,7 +476,7 @@ const openChat = () => {
                 @click="openChat"
             />
           </div>
-          <SaleInformation v-if="!isActor" />
+          <SaleInformation v-if="!isActor && isAuth" />
           <section v-if="!isActor" class="map">
             <h3 class="textMontserrat_bold">
               Место сделки

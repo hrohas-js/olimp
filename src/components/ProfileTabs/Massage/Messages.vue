@@ -49,6 +49,9 @@ const refresh = () => {
   profileStore.getAllChats({
     user_id: profileStore.user.id
   });
+  document.querySelectorAll('input[type=checkbox]').forEach(elem => {
+    elem.checked = false;
+  });
 }
 
 const selectedDelete = () => {

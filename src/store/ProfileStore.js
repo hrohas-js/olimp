@@ -7,7 +7,7 @@ import {getCurrentDateTime} from "@/plugins/validator";
 
 export const useProfileStore = defineStore("profileStore", {
     state: () => ({
-        content: "profileInfo",
+        content: "myAnnouncements",
         navigationMobile: false,
         user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {
             id: "",
