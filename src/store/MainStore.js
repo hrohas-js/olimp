@@ -6,6 +6,66 @@ import jsonp from 'jsonp';
 
 export const useMainStore = defineStore("mainStore", {
     state: () => ({
+        info: [
+            {
+                src: 'https://productioncity.pro/photos/anons/anons1.jpg',
+                link: 'https://dzen.ru/a/YWbXnJcRuDvTHoEC',
+                title: 'Хочу снимать кино.',
+                description: 'Как стать режиссером и что для этого нужно.'
+            },
+            {
+                src: 'https://productioncity.pro/photos/anons/anons2.jpg',
+                link: 'https://www.nur.kz/family/self-realization/1838273-kak-stat-modelu-sovety-instrukcia/',
+                title: 'Как стать моделью:',
+                description: '12 советов для тех, кто хочет блистать на подиуме и обложках журналов.'
+            },
+            {
+                src: 'https://productioncity.pro/photos/anons/anons3.jpg',
+                link: 'https://www.profguide.io/professions/Kaskador.html',
+                title: 'Профессия –Каскадер',
+                description: ''
+            },
+            {
+                src: 'https://productioncity.pro/photos/anons/anons4.jpg',
+                link: 'https://www.gazetametro.ru/articles/kak-popast-v-kino-bez-obrazovanija-i-chto-nuzhno-delat-chtoby-stat-vostrebovannym-akterom-13-08-2022',
+                title: 'Как попасть в кино без образования и что нужно делать, что бы стать востребованным актёром.',
+                description: ''
+            },
+            {
+                src: 'https://productioncity.pro/photos/anons/anons5.jpg',
+                link: 'https://dzen.ru/a/Xi4aRRbvkACthhCY',
+                title: 'Работа на съемочной площадке',
+                description: 'Мечта или наказание.'
+            },
+            {
+                src: 'https://productioncity.pro/photos/anons/anons6.jpg',
+                link: 'https://studref.com/466104/marketing/rabochee_vremya_vremya_otdyha_kinostudiyah',
+                title: 'Рабочее время и время отдыха на киностудиях',
+                description: ''
+            }
+        ],
+        videoReviews: [
+            {
+                player: `<iframe width="100%" src="https://www.youtube.com/embed/F8cpvjj1otA?si=KJ3zKuKEYgbAmj7C" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`,
+                title: 'КАК ПОПАСТЬ В КИНО - КАК СТАТЬ АКТЕРОМ БЕЗ ОБРАЗОВАНИЯ'
+            },
+            {
+                player: `<iframe width="100%" src="https://www.youtube.com/embed/dRc2As1xbTc?si=DkMEGPOUxnqBSDoM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`,
+                title: 'КАК СТАТЬ МОДЕЛЬЮ | ПОШАГОВЫЙ ПЛАН К ДЕЙСТВИЮ'
+            },
+            {
+                player: `<iframe width="100%" src="https://www.youtube.com/embed/dQgoo8RvekU?si=qKXvDeND92x-VYhk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`,
+                title: 'МУЖСКОЙ МОДЕЛИНГ: Через что проходят парни?'
+            },
+            {
+                player: `<iframe width="100%" src="https://www.youtube.com/embed/djF2Lw1K274?si=sfwxtNFQ_g-Artx5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`,
+                title: '10 КУЛЬТОВЫХ РЕЖИССЕРОВ БЕЗ ОБРАЗОВАНИЯ'
+            },
+            {
+                player: `<iframe width="100%" src="https://www.youtube.com/embed/cYAwu0V0avY?si=ezQQCJjUf_G87aM_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`,
+                title: 'КАК РАБОТАЕТ МУЗЫКА В КИНО. Полное руководство'
+            }
+        ],
         display_width: 0,
         someItem: "technics",
         popup: "",

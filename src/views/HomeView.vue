@@ -25,6 +25,8 @@ const width = computed(() => mainStore.display_width);
 const location = computed(() => mainStore.location);
 const catalog = computed(() => catalogStore.searchCatalog);
 const name = computed(() => profileStore.user.name);
+const info = computed(() => mainStore.info);
+const video = computed(() => mainStore.videoReviews);
 
 onBeforeMount(() => {
   catalogStore.getAnnouncements();
@@ -137,37 +139,13 @@ const openGeo = () => {
             </h2>
           </header>
           <main class="announcement__container">
-            <announcement-item/>
-            <announcement-item/>
-            <announcement-item/>
+            <announcement-item
+                v-for="(item, index) in info"
+                :key="index"
+                :item="item"
+            />
           </main>
         </section>
-<!--        <section
-            v-if="width <=1024"
-            class="news"
-        >
-          <header class="news__header">
-            <h2 class="subTitle">
-              Новости
-            </h2>
-          </header>
-          <main class="news__main">
-            <carousel
-                :items-to-show="3"
-                class="red-slider"
-            >
-              <slide
-                  v-for="slide in 6"
-                  :key="slide"
-              >
-                <news-item :news-text="'Из моделей в актеры!'"/>
-              </slide>
-              <template #addons>
-                <navigation/>
-              </template>
-            </carousel>
-          </main>
-        </section>-->
         <div
             v-if="width > 1024"
             class="filterContainer"
@@ -205,41 +183,12 @@ const openGeo = () => {
             </header>
             <main class="announcement__container">
               <announcement-item
-                  :relevanceText="'urgent'"
-                  :status-text="'Срочный кастинг'"
+                  v-for="(item, index) in info"
+                  :key="index"
+                  :item="item"
               />
-              <announcement-item/>
-              <announcement-item/>
-              <announcement-item/>
-              <announcement-item/>
             </main>
-            <footer class="announcement__footer">
-              <p class="showMore textMontserrat textMontserrat_regular color_accent">
-                Смотреть все кастинги...
-              </p>
-            </footer>
           </section>
-<!--          <section
-              v-if="width > 1024"
-              class="news"
-          >
-            <header class="news__header">
-              <h2 class="subTitle">
-                Новости
-              </h2>
-            </header>
-            <main class="news__main">
-              <news-item :news-text="'Из моделей в актеры!'"/>
-              <news-item :news-text="'Из моделей в актеры!'"/>
-              <news-item :news-text="'Из моделей в актеры!'"/>
-              <news-item :news-text="'Из моделей в актеры!'"/>
-            </main>
-            <footer class="news__footer">
-              <p class="showMore textMontserrat textMontserrat_regular color_accent">
-                Смотреть все новости...
-              </p>
-            </footer>
-          </section>-->
         </aside>
         <section class="mainContent">
           <section class="goodsContainer">
@@ -255,40 +204,6 @@ const openGeo = () => {
                   :item="item"
               />
             </div>
-<!--            <section class="goodItemContainer">
-              <good-item
-                  :item-title="'Локация для съемок'"
-                  :item-price="'1000'"
-              />
-              <good-item
-                  :item-title="'Галь Гадот'"
-                  :item-price="'1000'"
-              />
-              <good-item
-                  :item-title="'Локация для съемок'"
-                  :item-price="'1000'"
-              />
-              <good-item
-                  :item-title="'Галь Гадот'"
-                  :item-price="'1000'"
-              />
-              <good-item
-                  :item-title="'Локация для съемок'"
-                  :item-price="'1000'"
-              />
-              <good-item
-                  :item-title="'Галь Гадот'"
-                  :item-price="'1000'"
-              />
-              <good-item
-                  :item-title="'Локация для съемок'"
-                  :item-price="'1000'"
-              />
-              <good-item
-                  :item-title="'Галь Гадот'"
-                  :item-price="'1000'"
-              />
-            </section>-->
           </section>
           <section class="reviewsContainer">
             <header class="reviewsContainer__header">
@@ -302,10 +217,10 @@ const openGeo = () => {
                   class="blue-slider"
               >
                 <slide
-                    v-for="slide in 7"
-                    :key="slide"
+                    v-for="(item, index) in video"
+                    :key="index"
                 >
-                  <goods-item-reviews/>
+                  <goods-item-reviews :item="item" />
                 </slide>
                 <template #addons>
                   <navigation/>

@@ -695,12 +695,12 @@ const openChat = () => {
     //&__item {
     //  flex: 1 1 50%
     //}
-    &__photo{
+    &__photo {
       flex: 0 1 40%;
     }
-    &__information{
+    &__information {
       flex: 0 1 30%;
-      .saleInformation{
+      .saleInformation {
         margin-top: rem(10);
       }
     }

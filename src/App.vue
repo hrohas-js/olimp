@@ -906,6 +906,9 @@ button::-moz-focus-inner {
 }
 
 .blue-slider {
+  .carousel__slide {
+    align-items: start;
+  }
   .carousel__prev, .carousel__next {
     background: #2963A4 !important;
     border-radius: 50% !important;

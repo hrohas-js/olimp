@@ -1,28 +1,27 @@
 <script setup>
 const props = defineProps({
-  title:{
+  title: {
     type: String,
     default(){
       return "Лучшие камеры 2022"
     }
+  },
+  item: {
+    type: Object,
+    default: () => ({})
   }
 });
 </script>
 
 <template>
   <article class="goodsItemReviews">
-    <div class="image">
-      <img src="@/assets/png/GoodItem/goodsItemReviews.png" :alt="props.title"/>
-    </div>
+    <div class="image" v-html="props.item.player" />
     <section class="goodsItemReviews__content">
       <header class="goodsItemReviews__header textMontserrat">
         <h3 class="textMontserrat_medium">
-          {{ props.title }}
+          {{ props.item.title }}
         </h3>
       </header>
-      <footer class="goodsItemReviews__footer">
-        <img src="@/assets/svg/youTube.svg" alt="youTube"/>
-      </footer>
     </section>
   </article>
 </template>
