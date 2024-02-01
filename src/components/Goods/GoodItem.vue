@@ -163,7 +163,7 @@ const setLike = () => {
         <main class="goodItem__main">
           <p
               v-if="!isActor"
-              class="textMontserrat textMontserrat_regular color_black"
+              class="textMontserrat_medium color_black"
           >
             {{ vacancyFlag ? 'Оплата' : 'Цена' }}: {{ props.item.price }} руб.
           </p>
@@ -210,6 +210,7 @@ const setLike = () => {
 
   .wishButton{
     cursor: pointer;
+    flex-shrink:0;
   }
   &__header{
     display: flex;

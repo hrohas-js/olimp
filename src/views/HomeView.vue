@@ -292,17 +292,6 @@ const openGeo = () => {
     }
   }
 
-
-  .announcement {
-    &__header {
-      margin-bottom: rem(20);
-    }
-
-    .announcementItem {
-      margin-top: rem(30);
-    }
-  }
-
   .news {
     margin-top: rem(119);
 
@@ -415,7 +404,7 @@ const openGeo = () => {
 
       &__container {
         display: flex;
-        gap: calc(0.5rem + (32 - 8) * ((100vw - 390rem / 16) / (1024 - 390)));
+        gap: calc(0.5rem + (16 - 8) * ((100vw - 390rem / 16) / (1024 - 390)));
         max-width: rem(950);
         overflow-x: auto;
 

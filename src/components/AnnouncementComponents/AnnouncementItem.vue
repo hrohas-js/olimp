@@ -97,6 +97,7 @@ const width = computed(() =>mainStore.display_width);
 
 <style scoped lang="scss">
 .announcementItem {
+  padding-top:rem(10);
   cursor: pointer;
   border-bottom: 1px solid #ebebeb;
 
@@ -110,18 +111,19 @@ const width = computed(() =>mainStore.display_width);
     }
 
     img {
+      height: rem(177);
       width: 100%;
       object-fit: cover;
     }
   }
 
   .content {
-    padding: rem(18) rem(5) rem(23);
+    padding: rem(10) rem(5) rem(10);
   }
 
   &__header {
     p {
-      padding-top: rem(20);
+      padding-top: rem(5);
     }
   }
 
@@ -146,13 +148,13 @@ const width = computed(() =>mainStore.display_width);
 
   @media (max-width: em(1024, 16)) {
     display: flex;
-    width: calc(330rem / 16 + (500 - 330) * ((100vw - 390rem / 16) / (1024 - 390)));
-    max-width: 100%;
+    //width: calc(330rem / 16 + (500 - 330) * ((100vw - 390rem / 16) / (1024 - 390)));
+    width: 20%;
     .image {
       flex: 1 1 45%;
 
       img {
-        height: 100%;
+        height: rem(80);
         object-fit: cover;
       }
     }

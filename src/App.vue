@@ -291,9 +291,9 @@ button::-moz-focus-inner {
   @extend .textMontserrat;
   @extend .textMontserrat_medium;
   @extend .color_colorSubBg;
-  font-size: rem(20);
+  font-size: rem(16);
   @media (max-width: em(1920, 16)) {
-    font-size: calc(14rem / 16 + (20 - 14) * ((100vw - 390rem / 16) / (1920 - 390)));
+    font-size: calc(14rem / 16 + (16 - 14) * ((100vw - 390rem / 16) / (1920 - 390)));
   }
 }
 

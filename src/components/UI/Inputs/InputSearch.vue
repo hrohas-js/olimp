@@ -77,7 +77,7 @@ const searchValue = computed({
 
   input {
     width: 100%;
-    font-size: rem(12);
+    font-size: 1rem;
   }
   .centerPlaceholder{
     &::placeholder{
