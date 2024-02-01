@@ -57,7 +57,7 @@ watch(jwt, (newValue, oldValue) => {
   }
 });
 watch(notifications, (newValue, oldValue) => {
-  if (newValue.length > oldValue.length) {
+  if (newValue.length > oldValue.length && oldValue.length > 0) {
     profileStore.newNotificationsCount = newValue.length - oldValue.length
   } else {
     profileStore.newNotificationsCount = 0

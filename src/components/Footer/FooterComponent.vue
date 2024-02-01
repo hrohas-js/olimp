@@ -36,7 +36,7 @@ const categories = computed(() => catalogStore.categories);
           >
             <router-link :to="`/catalog/${category.id}/all`">
               <p class="textMontserrat_regular color_colorBg">
-                {{ category.name }}
+                {{ category.name }} {{ category.name === 'Работа' ? '(вакансии)' : '' }}
               </p>
             </router-link>
           </li>
@@ -66,9 +66,9 @@ const categories = computed(() => catalogStore.categories);
           </ul>
           <ul>
             <li class="textMontserrat">
-              <p class="textMontserrat_regular color_colorBg">
+              <router-link to="/about" class="textMontserrat_regular color_colorBg">
                 О компании
-              </p>
+              </router-link>
             </li>
             <li class="textMontserrat">
               <p class="textMontserrat_regular color_colorBg">
@@ -88,6 +88,14 @@ const categories = computed(() => catalogStore.categories);
           </ul>
         </div>
       </main>
+      <div class="copy textMontserrat textMontserrat_medium color_colorBg">
+        <span>
+          Production City - центр творчества
+        </span>
+        <span>
+          &copy;ООО "Возможно все! продакшен" 2022-2024
+        </span>
+      </div>
     </div>
   </footer>
 </template>
@@ -145,6 +153,13 @@ const categories = computed(() => catalogStore.categories);
     .textMontserrat_regular{
       font-size: rem(14);
     }
+  }
+
+  .copy {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: rem(20);
   }
 
   @media (max-width: em(1920, 16)) {

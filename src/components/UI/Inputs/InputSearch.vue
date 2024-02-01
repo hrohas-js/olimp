@@ -60,7 +60,7 @@ const searchValue = computed({
     </div>
     <input
         v-model="searchValue"
-        class="textMontserrat textMontserrat_light"
+        class="textMontserrat textMontserrat_medium"
         :class="{'centerPlaceholder': props.centerPlaceholder}"
         type="search"
         inputmode="text"

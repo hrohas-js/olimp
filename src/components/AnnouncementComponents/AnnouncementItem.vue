@@ -52,44 +52,6 @@ const width = computed(() =>mainStore.display_width);
             {{ props.item.description }}
           </p>
         </header>
-        <!--      <main class="announcementItem__main">
-                <p
-                    v-if="width > 1024"
-                    class="subItemText"
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                  magna aliqua...
-                </p>
-                <p class="subItemTextPrice">
-                  Гонорар: 170000 руб.
-                </p>
-              </main>
-              <footer
-                  v-if="width > 1024"
-                  class="announcementItem__footer"
-              >
-                <p class="subItemText">
-                  Город: Москва
-                </p>
-                <time class="subItemText" datatype="21.09.2023">
-                  Прием заявок до: 21.09.2023
-                </time>
-              </footer>
-              <footer
-                  v-if="width <= 1024"
-                  class="announcementItem__footer"
-              >
-                <p class="subItemText color_accent">
-                  Смотреть
-                </p>
-                <svg fill="#000000" height="18px" width="18px" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-                     viewBox="0 0 330 330" xml:space="preserve">
-                    <path id="XMLID_222_" d="M250.606,154.389l-150-149.996c-5.857-5.858-15.355-5.858-21.213,0.001
-                    c-5.857,5.858-5.857,15.355,0.001,21.213l139.393,139.39L79.393,304.394c-5.857,5.858-5.857,15.355,0.001,21.213
-                    C82.322,328.536,86.161,330,90,330s7.678-1.464,10.607-4.394l149.999-150.004c2.814-2.813,4.394-6.628,4.394-10.606
-                    C255,161.018,253.42,157.202,250.606,154.389z"/>
-                    </svg>
-              </footer>-->
       </section>
     </a>
   </article>
@@ -148,8 +110,7 @@ const width = computed(() =>mainStore.display_width);
 
   @media (max-width: em(1024, 16)) {
     display: flex;
-    //width: calc(330rem / 16 + (500 - 330) * ((100vw - 390rem / 16) / (1024 - 390)));
-    width: 20%;
+    width: 30%;
     .image {
       flex: 1 1 45%;
 

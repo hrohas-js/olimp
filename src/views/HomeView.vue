@@ -2,14 +2,13 @@
 import HeaderBanner from "@/components/HeaderComponents/HeaderBanner";
 import NavigationCategories from "@/components/NavigationComponents/NavigationCategories";
 import AnnouncementItem from "@/components/AnnouncementComponents/AnnouncementItem";
-import NewsItem from "@/components/News/NewsItem";
 import GoodItem from "@/components/Goods/GoodItem";
 import AdvertisingItem from "@/components/Advertising/AdvertisingItem";
 import GoodsItemReviews from "@/components/Goods/GoodsItemHit";
 import MainSearch from "@/components/UI/Filters/MainSearch";
 import "vue3-carousel/dist/carousel.css";
 import {Carousel, Slide, Navigation} from "vue3-carousel";
-import {computed, onMounted, watch, ref, onBeforeMount} from "vue";
+import {computed, onBeforeMount} from "vue";
 import {useRouter} from "vue-router";
 import {useMainStore} from "@/store/MainStore";
 import {useCatalogStore} from "@/store/CatalogStore";
@@ -31,60 +30,6 @@ const video = computed(() => mainStore.videoReviews);
 onBeforeMount(() => {
   catalogStore.getAnnouncements();
 });
-
-/*let ws;
-
-const val = ref('');
-
-const closeWebSocket = () => {
-  if (ws) {
-    ws.close();
-    console.log('WebSocket connection closed');
-  }
-};
-
-const initializeWebSocket = () => {
-  if (name.value !== '') {
-    console.log(name.value)
-    const messagesList = document.getElementById('messages');
-
-    ws = new WebSocket('ws://localhost:3000');
-
-    ws.onopen = function() {
-      console.log('Connected to the WebSocket server');
-      ws.send(JSON.stringify({ type: 'name', text: name.value }));
-    };
-
-    ws.onmessage = function(event) {
-      const data = JSON.parse(event.data);
-      const messageName = document.createElement('li');
-      messageName.textContent = data.username;
-      messagesList.appendChild(messageName);
-      const message = document.createElement('li');
-      message.textContent = data.text; // Исправлено с messageName на message
-      messagesList.appendChild(message);
-    }
-  }
-};
-
-onMounted(() => {
-  if (name.value) {
-    initializeWebSocket();
-  }
-});
-
-watch(name, (newValue) => {
-  if (newValue && newValue.length > 0) {
-    initializeWebSocket();
-  } else {
-    closeWebSocket();
-  }
-});
-
-const send = () => {
-  ws.send(JSON.stringify({type: 'message', text: val.value}));
-  val.value = '';
-}*/
 
 const openGeo = () => {
   mainStore.popup = 'location';
@@ -122,7 +67,7 @@ const openGeo = () => {
               </path>
             </svg>
             <p class="textMontserrat_regular">
-              {{ location === '' ? 'Выберете город' : location }}
+              {{ location === '' ? 'Выберите город' : location }}
             </p>
           </div>
           <div class="searchContainer">
@@ -162,7 +107,7 @@ const openGeo = () => {
               </path>
             </svg>
             <p class="textMontserrat_regular">
-              {{ location === '' ? 'Выберете город' : location }}
+              {{ location === '' ? 'Выберите город' : location }}
             </p>
           </div>
           <div class="searchContainer">

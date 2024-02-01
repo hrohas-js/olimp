@@ -313,6 +313,7 @@ export const useProfileStore = defineStore("profileStore", {
                 mainStore.loader = true;
                 const response = await ProfileApi.getNotifications();
                 this.notifications = response.result;
+                if (localStorage.getItem('not_count') === null) localStorage.setItem('not_count', this.notifications.length.toString());
             } catch (error) {
                 console.log(error)
             } finally {

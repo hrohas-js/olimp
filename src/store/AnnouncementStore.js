@@ -45,7 +45,9 @@ export const useAnnouncementStore = defineStore("announcementStore", {
             try {
                 mainStore.loader = true;
                 const response = await AnnouncementApi.uploadGallery(data);
-                this.newItem.gallery = response.gallery;
+                response.gallery.forEach(elem => {
+                    this.newItem.gallery.push(elem);
+                });
             } catch (error) {
                 console.log(error)
             } finally {

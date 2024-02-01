@@ -71,6 +71,8 @@ const login = () => {
     if (!empty) {
       authStore.auth().then(() => {
         profileStore.getLikes();
+        profileStore.getReviews();
+        profileStore.getNotifications();
         mainStore.clearInputs();
       });
     }

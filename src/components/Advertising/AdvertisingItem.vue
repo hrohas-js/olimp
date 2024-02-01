@@ -10,10 +10,8 @@
      </h3>
    </header>
     <main class="advertisingItem__main">
-<!--      <h2 class="textMontserrat textMontserrat_medium">-->
-<!--        Рекламное объявление-->
-<!--      </h2>-->
-      <img src="@/assets/png/Advertising/advertisingItem.jpg" alt="Реклама"/>
+      <img src="@/assets/png/Advertising/adv1.jpg" alt="Реклама"/>
+      <img src="@/assets/png/Advertising/adv2.jpg" alt="Реклама"/>
     </main>
   </article>
 </template>
@@ -22,13 +20,13 @@
 .advertisingItem{
   position: sticky;
   top: rem(15);
-  //background: #F6CB32;
-  height: rem(450);
   &__main{
     height: 100%;
     display: flex;
     align-items: center;
+    flex-direction: column;
     justify-content: center;
+    gap: rem(10);
     text-align: center;
     .textMontserrat_medium{
       font-size: 2rem;

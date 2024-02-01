@@ -215,7 +215,6 @@ const setLike = () => {
   &__header{
     display: flex;
     justify-content: space-between;
-    align-items: center;
     .textMontserrat_medium{
       font-size: 1rem;
     }
