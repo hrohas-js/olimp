@@ -59,9 +59,9 @@ const categories = computed(() => catalogStore.categories);
               </p>
             </li>
             <li class="textMontserrat">
-              <p class="textMontserrat_regular color_colorBg">
+              <router-link to="/question" class="textMontserrat_regular color_colorBg">
                 Вопрос - ответ
-              </p>
+              </router-link>
             </li>
           </ul>
           <ul>
@@ -76,14 +76,14 @@ const categories = computed(() => catalogStore.categories);
               </p>
             </li>
             <li class="textMontserrat">
-              <p class="textMontserrat_regular color_colorBg">
+              <router-link to="/advert" class="textMontserrat_regular color_colorBg">
                 Реклама на сайте
-              </p>
+              </router-link>
             </li>
             <li class="textMontserrat">
-              <p class="textMontserrat_regular color_colorBg">
+              <router-link to="/cooperation" class="textMontserrat_regular color_colorBg">
                 Предложения о сотрудничестве
-              </p>
+              </router-link>
             </li>
           </ul>
         </div>
@@ -160,6 +160,7 @@ const categories = computed(() => catalogStore.categories);
     align-items: center;
     justify-content: space-between;
     margin-top: rem(20);
+    font-size: rem(10);
   }
 
   @media (max-width: em(1920, 16)) {

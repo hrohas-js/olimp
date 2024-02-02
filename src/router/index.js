@@ -38,6 +38,21 @@ const routes = [
     component: () => import("@/views/AboutCompany")
   },
   {
+    path: '/question',
+    name: 'AskQuestion',
+    component: () => import("@/views/AskQuestion")
+  },
+  {
+    path: '/advert',
+    name: 'AdverOnSite',
+    component: () => import("@/views/AdverOnSite")
+  },
+  {
+    path: '/cooperation',
+    name: 'NewCooperation',
+    component: () => import("@/views/NewCooperation")
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: () => import("@/views/NotFound"),

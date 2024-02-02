@@ -3,6 +3,8 @@ import { validateField } from "@/plugins/validator";
 import { AnotherServicesApi } from "@/api/AnotherServices/AnotherServicesApi";
 import { useCatalogStore } from "@/store/CatalogStore";
 import jsonp from 'jsonp';
+import {SendMessageApi} from "@/api/SendMessage/SendMessageApi";
+import {ElMessage} from "element-plus";
 
 export const useMainStore = defineStore("mainStore", {
     state: () => ({
@@ -182,6 +184,28 @@ export const useMainStore = defineStore("mainStore", {
             } catch (error) {
                 console.log(error)
             }
-        }
+        },
+        async sendEmailRequest(data) {
+            const mainStore = useMainStore();
+            try {
+                mainStore.loader = true;
+                const response = await SendMessageApi.sendMessage(data);
+                console.log(response)
+                ElMessage({
+                    type: 'success',
+                    message: 'Ваше обращение зарегистрировано. Ожидайте ответа на указанный вами Email.',
+                    duration: 6000
+                });
+            } catch (error) {
+                console.log(error)
+                ElMessage({
+                    type: 'error',
+                    message: 'Что-то пошло не так, попробуйте позже!',
+                    duration: 6000
+                });
+            } finally {
+                mainStore.loader = false;
+            }
+        },
     }
 })

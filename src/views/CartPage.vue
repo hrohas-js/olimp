@@ -220,9 +220,10 @@ const openChat = () => {
             <h3 class="textMontserrat_bold">
               Дополнительная информация
             </h3>
-            <p class="textMontserrat_regular">
-              {{ product.description }}
-            </p>
+            <p
+                v-html="product.description"
+                class="textMontserrat_regular"
+            />
           </section>
           <div
               v-if="someItem === 'technics' && width <= 1024"
@@ -392,9 +393,10 @@ const openChat = () => {
               <h3 class="textMontserrat_medium">
                 Дополнительная информация
               </h3>
-              <p class="textMontserrat_light">
-                {{ product.description }}
-              </p>
+              <p
+                  v-html="product.description"
+                  class="textMontserrat_regular"
+              />
             </section>
           </section>
           <div class="complain">
@@ -558,9 +560,10 @@ const openChat = () => {
               <h3 class="textMontserrat_medium">
                 Дополнительная информация
               </h3>
-              <p class="textMontserrat_light">
-                {{ product.description }}
-              </p>
+              <p
+                  v-html="product.description"
+                  class="textMontserrat_regular"
+              />
             </section>
           </section>
         </div>
@@ -668,7 +671,7 @@ const openChat = () => {
 <style scoped lang="scss">
 .cartPage {
   .content{
-    margin-top: rem(25);
+    margin-top: rem(10);
   }
   .categoryName{
     font-size: rem(32);
@@ -682,8 +685,7 @@ const openChat = () => {
       //top: rem(8);
       //left: 0;
       height: rem(28);
-      max-width:rem(210);
-      margin-bottom: rem(10);
+      max-width:rem(200);
       font-size: rem(14);
     }
   }
@@ -708,6 +710,10 @@ const openChat = () => {
 
   .moreInfo {
     margin-top: rem(12);
+
+    p {
+      white-space: pre-wrap;
+    }
 
     .textMontserrat_medium {
       font-size: rem(18);
