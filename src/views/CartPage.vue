@@ -32,6 +32,7 @@ const width = computed(() => mainStore.display_width);
 const someItem = computed(() => mainStore.someItem);
 const isAuth = computed(() => authStore.jwt !== null);
 const chat = computed(() => profileStore.currentChat);
+const isMyAnnouncement = computed(() => profileStore.user.id === parseInt(productStore.author.id));
 
 const product = computed(() => {
   let prod = {};
@@ -288,7 +289,7 @@ const openChat = () => {
                   :phone="product.phone"
               />
               <main-button
-                  v-if="messageShow"
+                  v-if="messageShow && !isMyAnnouncement"
                   button-text="Написать сообщение"
                   color="blue"
                   size="big"
@@ -471,7 +472,7 @@ const openChat = () => {
                 :phone="product.phone"
             />
             <main-button
-                v-if="messageShow"
+                v-if="messageShow && !isMyAnnouncement"
                 button-text="Написать сообщение"
                 color="blue"
                 size="big"

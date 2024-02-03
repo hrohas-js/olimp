@@ -258,6 +258,7 @@ const goBack = () => {
 
       .controls {
         position: relative;
+        flex: 1 1 30%;
 
         .activeMenu {
           border-radius: 5px;
@@ -298,10 +299,11 @@ const goBack = () => {
     }
 
     .info {
-      flex: 0 1 90%;
+      flex: 0 1 60%;
     }
 
     .image {
+      flex: 1 1 10%;
       img {
         height: rem(35);
         object-fit: cover;

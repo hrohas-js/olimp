@@ -110,7 +110,7 @@ const width = computed(() =>mainStore.display_width);
 
   @media (max-width: em(1024, 16)) {
     display: flex;
-    width: 30%;
+    width: 38%;
     .image {
       flex: 1 1 45%;
 

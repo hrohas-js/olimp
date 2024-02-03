@@ -2,7 +2,7 @@
 import { Carousel, Slide, Navigation } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
 import {useProductStore} from "@/store/ProductStore";
-import {ref} from "vue";
+import {ref, computed} from "vue";
 
 const productStore = useProductStore();
 
@@ -14,6 +14,8 @@ const props = defineProps({
     default: () => ([])
   }
 });
+
+const isOneImage = computed(() => props.slider.length > 1);
 
 const slideTo = (val) => {
   currentSlide.value = val
@@ -29,7 +31,7 @@ const fetchGallery = (data) => {
     <Carousel
         id="gallery"
         :items-to-show="1"
-        :wrap-around="props.slider.length > 1"
+        :wrap-around="isOneImage"
         v-model="currentSlide"
         snap-align="center"
         @slide-end="fetchGallery"
@@ -43,13 +45,13 @@ const fetchGallery = (data) => {
             alt="actor"
         />
       </Slide>
-      <template v-if="props.slider.length > 1" #addons>
-        <navigation/>
+      <template #addons>
+        <navigation v-if="isOneImage" />
       </template>
     </Carousel>
 
     <Carousel
-        v-if="props.slider.length > 1"
+        v-if="isOneImage"
         id="thumbnails"
         :items-to-show="8"
         :wrap-around="false"
