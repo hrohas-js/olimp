@@ -12,7 +12,7 @@ export const useAnnouncementStore = defineStore("announcementStore", {
             title: '',
             description: '',
             categories: [],
-            price: '0',
+            price: '',
             parameters: [],
             gallery: [],
             location: '',

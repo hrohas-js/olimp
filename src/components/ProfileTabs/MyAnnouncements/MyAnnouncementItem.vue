@@ -34,7 +34,7 @@ const daysLeft = computed(() => {
   const startDate = new Date(props.item.date_publish);
   const endDate = new Date(props.item.date_ended_publish);
   const differenceInTime = endDate.getTime() - startDate.getTime();
-  return Math.floor(differenceInTime / (1000 * 3600 * 24));
+  return Math.ceil(differenceInTime / (1000 * 3600 * 24));
 });
 const daysLeftWords = computed(() => {
   const lastDigit = daysLeft.value % 10;

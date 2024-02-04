@@ -65,11 +65,7 @@ const titleValue = computed({
     return announcementStore.newItem.title;
   },
   set(value) {
-    if (value.length > 50) {
-      announcementStore.newItem.title = validateField('title', value.slice(0, -1)).message;
-    } else {
-      announcementStore.newItem.title = validateField('title', value).message;
-    }
+    announcementStore.newItem.title = validateField('title', value).message;
   }
 });
 const descriptionValue = computed({
@@ -411,6 +407,7 @@ const setPayAgreement = (e) => {
                 v-model="priceValue"
                 class="price"
                 :class="{'border_accent': createTrigger && price.length === 0}"
+                input-placeholder="0"
             />
             <div class="pay-agreement">
               <input
@@ -543,7 +540,11 @@ const setPayAgreement = (e) => {
       <p class="textMontserrat_medium">
         Вы размещаете данное объявление и информацию в нем для общего доступа в сети интернет.
         Нажимая "Разместить объявление", вы подтверждаете, что ознакомились и согласны с
-        <router-link to="/rules">
+        <router-link
+            to="/rules"
+            target="_blank"
+            class="color_colorSubBg"
+        >
           правилами сайта Production City
         </router-link>.
       </p>
