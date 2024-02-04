@@ -540,6 +540,13 @@ const setPayAgreement = (e) => {
     <footer v-if="route.params.mode === 'create'" class="postAdvertisements__footer">
       <main-button button-text="Разместить объявление" @click="create('publish')"/>
       <action-button text="Сохранить и выйти" @click="create('draft')"/>
+      <p class="textMontserrat_medium">
+        Вы размещаете данное объявление и информацию в нем для общего доступа в сети интернет.
+        Нажимая "Разместить объявление", вы подтверждаете, что ознакомились и согласны с
+        <router-link to="/rules">
+          правилами сайта Production City
+        </router-link>.
+      </p>
     </footer>
     <footer v-else class="postAdvertisements__footer">
       <main-button button-text="Сохранить изменения" @click="create('publish')"/>
@@ -804,9 +811,16 @@ const setPayAgreement = (e) => {
     max-width: rem(573);
     display: flex;
     gap: rem(20);
+    flex-wrap: wrap;
+
     button{
       max-width: 100%;
-      flex: 1 1 50%;
+      flex: 0 1 48%;
+    }
+
+    p {
+      width: 100%;
+      font-size: rem(14);
     }
   }
   .param {

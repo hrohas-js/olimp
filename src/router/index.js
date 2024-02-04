@@ -53,6 +53,11 @@ const routes = [
     component: () => import("@/views/NewCooperation")
   },
   {
+    path: '/rules',
+    name: 'SiteRules',
+    component: () => import("@/views/SiteRules")
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: () => import("@/views/NotFound"),

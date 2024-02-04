@@ -54,9 +54,9 @@ const categories = computed(() => catalogStore.categories);
               </p>
             </li>
             <li class="textMontserrat">
-              <p class="textMontserrat_regular color_colorBg">
+              <router-link to="/rules" class="textMontserrat_regular color_colorBg">
                 Правила сайта
-              </p>
+              </router-link>
             </li>
             <li class="textMontserrat">
               <router-link to="/question" class="textMontserrat_regular color_colorBg">
