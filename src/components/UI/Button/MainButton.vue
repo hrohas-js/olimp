@@ -2,9 +2,11 @@
 import {computed, ref} from "vue";
 import {useAuthStore} from "@/store/AuthStore";
 import {useMainStore} from "@/store/MainStore";
+import {useAnnouncementStore} from "@/store/AnnouncementStore";
 
 const authStore = useAuthStore();
 const mainStore = useMainStore();
+const announcementStore = useAnnouncementStore();
 
 const isAuth = computed(() => authStore.jwt !== null);
 
@@ -46,12 +48,30 @@ const props = defineProps({
     default() {
       return ""
     }
+  },
+  id: {
+    type: Number,
+    default() {
+      return ""
+    }
+  },
+  contacts: {
+    type: Number,
+    default() {
+      return ""
+    }
   }
 });
 
 const phoneShowTrigger = () => {
   if (isAuth.value) {
     phoneShow.value = !phoneShow.value;
+    if (phoneShow.value) {
+      announcementStore.setAnnouncementContacts({
+        id: props.id,
+        contacts: props.contacts
+      })
+    }
   } else {
     mainStore.popup = 'auth';
   }

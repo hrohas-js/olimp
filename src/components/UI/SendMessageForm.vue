@@ -48,15 +48,15 @@ const send = () => {
       @submit.prevent="send"
   >
     <div class="form-group color_black">
-      <label>Введите ваше имя:</label>
+      <label>Имя:</label>
       <input-announcement v-model="name" />
     </div>
     <div class="form-group color_black">
-      <label>Введите ваш Email:</label>
+      <label>Email:</label>
       <input-announcement v-model="email" />
     </div>
     <div class="form-group color_black">
-      <label>Введите ваше сообщение:</label>
+      <label>Сообщение:</label>
       <text-area-with-border v-model="message" />
     </div>
     <button

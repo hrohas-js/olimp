@@ -29,9 +29,10 @@ const props = defineProps({
 });
 
 const width = computed(() => mainStore.display_width);
+
 const daysLeft = computed(() => {
-  const startDate = new Date('2023-12-31T19:49:30');
-  const endDate = new Date('2024-01-20T00:00:00');
+  const startDate = new Date(props.item.date_publish);
+  const endDate = new Date(props.item.date_ended_publish);
   const differenceInTime = endDate.getTime() - startDate.getTime();
   return Math.floor(differenceInTime / (1000 * 3600 * 24));
 });
@@ -52,7 +53,7 @@ const daysLeftWords = computed(() => {
       return 'дней';
   }
 });
-const daysLeftPercent = computed(() => (daysLeft.value / 20) * 100);
+const daysLeftPercent = computed(() => (daysLeft.value / 30) * 100);
 const mainImage = computed(() => {
   if (props.item.gallery !== '[]') {
     const gal = JSON.parse(props.item.gallery);
@@ -63,6 +64,11 @@ const mainImage = computed(() => {
 });
 
 onMounted(() => {
+  document.addEventListener('click', (e) => {
+    if (actionItem.value && !e.target.classList.contains('actionsMenu')) {
+      actionItem.value = false;
+    }
+  });
   switch (props.mode) {
     case "publish":
       mainButton.value = {
@@ -121,7 +127,13 @@ const announcementAction = (id) => {
       router.push('/postAdvertisements/edit')
       break;
     case 2:
-      //some
+      announcementStore.removeAnnouncement({
+        id: props.item.id
+      }).then(() => {
+        profileStore.getAnnouncementOfUser({
+          user_id: profileStore.user.id
+        })
+      });
       break;
     case 3:
       announcementStore.changeAnnouncementStatus({
@@ -148,10 +160,6 @@ const announcementAction = (id) => {
           :src="mainImage"
           :alt="item.title"
       />
-<!--      <input
-          type="checkbox"
-          class="chooseThis"
-      />-->
     </div>
     <div class="content">
       <div
@@ -220,7 +228,7 @@ const announcementAction = (id) => {
 
               </div>
               <p class="textMontserrat_regular">
-                5
+                {{ item.contacts }}
               </p>
             </div>
             <div class="likeInfo__item">
@@ -319,7 +327,7 @@ const announcementAction = (id) => {
 
                 </div>
                 <p class="textMontserrat_regular">
-                  5
+                  {{ item.contacts }}
                 </p>
               </div>
               <div class="likeInfo__item">
@@ -370,9 +378,8 @@ const announcementAction = (id) => {
         <!--                ...-->
         <!--              </div>-->
         <h2 class="textMontserrat_medium">
-          Аренда проф. фотоаппарата
+          {{ item.title }}
         </h2>
-
       </div>
       <div
           v-if="width <= 768"
@@ -380,7 +387,7 @@ const announcementAction = (id) => {
       >
         <div class="text">
           <p class="price textMontserrat_light">
-            1000 руб/час
+            {{ item.price }} руб
           </p>
         </div>
         <div class="likeInfo">
@@ -396,7 +403,7 @@ const announcementAction = (id) => {
               </svg>
             </div>
             <p class="textMontserrat_light">
-              260
+              {{ item.views }}
             </p>
           </div>
           <div class="likeInfo__item">
@@ -411,7 +418,7 @@ const announcementAction = (id) => {
               </svg>
             </div>
             <p class="textMontserrat_light">
-              5
+              {{ item.contacts }}
             </p>
           </div>
           <div class="likeInfo__item">
@@ -423,7 +430,7 @@ const announcementAction = (id) => {
               </svg>
             </div>
             <p class="textMontserrat_light">
-              10
+              {{ item.likes }}
             </p>
           </div>
         </div>
@@ -447,27 +454,18 @@ const announcementAction = (id) => {
     position: relative;
     display: flex;
     justify-content: center;
-    //flex: 1 1 30%;
-    //max-width: rem(177);
 
     img {
       height: rem(137);
       object-fit: cover;
     }
-
-    .chooseThis {
-      position: absolute;
-      top: rem(5);
-      left: rem(5);
-    }
   }
 
   .header {
-    //display: flex;
-    //justify-content: space-between;
     display: grid;
     grid-template-columns: 1.4fr 0.8fr 0.5fr;
     width: 100%;
+    gap: rem(10);
   }
 
   .content {
@@ -538,12 +536,15 @@ const announcementAction = (id) => {
     width: 100%;
     position: absolute;
     top: 45%;
-    padding: rem(10);
     box-shadow: 0 10px 10px 5px rgb(221, 221, 221);
 
     p {
+      padding: rem(10);
       cursor: pointer;
-      text-transform: capitalize;
+
+      &:hover {
+        background: $color_grayLight;
+      }
     }
 
     p:last-child {

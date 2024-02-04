@@ -60,7 +60,7 @@ const categories = computed(() => catalogStore.categories);
             </li>
             <li class="textMontserrat">
               <router-link to="/question" class="textMontserrat_regular color_colorBg">
-                Вопрос - ответ
+                Поддержка
               </router-link>
             </li>
           </ul>

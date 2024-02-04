@@ -154,6 +154,17 @@ export const useAnnouncementStore = defineStore("announcementStore", {
                 mainStore.loader = false;
             }
         },
+        async setAnnouncementContacts(data) {
+            const mainStore = useMainStore();
+            try {
+                mainStore.loader = true;
+                await AnnouncementApi.setAnnouncementContacts(data);
+            } catch (error) {
+                console.log(error)
+            } finally {
+                mainStore.loader = false;
+            }
+        },
         async changeAnnouncementStatus(data) {
             const mainStore = useMainStore();
             const profileStore = useProfileStore();
@@ -208,6 +219,14 @@ export const useAnnouncementStore = defineStore("announcementStore", {
                     this.newItem.marker.coordinates = [response.lon, response.lat];
                     this.fetchMap('coordinates', `${response.lon}, ${response.lat}`)
                 });
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async removeAnnouncement(data) {
+            try {
+                const response = await AnnouncementApi.removeAnnouncement(data);
+                console.log(response);
             } catch (error) {
                 console.log(error)
             }

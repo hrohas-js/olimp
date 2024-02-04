@@ -67,6 +67,17 @@ export class AnnouncementApi extends BaseApi {
             }
         })
     }
+    static async setAnnouncementContacts(data) {
+        return this.doRequest({
+            method: "POST",
+            url: "/requests/setAnnouncementContacts",
+            data: data,
+            headers: {
+                Authorization: `Bearer ${this.getJWT()}`,
+                'Content-Type': 'application/json'
+            }
+        })
+    }
     static async changeAnnouncementStatus(data) {
         return this.doRequest({
             method: "POST",
@@ -82,6 +93,17 @@ export class AnnouncementApi extends BaseApi {
         return this.doRequest({
             method: "POST",
             url: "/requests/getUserOfAnnouncement",
+            data: data,
+            headers: {
+                Authorization: `Bearer ${this.getJWT()}`,
+                'Content-Type': 'application/json'
+            }
+        })
+    }
+    static async removeAnnouncement(data) {
+        return this.doRequest({
+            method: "POST",
+            url: "/requests/removeAnnouncement",
             data: data,
             headers: {
                 Authorization: `Bearer ${this.getJWT()}`,

@@ -67,7 +67,6 @@ watch(notifications, (newValue, oldValue) => {
 onBeforeMount(() => {
   catalogStore.getCategories();
   catalogStore.getAnnouncements();
-  mainStore.fetchCoords();
 });
 
 onMounted(() => {
@@ -970,10 +969,6 @@ button::-moz-focus-inner {
 }
 
 #thumbnails {
-  .carousel__slide--active {
-    border: 2px solid $color_subBg;
-  }
-
   ol {
     gap: rem(8);
 

@@ -32,7 +32,7 @@ const width = computed(() => mainStore.display_width);
 const someItem = computed(() => mainStore.someItem);
 const isAuth = computed(() => authStore.jwt !== null);
 const chat = computed(() => profileStore.currentChat);
-const isMyAnnouncement = computed(() => profileStore.user.id === parseInt(productStore.author.id));
+const isMyAnnouncement = computed(() => parseInt(profileStore.user.id) === parseInt(productStore.author.id));
 
 const product = computed(() => {
   let prod = {};
@@ -243,36 +243,6 @@ const openChat = () => {
               class="buttonActionContainer"
           >
             <SaleInformation v-if="!isActor && isAuth"/>
-<!--            <div
-                v-if="someItem === 'technics' && width > 1024"
-                class="buttonContainer"
-                :class="{'fraction':width > 1024}"
-            >
-              <main-button
-                  button-text="Купить с доставкой"
-                  size="big"
-              />
-            </div>-->
-<!--            <div-->
-<!--                class="buttonContainer"-->
-<!--                :class="{'fraction':width > 1024, 'row': someItem !== 'technics' && width < 1024}"-->
-<!--            >-->
-<!--              <main-button-->
-<!--                  v-if="width < 1024 && someItem === 'technics'"-->
-<!--                  button-text="Купить с доставкой"-->
-<!--                  size="big"-->
-<!--              />-->
-<!--              <main-button-->
-<!--                  button-text="Показать телефон"-->
-<!--                  color="green"-->
-<!--                  size="big"-->
-<!--              />-->
-<!--              <main-button-->
-<!--                  button-text="Написать сообщение"-->
-<!--                  color="blue"-->
-<!--                  size="big"-->
-<!--              />-->
-<!--            </div>-->
             <div
                 class="buttonContainer"
             >
@@ -286,6 +256,7 @@ const openChat = () => {
                   button-text="Показать телефон"
                   color="green"
                   size="big"
+                  :id="product.id"
                   :phone="product.phone"
               />
               <main-button
@@ -419,43 +390,10 @@ const openChat = () => {
               class="cartPageName textMontserrat_medium"
               :class="{'fraction':width > 1024}"
           >
-<!--            <p>-->
-<!--              Фотоаппарат Canon EOS 600D-->
-<!--            </p>-->
             <p>
               {{ product.price }} ₽
             </p>
           </div>
-<!--          <div
-              v-if="someItem === 'technics' && width > 1024"
-              class="buttonContainer"
-              :class="{'fraction':width > 1024}"
-          >
-            <main-button
-                button-text="Купить с доставкой"
-                size="big"
-            />
-          </div>-->
-<!--          <div-->
-<!--              class="buttonContainer"-->
-<!--              :class="{'fraction':width > 1024, 'row': someItem !== 'technics' && width < 1024}"-->
-<!--          >-->
-<!--            <main-button-->
-<!--                v-if="width < 1024 && someItem === 'technics'"-->
-<!--                button-text="Купить с доставкой"-->
-<!--                size="big"-->
-<!--            />-->
-<!--            <main-button-->
-<!--                button-text="Показать телефон"-->
-<!--                color="green"-->
-<!--                size="big"-->
-<!--            />-->
-<!--            <main-button-->
-<!--                button-text="Написать сообщение"-->
-<!--                color="blue"-->
-<!--                size="big"-->
-<!--            />-->
-<!--          </div>-->
           <div
               class="buttonContainer fraction"
           >
@@ -469,6 +407,7 @@ const openChat = () => {
                 button-text="Показать телефон"
                 color="green"
                 size="big"
+                :id="product.id"
                 :phone="product.phone"
             />
             <main-button

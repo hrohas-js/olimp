@@ -18,11 +18,12 @@ const props = defineProps({
 const isOneImage = computed(() => props.slider.length > 1);
 
 const slideTo = (val) => {
-  currentSlide.value = val
+  currentSlide.value = val;
 }
 
 const fetchGallery = (data) => {
-  currentSlide.value = data.currentSlideIndex
+  currentSlide.value = data.currentSlideIndex;
+  console.log(currentSlide.value)
 }
 </script>
 
@@ -37,8 +38,8 @@ const fetchGallery = (data) => {
         @slide-end="fetchGallery"
     >
       <Slide
-          v-for="slide in props.slider"
-          :key="slide.id"
+          v-for="(slide, index) in props.slider"
+          :key="index"
       >
         <img
             :src="slide.src"
@@ -60,13 +61,14 @@ const fetchGallery = (data) => {
         ref="carousel"
     >
       <Slide
-          v-for="slide in props.slider"
-          :key="slide.id"
-          @click="slideTo(slide.id - 1)"
+          v-for="(slide, index) in props.slider"
+          :key="index"
+          @click="slideTo(index)"
       >
         <img
             :src="slide.src"
-            alt="actor"
+            alt="photo"
+            :class="{'active': currentSlide === index}"
         />
       </Slide>
     </Carousel>
@@ -74,5 +76,7 @@ const fetchGallery = (data) => {
 </template>
 
 <style scoped lang="scss">
-
+.active {
+  border: 2px solid $color_subBg;
+}
 </style>

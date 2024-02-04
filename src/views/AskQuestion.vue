@@ -17,7 +17,7 @@ const width = computed(() => mainStore.display_width);
       <search-header v-if="width > 1024"/>
       <div class="content">
         <h2 class="textMontserrat textMontserrat_medium">
-          Вопрос-ответ
+          Поддержка
         </h2>
         <p class="textMontserrat textMontserrat_medium">
           Оставьте свои контактные данные, а также свой вопрос, и мы свяжемся с вами в ближайшее время

@@ -93,10 +93,10 @@ export const useMainStore = defineStore("mainStore", {
         errors: [],
         loader: false,
         miniChat: false,
-        location: '',
-        country: '',
+        location: localStorage.getItem('location') !== null ? localStorage.getItem('location') : '',
+        country: localStorage.getItem('country') !== null ? localStorage.getItem('country') : '',
         marker: {
-            coordinates: [37.617644, 55.755819]
+            coordinates: localStorage.getItem('coords') !== null ? localStorage.getItem('coords').split(',').map(Number) : [37.617644, 55.755819]
         },
         CLADR: []
     }),
@@ -173,13 +173,19 @@ export const useMainStore = defineStore("mainStore", {
                     response.response.GeoObjectCollection.featureMember.forEach(elem => {
                         if (elem.GeoObject.metaDataProperty.GeocoderMetaData.kind === 'locality') {
                             this.location = elem.GeoObject.name;
+                            localStorage.setItem('location', this.location);
                         }
                         if (elem.GeoObject.metaDataProperty.GeocoderMetaData.kind === 'country') {
                             this.country = elem.GeoObject.name;
+                            localStorage.setItem('country', this.country);
                         }
                     });
                 } else {
-                    this.marker = {...this.marker, coordinates: response.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ').map(Number)}
+                    this.marker = {
+                        ...this.marker,
+                        coordinates: response.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ').map(Number)
+                    };
+                    localStorage.setItem('coords', this.marker.coordinates.join(','));
                 }
             } catch (error) {
                 console.log(error)
