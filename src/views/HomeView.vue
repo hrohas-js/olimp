@@ -29,6 +29,7 @@ const video = computed(() => mainStore.videoReviews);
 
 onBeforeMount(() => {
   catalogStore.getAnnouncements();
+  profileStore.getLikes();
 });
 
 const openGeo = () => {
