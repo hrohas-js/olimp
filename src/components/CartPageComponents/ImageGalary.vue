@@ -7,6 +7,7 @@ import {ref, computed} from "vue";
 const productStore = useProductStore();
 
 const currentSlide = ref(0);
+const visibleRef = ref(false)
 
 const props = defineProps({
   slider: {
@@ -25,6 +26,10 @@ const fetchGallery = (data) => {
   currentSlide.value = data.currentSlideIndex;
   console.log(currentSlide.value)
 }
+
+const onShow = () => (visibleRef.value = true);
+
+const onHide = () => (visibleRef.value = false);
 </script>
 
 <template>
@@ -44,6 +49,7 @@ const fetchGallery = (data) => {
         <img
             :src="slide.src"
             alt="actor"
+            @click="onShow"
         />
       </Slide>
       <template #addons>
@@ -69,14 +75,25 @@ const fetchGallery = (data) => {
             :src="slide.src"
             alt="photo"
             :class="{'active': currentSlide === index}"
+            @click="onShow"
         />
       </Slide>
     </Carousel>
+    <vue-easy-lightbox
+        :visible="visibleRef"
+        :imgs="props.slider"
+        :index="currentSlide"
+        @hide="onHide"
+    />
   </div>
 </template>
 
 <style scoped lang="scss">
 .active {
   border: 2px solid $color_subBg;
+}
+
+img {
+  cursor: pointer;
 }
 </style>

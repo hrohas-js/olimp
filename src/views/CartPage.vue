@@ -85,7 +85,7 @@ const messageShow = computed(() => {
 const isLiked = computed(() => {
   const id = parseInt(route.params.id);
   let flag = false;
-  profileStore.myLikes.forEach(elem => {
+  [...profileStore.myLikes].forEach(elem => {
     if (id === elem.id) {
       flag = true;
     }
@@ -339,7 +339,7 @@ const openChat = () => {
               class="parameters"
               :class="{'fraction':width > 1024}"
           >
-            <h3 class="textMontserrat_bold">
+            <h3 v-if="parameters.length > 0" class="textMontserrat_bold">
               Параметры
             </h3>
             <main class="parameters__main">
