@@ -44,6 +44,7 @@ export const useCatalogStore = defineStore("catalogStore", {
         },
         filteredCatalog: (state) => {
             const route = useRoute();
+            const mainStore = useMainStore();
             let res = [];
             if (route.params.category) {
                 res = [...state.catalog].filter(elem => {
@@ -101,9 +102,16 @@ export const useCatalogStore = defineStore("catalogStore", {
             return res;
         },
         searchCatalog: (state) => {
-            if (state.search.length === 0) return state.catalog;
-            const srch = state.search.toLowerCase();
-            return [...state.catalog].filter(elem => elem.title.toLowerCase().indexOf(srch) !== -1);
+            const mainStore = useMainStore();
+            let res = state.catalog;
+            if (mainStore.location.length > 0) {
+                res = res.filter(elem => elem.location.indexOf(mainStore.location) !== -1);
+            }
+            if (state.search.length > 0) {
+                const srch = state.search.toLowerCase();
+                res = res.filter(elem => elem.title.toLowerCase().indexOf(srch) !== -1)
+            }
+            return res;
         }
     },
     actions: {

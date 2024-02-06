@@ -31,7 +31,7 @@ const props = defineProps({
 const width = computed(() => mainStore.display_width);
 
 const daysLeft = computed(() => {
-  const startDate = new Date(props.item.date_publish);
+  const startDate = new Date();
   const endDate = new Date(props.item.date_ended_publish);
   const differenceInTime = endDate.getTime() - startDate.getTime();
   return Math.ceil(differenceInTime / (1000 * 3600 * 24));

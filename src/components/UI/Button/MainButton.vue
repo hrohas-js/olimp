@@ -52,13 +52,13 @@ const props = defineProps({
   id: {
     type: Number,
     default() {
-      return ""
+      return 0
     }
   },
   contacts: {
     type: Number,
     default() {
-      return ""
+      return 0
     }
   }
 });

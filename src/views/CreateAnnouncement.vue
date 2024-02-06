@@ -208,7 +208,10 @@ const getCategoriesTree = (slug, category, filter = null) => {
               :key="filter.id"
               class="filter-group"
           >
-            <ul class="textMontserrat_regular">
+            <ul
+                v-if="filter.name !== 'Пол' && filter.name !== 'Стиль'"
+                class="textMontserrat_regular"
+            >
               <li
                   v-for="param in filter.content"
                   :key="param.id"
