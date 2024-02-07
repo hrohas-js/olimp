@@ -454,8 +454,11 @@ const setPayAgreement = (e) => {
                 :class="{'border_accent': createTrigger && location.length === 0}"
                 @blur="setMapAddress"
             />
-            <p class="textMontsserat_medium">
-              При заполнении данного поля обязательно укажите город
+            <p class="textMontserrat_medium">
+              При заполнении данного поля
+              <span class="textMontserrat_semiBold">
+                обязательно укажите город
+              </span>
             </p>
             <yandex-map
                 :settings="{
@@ -588,8 +591,7 @@ const setPayAgreement = (e) => {
         grid-template-areas:
           "name name name name name name name name name"
           "type type type type type type type type type"
-          "height height weight weight size size . . ."
-          "age age age age age age age age age"
+          "height height weight weight size size age age ."
           "study study study study study study study study study"
           "exp exp exp exp exp exp exp exp exp"
           "description description description description description description description description description"

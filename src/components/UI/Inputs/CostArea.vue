@@ -48,14 +48,14 @@ const toValue = computed({
     <input
         v-model="fromValue"
         type="text"
-        class="cost__item border_gray textMontserrat_light"
-        :placeholder="props.placeholderFrom"
+        class="cost__item textMontserrat_light border_subBg"
+        placeholder="от"
     >
     <input
         v-model="toValue"
         type="text"
-        class="cost__item border_gray textMontserrat_light"
-        :placeholder="props.placeholderTo"
+        class="cost__item textMontserrat_light border_subBg"
+        placeholder="до"
     >
   </div>
 </template>

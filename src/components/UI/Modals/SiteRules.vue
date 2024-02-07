@@ -71,12 +71,24 @@ const closeModal = () => {
 .modal {
   &__content {
     padding: 3%;
-    width: 60%;
+    width: 70%;
     display: flex;
     flex-direction: column;
     gap: rem(25);
     position: relative;
     border-radius: rem(5);
+
+    h2 {
+      font-size: rem(36);
+      margin-top: rem(40);
+      margin-bottom: rem(20);
+    }
+    div.textMontserrat_medium {
+      display: flex;
+      flex-direction: column;
+      gap: rem(10);
+      font-size: rem(14);
+    }
 
     .close {
       position: absolute;

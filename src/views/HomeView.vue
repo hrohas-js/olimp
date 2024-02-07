@@ -7,7 +7,7 @@ import AdvertisingItem from "@/components/Advertising/AdvertisingItem";
 import GoodsItemReviews from "@/components/Goods/GoodsItemHit";
 import MainSearch from "@/components/UI/Filters/MainSearch";
 import "vue3-carousel/dist/carousel.css";
-import {Carousel, Slide, Navigation} from "vue3-carousel";
+import {Carousel, Navigation, Slide} from "vue3-carousel";
 import {computed, onBeforeMount} from "vue";
 import {useRouter} from "vue-router";
 import {useMainStore} from "@/store/MainStore";
@@ -22,7 +22,10 @@ const profileStore = useProfileStore();
 
 const width = computed(() => mainStore.display_width);
 const location = computed(() => mainStore.location);
-const catalog = computed(() => catalogStore.searchCatalog);
+const catalog = computed(() => {
+  const originalCatalog = catalogStore.searchCatalog;
+  return originalCatalog.slice().sort(() => Math.random() - 0.5);
+});
 const name = computed(() => profileStore.user.name);
 const info = computed(() => mainStore.info);
 const video = computed(() => mainStore.videoReviews);

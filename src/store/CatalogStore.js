@@ -19,8 +19,8 @@ export const useCatalogStore = defineStore("catalogStore", {
         createdCategories: [],
         filterParams: {
             age: {
-                from: 0,
-                to: 0
+                from: '',
+                to: ''
             },
             sex: {},
             type: {},
