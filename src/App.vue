@@ -20,6 +20,7 @@ import Filter from "@/components/UI/Filters/Filter";
 import Messages from "@/components/ProfileTabs/Massage/Messages";
 import ReviewForm from "@/components/UI/Modals/ReviewForm";
 import ResetPassword from "@/components/UI/Modals/ResetPassword";
+import SiteRules from "@/components/UI/Modals/SiteRules";
 
 const mainStore = useMainStore();
 const profileStore = useProfileStore();
@@ -115,6 +116,7 @@ const closeMiniChat = () => {
     <geo-announcement-form v-if="popup === 'deal-location'" />
     <review-form v-if="popup === 'review'" />
     <reset-password v-if="popup === 'reset'" />
+    <site-rules v-if="popup === 'rules'" />
     <div
         v-if="miniChat"
         class="widget"
@@ -977,5 +979,13 @@ button::-moz-focus-inner {
       object-fit: cover;
     }
   }
+}
+
+.vel-btns-wrapper .btn__next {
+  right: 10% !important;
+}
+
+.vel-btns-wrapper .btn__prev {
+  left: 10% !important;
 }
 </style>

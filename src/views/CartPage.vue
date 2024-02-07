@@ -130,6 +130,7 @@ const upperTitle = computed(() =>{
 });
 
 onMounted(() => {
+  profileStore.getLikes();
   productStore.getUserOfAnnouncement({
     id: route.params.author
   });

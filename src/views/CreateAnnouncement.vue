@@ -215,7 +215,10 @@ const getCategoriesTree = (slug, category, filter = null) => {
               <li
                   v-for="param in filter.content"
                   :key="param.id"
-                  :class="{'active': param.id === newItemCategories[3]?.id}"
+                  :class="{
+                    'active': param.id === newItemCategories[3]?.id,
+                    'hide': param.hide
+                  }"
                   @click.stop="getCategoriesTree('filter', param, filter)"
               >
                 {{ param.name }}
@@ -284,6 +287,10 @@ const getCategoriesTree = (slug, category, filter = null) => {
       &.active,
       &:hover {
         background: $color_blueLikeAvt;
+      }
+
+      &.hide {
+        display: none;
       }
 
       &.cats:first-child {

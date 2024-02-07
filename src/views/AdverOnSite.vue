@@ -20,7 +20,7 @@ const width = computed(() => mainStore.display_width);
           Реклама на сайте
         </h2>
         <p class="textMontserrat textMontserrat_medium">
-          Напишите свои предложения и мы свяжемся с вами в ближайшее время!
+          Напишите свои предложения, мы постараемся в короткие сроки ответить Вам на указанную Вами электронную почту.
         </p>
         <send-message-form subject="Реклама на сайте" />
       </div>

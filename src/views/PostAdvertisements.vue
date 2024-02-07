@@ -230,6 +230,10 @@ onUnmounted(() => {
   localStorage.removeItem('newItem');
 });
 
+const openRules = () => {
+  mainStore.popup = 'rules';
+}
+
 const updateInputValue = (paramId, value) => {
   inputValues.value[paramId] = validateField('description', value).message;
 };
@@ -450,6 +454,9 @@ const setPayAgreement = (e) => {
                 :class="{'border_accent': createTrigger && location.length === 0}"
                 @blur="setMapAddress"
             />
+            <p class="textMontsserat_medium">
+              При заполнении данного поля обязательно укажите город
+            </p>
             <yandex-map
                 :settings="{
                   location: {
@@ -540,13 +547,12 @@ const setPayAgreement = (e) => {
       <p class="textMontserrat_medium">
         Вы размещаете данное объявление и информацию в нем для общего доступа в сети интернет.
         Нажимая "Разместить объявление", вы подтверждаете, что ознакомились и согласны с
-        <router-link
-            to="/rules"
-            target="_blank"
+        <span
             class="color_colorSubBg"
+            @click="openRules"
         >
           правилами сайта Production City
-        </router-link>.
+        </span>.
       </p>
     </footer>
     <footer v-else class="postAdvertisements__footer">
@@ -783,7 +789,12 @@ const setPayAgreement = (e) => {
     .mapArea{
       display: flex;
       flex-direction: column;
-      gap: rem(36);
+
+      p {
+        margin-bottom: rem(20);
+        font-size: rem(12);
+      }
+
       .map{
         border-radius: 5px;
       }
@@ -822,6 +833,10 @@ const setPayAgreement = (e) => {
     p {
       width: 100%;
       font-size: rem(14);
+
+      span {
+        cursor: pointer;
+      }
     }
   }
   .param {

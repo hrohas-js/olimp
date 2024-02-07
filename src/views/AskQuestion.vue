@@ -20,7 +20,7 @@ const width = computed(() => mainStore.display_width);
           Поддержка
         </h2>
         <p class="textMontserrat textMontserrat_medium">
-          Оставьте свои контактные данные, а также свой вопрос, и мы свяжемся с вами в ближайшее время
+          Изложите суть вопроса , мы направим Вам ответ на указанную Вами электронную почту.
         </p>
         <send-message-form subject="Вопрос-ответ" />
       </div>
