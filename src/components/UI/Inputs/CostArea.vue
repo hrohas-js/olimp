@@ -27,18 +27,42 @@ const props = defineProps({
 
 const fromValue = computed({
   get() {
-    return catalogStore.filterParams.age.from;
+    switch (props.paramName) {
+      case 'age':
+        return catalogStore.filterParams.age.from;
+      case 'height':
+        return catalogStore.filterParams.height.from;
+    }
   },
   set(value) {
-    catalogStore.filterParams.age.from = value;
+    switch (props.paramName) {
+      case 'age':
+        catalogStore.filterParams.age.from = value;
+        break;
+      case 'height':
+        catalogStore.filterParams.height.from = value;
+        break;
+    }
   }
 });
 const toValue = computed({
   get() {
-    return catalogStore.filterParams.age.to;
+    switch (props.paramName) {
+      case 'age':
+        return catalogStore.filterParams.age.to;
+      case 'height':
+        return catalogStore.filterParams.height.to;
+    }
   },
   set(value) {
-    catalogStore.filterParams.age.to = value;
+    switch (props.paramName) {
+      case 'age':
+        catalogStore.filterParams.age.to = value;
+        break;
+      case 'height':
+        catalogStore.filterParams.height.to = value;
+        break;
+    }
   }
 });
 </script>
@@ -65,8 +89,8 @@ const toValue = computed({
   display: flex;
   gap: rem(20);
   &__item{
-    height: rem(45);
-    max-width: rem(120);
+    height: rem(30);
+    max-width: rem(80);
     text-align: center;
   }
 }

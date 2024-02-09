@@ -22,15 +22,24 @@ export const useCatalogStore = defineStore("catalogStore", {
                 from: '',
                 to: ''
             },
+            height: {
+                from: '',
+                to: ''
+            },
             sex: {},
             type: {},
+            instruments: {},
             selectedSex: [],
-            selectedType: []
+            selectedType: [],
+            selectedInstruments: []
         }
     }),
     getters: {
+        musicianFlag: (state) => {
+            return (state.filterID.some(elem => elem.id === 41) || state.filterID.some(elem => elem.id === 62)) && state.filterContentID.some(elem => elem.id === 35)
+        },
         modelFlag: (state) => {
-            return (state.filterID.some(elem => elem.id === 30) || state.filterID.some(elem => elem.id === 51)) && state.filterContentID.some(elem => elem.id === 6)
+            return (state.filterID.some(elem => elem.id === 30) || state.filterID.some(elem => elem.id === 51)) && state.filterContentID.some(elem => elem.id === 3)
         },
         actorFlag: (state) => {
             return (state.filterID.some(elem => elem.id === 30) || state.filterID.some(elem => elem.id === 51)) && (state.filterContentID.some(elem => elem.id === 1) || state.filterContentID.some(elem => elem.id === 2))
@@ -44,7 +53,6 @@ export const useCatalogStore = defineStore("catalogStore", {
         },
         filteredCatalog: (state) => {
             const route = useRoute();
-            const mainStore = useMainStore();
             let res = [];
             if (route.params.category) {
                 res = [...state.catalog].filter(elem => {
@@ -77,6 +85,17 @@ export const useCatalogStore = defineStore("catalogStore", {
                     return tmp;
                 });
             }
+            if (state.filterParams.selectedInstruments.length > 0) {
+                res = res.filter(elem => {
+                    let tmp = false;
+                    JSON.parse(elem.parameters).forEach(elem => {
+                        if (state.filterParams.selectedInstruments.some(item => item.name === elem.name)) {
+                            tmp = true;
+                        }
+                    });
+                    return tmp;
+                });
+            }
             if (state.filterParams.age.from > 0) {
                 res = res.filter(elem => {
                     let tmp = false;
@@ -93,6 +112,28 @@ export const useCatalogStore = defineStore("catalogStore", {
                     let tmp = false;
                     JSON.parse(elem.parameters).forEach(elem => {
                         if (elem.name === 'Возраст' && state.filterParams.age.to < parseInt(elem.value)) {
+                            tmp = true;
+                        }
+                    });
+                    return tmp;
+                });
+            }
+            if (state.filterParams.height.from > 0) {
+                res = res.filter(elem => {
+                    let tmp = false;
+                    JSON.parse(elem.parameters).forEach(elem => {
+                        if (elem.name === 'Рост' && state.filterParams.age.from > parseInt(elem.value)) {
+                            tmp = true;
+                        }
+                    });
+                    return tmp;
+                });
+            }
+            if (state.filterParams.height.to > 0) {
+                res = res.filter(elem => {
+                    let tmp = false;
+                    JSON.parse(elem.parameters).forEach(elem => {
+                        if (elem.name === 'Рост' && state.filterParams.age.to < parseInt(elem.value)) {
                             tmp = true;
                         }
                     });

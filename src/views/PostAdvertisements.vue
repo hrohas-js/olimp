@@ -548,7 +548,6 @@ const setPayAgreement = (e) => {
       <main-button button-text="Разместить объявление" @click="create('publish')"/>
       <action-button text="Сохранить и выйти" @click="create('draft')"/>
       <p class="textMontserrat_medium">
-        Вы размещаете данное объявление и информацию в нем для общего доступа в сети интернет.
         Нажимая "Разместить объявление", вы подтверждаете, что ознакомились и согласны с
         <span
             class="color_colorSubBg"

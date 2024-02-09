@@ -12,8 +12,16 @@ const width = computed(() => mainStore.display_width);
 const filters = computed(() => catalogStore.filters);
 const actorFlag = computed(() => catalogStore.actorFlag);
 const modelFlag = computed(() => catalogStore.modelFlag);
+const musicianFlag = computed(() => catalogStore.musicianFlag);
 const sex = computed(() => catalogStore.filterParams.sex);
 const type = computed(() => catalogStore.filterParams.type);
+
+const emptyAge = computed(() => {
+  return catalogStore.filterParams.age.from === '' && catalogStore.filterParams.age.to === '';
+});
+const emptyHeight = computed(() => {
+  return catalogStore.filterParams.height.from === '' && catalogStore.filterParams.height.to === '';
+});
 
 onMounted(() => {
   document.addEventListener('click', (e) => {
@@ -23,6 +31,11 @@ onMounted(() => {
 
 const closeModal = () => {
   catalogStore.showModalFilters = false
+}
+
+const resetFilterRange = (name) => {
+  catalogStore.filterParams[name].from = '';
+  catalogStore.filterParams[name].to = '';
 }
 </script>
 
@@ -95,6 +108,24 @@ const closeModal = () => {
       </div>
     </div>
     <div
+        v-if="musicianFlag"
+        class="fraction"
+    >
+      <div>
+        <p
+            class="textMontserrat textMontserrat_semiBold"
+            v-html="type.name"
+        />
+        <div class="content">
+          <filter-item
+              filter-type="type"
+              :id="type"
+              :filter-param="type.content"
+          />
+        </div>
+      </div>
+    </div>
+    <div
         v-if="actorFlag || modelFlag"
         class="fraction"
     >
@@ -105,7 +136,37 @@ const closeModal = () => {
         <cost-area
             placeholder-from="от"
             placeholder-to="до"
+            param-name="age"
         />
+        <div
+            v-if="!emptyAge"
+            class="textMontserrat textMontserrat_medium"
+            @click="resetFilterRange('age')"
+        >
+          сбросить
+        </div>
+      </div>
+    </div>
+    <div
+        v-if="actorFlag || modelFlag"
+        class="fraction"
+    >
+      <p class="textMontserrat textMontserrat_medium">
+        Рост
+      </p>
+      <div class="content cost">
+        <cost-area
+            placeholder-from="от"
+            placeholder-to="до"
+            param-name="height"
+        />
+        <div
+            v-if="!emptyHeight"
+            class="textMontserrat textMontserrat_medium"
+            @click="resetFilterRange('height')"
+        >
+          сбросить
+        </div>
       </div>
     </div>
   </nav>
@@ -125,6 +186,12 @@ const closeModal = () => {
     .content {
       padding-left: rem(10);
       margin-top: rem(20);
+
+      &.cost > .textMontserrat_medium {
+        text-align: right;
+        text-decoration: underline;
+        cursor: pointer;
+      }
     }
   }
 }
