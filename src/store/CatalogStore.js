@@ -54,7 +54,7 @@ export const useCatalogStore = defineStore("catalogStore", {
         filteredCatalog: (state) => {
             const route = useRoute();
             let res = [];
-            if (route.params.category) {
+            if (route.params?.category) {
                 res = [...state.catalog].filter(elem => {
                     const cats = JSON.parse(elem.categories);
                     return cats[0].id === parseInt(route.params.category);
@@ -62,7 +62,7 @@ export const useCatalogStore = defineStore("catalogStore", {
             } else {
                 return state.catalog;
             }
-            if (route.params.subCategory !== 'all') {
+            if (route.params?.subCategory !== 'all') {
                 res = res.filter(elem => {
                     const cats = JSON.parse(elem.categories);
                     return cats[1].id === parseInt(route.params.subCategory);
@@ -216,6 +216,13 @@ export const useCatalogStore = defineStore("catalogStore", {
                         }
                     } else if (elem.id === 110 || elem.id === 111) {
                         this.filterParams.type = {
+                            id: elem.id,
+                            name: elem.name,
+                            catID: elem.sub_category_id,
+                            content: JSON.parse(elem.content)
+                        }
+                    } else if (elem.id === 112 || elem.id === 113) {
+                        this.filterParams.instruments = {
                             id: elem.id,
                             name: elem.name,
                             catID: elem.sub_category_id,

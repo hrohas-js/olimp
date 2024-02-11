@@ -209,7 +209,7 @@ const getCategoriesTree = (slug, category, filter = null) => {
               class="filter-group"
           >
             <ul
-                v-if="filter.name !== 'Пол' && filter.name !== 'Стиль'"
+                v-if="filter.name !== 'Пол' && filter.name !== 'Стиль' && filter.name !== 'Музыкальные инструменты'"
                 class="textMontserrat_regular"
             >
               <li

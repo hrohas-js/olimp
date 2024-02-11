@@ -15,6 +15,7 @@ const modelFlag = computed(() => catalogStore.modelFlag);
 const musicianFlag = computed(() => catalogStore.musicianFlag);
 const sex = computed(() => catalogStore.filterParams.sex);
 const type = computed(() => catalogStore.filterParams.type);
+const instruments = computed(() => catalogStore.filterParams.instruments);
 
 const emptyAge = computed(() => {
   return catalogStore.filterParams.age.from === '' && catalogStore.filterParams.age.to === '';
@@ -57,7 +58,7 @@ const resetFilterRange = (name) => {
         :key="filter.id"
         class="fraction"
     >
-      <div>
+      <div v-if="filter.name !== 'Музыкальные инструменты'">
         <p
             v-if="filter.name.length > 0"
             class="textMontserrat textMontserrat_semiBold"
@@ -114,13 +115,13 @@ const resetFilterRange = (name) => {
       <div>
         <p
             class="textMontserrat textMontserrat_semiBold"
-            v-html="type.name"
+            v-html="instruments.name"
         />
         <div class="content">
           <filter-item
-              filter-type="type"
-              :id="type"
-              :filter-param="type.content"
+              filter-type="instruments"
+              :id="instruments"
+              :filter-param="instruments.content"
           />
         </div>
       </div>

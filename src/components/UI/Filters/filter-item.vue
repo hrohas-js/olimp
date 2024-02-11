@@ -37,6 +37,12 @@ const setCurrentFilter = (e, filID, filconID) => {
     } else {
       catalogStore.filterParams.selectedType = [...catalogStore.filterParams.selectedType].filter(elem => elem.id !== filconID.id);
     }
+  } else if (props.filterType === 'instruments') {
+    if (e.target.checked) {
+      catalogStore.filterParams.selectedInstruments.push(filconID);
+    } else {
+      catalogStore.filterParams.selectedInstruments = [...catalogStore.filterParams.selectedInstruments].filter(elem => elem.id !== filconID.id);
+    }
   } else {
     if (e.target.checked) {
       catalogStore.filterID.push(filID);
