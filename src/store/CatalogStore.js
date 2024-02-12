@@ -145,7 +145,7 @@ export const useCatalogStore = defineStore("catalogStore", {
         searchCatalog: (state) => {
             const mainStore = useMainStore();
             let res = state.catalog;
-            if (mainStore.location.length > 0) {
+            if (mainStore.location.length > 0 && mainStore.location !== 'Все города') {
                 res = res.filter(elem => elem.location.indexOf(mainStore.location) !== -1);
             }
             if (state.search.length > 0) {

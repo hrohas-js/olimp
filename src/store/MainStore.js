@@ -10,6 +10,12 @@ export const useMainStore = defineStore("mainStore", {
     state: () => ({
         info: [
             {
+                src: 'https://productioncity.pro/photos/anons/anons0.jpg',
+                link: '',
+                title: 'Подобрать специалистов и участников на кино-фото или музыкальный проект.',
+                description: 'Рынок и аренда кино-фото-видео и музыкальной техники.'
+            },
+            {
                 src: 'https://productioncity.pro/photos/anons/anons1.jpg',
                 link: 'https://dzen.ru/a/YWbXnJcRuDvTHoEC',
                 title: 'Хочу снимать кино.',

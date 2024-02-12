@@ -25,10 +25,15 @@ const props = defineProps({
 });
 
 const width = computed(() =>mainStore.display_width);
+
+const openAbout = () => mainStore.popup = 'about';
 </script>
 
 <template>
-  <article class="announcementItem">
+  <article
+      v-if="props.item.link.length > 0"
+      class="announcementItem"
+  >
     <a
         :href="props.item.link"
         target="_blank"
@@ -54,6 +59,34 @@ const width = computed(() =>mainStore.display_width);
         </header>
       </section>
     </a>
+  </article>
+  <article
+      v-else
+      class="announcementItem"
+      @click="openAbout"
+  >
+    <div>
+      <div class="image">
+        <!--      <sub-items-status
+                  :text="props.statusText"
+                  :relevance="props.relevanceText"
+              />-->
+        <img
+            :src="props.item.src"
+            :alt="props.item.title"
+        />
+      </div>
+      <section class="content">
+        <header class="announcementItem__header">
+          <h3 class="subItemTitle">
+            {{ props.item.title }}
+          </h3>
+          <p class="subItemText">
+            {{ props.item.description }}
+          </p>
+        </header>
+      </section>
+    </div>
   </article>
 </template>
 

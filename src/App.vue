@@ -21,6 +21,7 @@ import Messages from "@/components/ProfileTabs/Massage/Messages";
 import ReviewForm from "@/components/UI/Modals/ReviewForm";
 import ResetPassword from "@/components/UI/Modals/ResetPassword";
 import SiteRules from "@/components/UI/Modals/SiteRules";
+import AboutSite from "@/components/UI/Modals/AboutSite";
 
 const mainStore = useMainStore();
 const profileStore = useProfileStore();
@@ -117,6 +118,7 @@ const closeMiniChat = () => {
     <review-form v-if="popup === 'review'" />
     <reset-password v-if="popup === 'reset'" />
     <site-rules v-if="popup === 'rules'" />
+    <about-site v-if="popup === 'about'" />
     <div
         v-if="miniChat"
         class="widget"

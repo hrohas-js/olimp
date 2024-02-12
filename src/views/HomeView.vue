@@ -46,14 +46,6 @@ const openGeo = () => {
     <header-banner v-if="width > 768"/>
     <div class="wrapper">
       <section class="content">
-        <header
-            v-if="width > 768"
-            class="content__header"
-        >
-          <h2 class="textMontserrat textMontserrat_semiBold lineHeader">
-            Центр содействия по реализации кино, фото, видео, музыкальных и других творческих проектов
-          </h2>
-        </header>
         <navigation-categories/>
         <div
             v-if="width <= 1024 && width > 768"
