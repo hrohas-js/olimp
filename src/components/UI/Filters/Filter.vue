@@ -13,9 +13,11 @@ const filters = computed(() => catalogStore.filters);
 const actorFlag = computed(() => catalogStore.actorFlag);
 const modelFlag = computed(() => catalogStore.modelFlag);
 const musicianFlag = computed(() => catalogStore.musicianFlag);
+const photoFlag = computed(() => catalogStore.photoFlag);
 const sex = computed(() => catalogStore.filterParams.sex);
 const type = computed(() => catalogStore.filterParams.type);
 const instruments = computed(() => catalogStore.filterParams.instruments);
+const photo = computed(() => catalogStore.filterParams.photo);
 
 const emptyAge = computed(() => {
   return catalogStore.filterParams.age.from === '' && catalogStore.filterParams.age.to === '';
@@ -122,6 +124,24 @@ const resetFilterRange = (name) => {
               filter-type="instruments"
               :id="instruments"
               :filter-param="instruments.content"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+        v-if="photoFlag"
+        class="fraction"
+    >
+      <div>
+        <p
+            class="textMontserrat textMontserrat_semiBold"
+            v-html="photo.name"
+        />
+        <div class="content">
+          <filter-item
+              filter-type="instruments"
+              :id="photo"
+              :filter-param="photo.content"
           />
         </div>
       </div>

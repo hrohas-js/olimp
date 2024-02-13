@@ -43,6 +43,12 @@ const setCurrentFilter = (e, filID, filconID) => {
     } else {
       catalogStore.filterParams.selectedInstruments = [...catalogStore.filterParams.selectedInstruments].filter(elem => elem.id !== filconID.id);
     }
+  } else if (props.filterType === 'photo') {
+    if (e.target.checked) {
+      catalogStore.filterParams.selectedPhoto.push(filconID);
+    } else {
+      catalogStore.filterParams.selectedPhoto = [...catalogStore.filterParams.selectedPhoto].filter(elem => elem.id !== filconID.id);
+    }
   } else {
     if (e.target.checked) {
       catalogStore.filterID.push(filID);

@@ -29,12 +29,17 @@ export const useCatalogStore = defineStore("catalogStore", {
             sex: {},
             type: {},
             instruments: {},
+            photo: {},
             selectedSex: [],
             selectedType: [],
-            selectedInstruments: []
+            selectedInstruments: [],
+            selectedPhoto: []
         }
     }),
     getters: {
+        photoFlag: (state) => {
+            return (state.filterID.some(elem => elem.id === 1)) && state.filterContentID.some(elem => elem.id === 11)
+        },
         musicianFlag: (state) => {
             return (state.filterID.some(elem => elem.id === 41) || state.filterID.some(elem => elem.id === 62)) && state.filterContentID.some(elem => elem.id === 35)
         },
@@ -223,6 +228,13 @@ export const useCatalogStore = defineStore("catalogStore", {
                         }
                     } else if (elem.id === 112 || elem.id === 113) {
                         this.filterParams.instruments = {
+                            id: elem.id,
+                            name: elem.name,
+                            catID: elem.sub_category_id,
+                            content: JSON.parse(elem.content)
+                        }
+                    } else if (elem.id === 114) {
+                        this.filterParams.photo = {
                             id: elem.id,
                             name: elem.name,
                             catID: elem.sub_category_id,
