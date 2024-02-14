@@ -14,10 +14,14 @@ const actorFlag = computed(() => catalogStore.actorFlag);
 const modelFlag = computed(() => catalogStore.modelFlag);
 const musicianFlag = computed(() => catalogStore.musicianFlag);
 const photoFlag = computed(() => catalogStore.photoFlag);
+const voiceFlag = computed(() => catalogStore.vocalFlag);
+const opticFlag = computed(() => catalogStore.opticFlag);
 const sex = computed(() => catalogStore.filterParams.sex);
 const type = computed(() => catalogStore.filterParams.type);
 const instruments = computed(() => catalogStore.filterParams.instruments);
 const photo = computed(() => catalogStore.filterParams.photo);
+const style = computed(() => catalogStore.filterParams.style);
+const optic = computed(() => catalogStore.filterParams.optic);
 
 const emptyAge = computed(() => {
   return catalogStore.filterParams.age.from === '' && catalogStore.filterParams.age.to === '';
@@ -60,7 +64,7 @@ const resetFilterRange = (name) => {
         :key="filter.id"
         class="fraction"
     >
-      <div v-if="filter.name !== 'Музыкальные инструменты'">
+      <div v-if="filter.name !== 'Музыкальные инструменты' && filter.name !== 'Пол' && filter.name !== 'Стиль'">
         <p
             v-if="filter.name.length > 0"
             class="textMontserrat textMontserrat_semiBold"
@@ -75,7 +79,7 @@ const resetFilterRange = (name) => {
       </div>
     </div>
     <div
-        v-if="modelFlag"
+        v-if="modelFlag || voiceFlag"
         class="fraction"
     >
       <div>
@@ -129,6 +133,24 @@ const resetFilterRange = (name) => {
       </div>
     </div>
     <div
+        v-if="voiceFlag"
+        class="fraction"
+    >
+      <div>
+        <p
+            class="textMontserrat textMontserrat_semiBold"
+            v-html="style.name"
+        />
+        <div class="content">
+          <filter-item
+              filter-type="instruments"
+              :id="style"
+              :filter-param="style.content"
+          />
+        </div>
+      </div>
+    </div>
+    <div
         v-if="photoFlag"
         class="fraction"
     >
@@ -142,6 +164,24 @@ const resetFilterRange = (name) => {
               filter-type="instruments"
               :id="photo"
               :filter-param="photo.content"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+        v-if="opticFlag"
+        class="fraction"
+    >
+      <div>
+        <p
+            class="textMontserrat textMontserrat_semiBold"
+            v-html="optic.name"
+        />
+        <div class="content">
+          <filter-item
+              filter-type="instruments"
+              :id="optic"
+              :filter-param="optic.content"
           />
         </div>
       </div>

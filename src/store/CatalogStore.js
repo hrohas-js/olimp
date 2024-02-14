@@ -30,13 +30,23 @@ export const useCatalogStore = defineStore("catalogStore", {
             type: {},
             instruments: {},
             photo: {},
+            style: {},
+            optic: {},
             selectedSex: [],
             selectedType: [],
             selectedInstruments: [],
-            selectedPhoto: []
+            selectedPhoto: [],
+            selectedStyle: [],
+            selectedOptic: []
         }
     }),
     getters: {
+        opticFlag: (state) => {
+            return (state.filterID.some(elem => elem.id === 115)) && state.filterContentID.some(elem => elem.id === 1)
+        },
+        vocalFlag: (state) => {
+            return (state.filterID.some(elem => elem.id === 32) || state.filterID.some(elem => elem.id === 53)) && state.filterContentID.some(elem => elem.id === 1)
+        },
         photoFlag: (state) => {
             return (state.filterID.some(elem => elem.id === 1)) && state.filterContentID.some(elem => elem.id === 11)
         },
@@ -95,6 +105,28 @@ export const useCatalogStore = defineStore("catalogStore", {
                     let tmp = false;
                     JSON.parse(elem.parameters).forEach(elem => {
                         if (state.filterParams.selectedInstruments.some(item => item.name === elem.name)) {
+                            tmp = true;
+                        }
+                    });
+                    return tmp;
+                });
+            }
+            if (state.filterParams.selectedStyle.length > 0) {
+                res = res.filter(elem => {
+                    let tmp = false;
+                    JSON.parse(elem.parameters).forEach(elem => {
+                        if (state.filterParams.selectedStyle.some(item => item.name === elem.name)) {
+                            tmp = true;
+                        }
+                    });
+                    return tmp;
+                });
+            }
+            if (state.filterParams.selectedOptic.length > 0) {
+                res = res.filter(elem => {
+                    let tmp = false;
+                    JSON.parse(elem.parameters).forEach(elem => {
+                        if (state.filterParams.selectedOptic.some(item => item.name === elem.name)) {
                             tmp = true;
                         }
                     });
@@ -211,8 +243,9 @@ export const useCatalogStore = defineStore("catalogStore", {
             try {
                 mainStore.loader = true;
                 const response = await CatalogApi.getFilters(id);
+                console.log(response)
                 response.result.forEach(elem => {
-                    if (elem.id === 108 || elem.id === 109) {
+                    if (elem.id === 108 || elem.id === 109 || elem.id === 42 || elem.id === 63) {
                         this.filterParams.sex = {
                             id: elem.id,
                             name: elem.name,
@@ -235,6 +268,20 @@ export const useCatalogStore = defineStore("catalogStore", {
                         }
                     } else if (elem.id === 114) {
                         this.filterParams.photo = {
+                            id: elem.id,
+                            name: elem.name,
+                            catID: elem.sub_category_id,
+                            content: JSON.parse(elem.content)
+                        }
+                    } else if (elem.id === 43 || elem.id === 64) {
+                        this.filterParams.style = {
+                            id: elem.id,
+                            name: elem.name,
+                            catID: elem.sub_category_id,
+                            content: JSON.parse(elem.content)
+                        }
+                    } else if (elem.id === 5) {
+                        this.filterParams.optic = {
                             id: elem.id,
                             name: elem.name,
                             catID: elem.sub_category_id,

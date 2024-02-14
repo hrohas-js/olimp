@@ -59,6 +59,8 @@ const getCategoriesTree = (slug, category, filter = null) => {
         } else if (announcementStore.newItem.selectedCategories.length > 0) {
           announcementStore.newItem.selectedCategories = [];
           announcementStore.newItem.selectedCategories.push(category.name);
+        } else {
+          announcementStore.newItem.selectedCategories.push(category.name);
         }
         mobileSubCategoriesShowFlag.value = true;
         if (width.value < 768) {
@@ -209,7 +211,7 @@ const getCategoriesTree = (slug, category, filter = null) => {
               class="filter-group"
           >
             <ul
-                v-if="filter.name !== 'Пол' && filter.name !== 'Стиль' && filter.name !== 'Музыкальные инструменты'"
+                v-if="filter.name !== 'Пол' && filter.name !== 'Стиль' && filter.name !== 'Музыкальные инструменты' && filter.name !== 'Байонет'"
                 class="textMontserrat_regular"
             >
               <li

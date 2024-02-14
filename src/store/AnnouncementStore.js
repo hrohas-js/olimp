@@ -61,7 +61,6 @@ export const useAnnouncementStore = defineStore("announcementStore", {
                 const response = await AnnouncementApi.removeFromGallery(data);
                 if (response.result) {
                     this.newItem.gallery = [...this.newItem.gallery].filter(elem => elem.src !== data.url);
-                    console.log();
                 } else {
                     ElMessage({
                         type: 'error',
