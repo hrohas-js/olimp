@@ -3,7 +3,7 @@ import { Carousel, Slide, Navigation } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
 import {useProductStore} from "@/store/ProductStore";
 import {ref, computed} from "vue";
-import YouTube from "vue3-youtube";
+import YouTubeVideo from "@/components/UI/YouTubeVideo";
 
 const productStore = useProductStore();
 
@@ -57,8 +57,8 @@ const onHide = () => (visibleRef.value = false);
             @click="onShow"
         />
       </Slide>
-      <Slide v-show="props.video.length > 0" :key="props.slider.length">
-        <YouTube id="player" :src="props.video" width="100%" height="100%" />
+      <Slide v-if="props.video.length > 0" :key="props.slider.length">
+        <YouTubeVideo :video-link="props.video" />
       </Slide>
       <template #addons>
         <navigation v-if="isOneImage" />
@@ -88,7 +88,7 @@ const onHide = () => (visibleRef.value = false);
       <Slide
           v-show="props.video.length > 0"
           :key="props.slider.length"
-          @click.stop="slideTo(props.slider.length)"
+          @click="slideTo(props.slider.length)"
       >
         <img
             :src="props.slider[0].src"
