@@ -954,6 +954,11 @@ button::-moz-focus-inner {
   .carousel__slide {
     height: rem(300);
     @extend .background_modal;
+
+    & > div {
+      width: 100%;
+      height: 100%;
+    }
   }
 
   .carousel__prev,
@@ -975,6 +980,10 @@ button::-moz-focus-inner {
 #thumbnails {
   ol {
     gap: rem(8);
+
+    .carousel__slide {
+      height: rem(70);
+    }
 
     img {
       height: 100%;

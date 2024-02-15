@@ -29,6 +29,9 @@ const deactivateFocusFlag = () => {
       @focus="activateFocusFlag"
       @blur="deactivateFocusFlag"
   >
+    <option value="Выбрать">
+      Выбрать
+    </option>
     <option
         v-for="paramVariant in props.options"
         :key="paramVariant.id"

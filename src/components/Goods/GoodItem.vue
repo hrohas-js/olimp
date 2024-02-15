@@ -57,7 +57,7 @@ const categoriesTree = computed(() => {
 });
 const vacancyFlag = computed(() => {
   const cats = JSON.parse(categories.value);
-  return cats[0].id === 2;
+  return cats[0].id === 1;
 });
 const isLiked = computed(() => {
   let flag = false;

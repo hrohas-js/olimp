@@ -42,7 +42,7 @@ export const useCatalogStore = defineStore("catalogStore", {
     }),
     getters: {
         opticFlag: (state) => {
-            return (state.filterID.some(elem => elem.id === 115)) && state.filterContentID.some(elem => elem.id === 1)
+            return (state.filterID.some(elem => elem.id === 115) || state.filterID.some(elem => elem.id === 90)) && state.filterContentID.some(elem => elem.id === 1)
         },
         vocalFlag: (state) => {
             return (state.filterID.some(elem => elem.id === 32) || state.filterID.some(elem => elem.id === 53)) && state.filterContentID.some(elem => elem.id === 1)
@@ -200,6 +200,7 @@ export const useCatalogStore = defineStore("catalogStore", {
                 mainStore.loader = true;
                 const response = await CatalogApi.getCategories();
                 this.categories = response.result;
+                console.log(response);
                 arr = response.result.filter(elem => elem.name !== 'Поиск специалистов');
                 arr.forEach(elem => {
                     if (elem.name === 'Работа (вакансии)') {
@@ -207,12 +208,12 @@ export const useCatalogStore = defineStore("catalogStore", {
                         elem.subs = [
                             {
                                 id: 1,
-                                title: 'Соискатель',
+                                title: 'Работодатель',
                                 name: 'Работа (вакансии)'
                             },
                             {
                                 id: 2,
-                                title: 'Работодатель',
+                                title: 'Соискатель',
                                 name: 'Поиск специалистов'
                             }
                         ];
@@ -280,7 +281,7 @@ export const useCatalogStore = defineStore("catalogStore", {
                             catID: elem.sub_category_id,
                             content: JSON.parse(elem.content)
                         }
-                    } else if (elem.id === 5) {
+                    } else if (elem.id === 5 || elem.id === 118) {
                         this.filterParams.optic = {
                             id: elem.id,
                             name: elem.name,

@@ -3,6 +3,7 @@ import { Carousel, Slide, Navigation } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
 import {useProductStore} from "@/store/ProductStore";
 import {ref, computed} from "vue";
+import YouTube from "vue3-youtube";
 
 const productStore = useProductStore();
 
@@ -13,6 +14,10 @@ const props = defineProps({
   slider: {
     type: Array,
     default: () => ([])
+  },
+  video: {
+    type: String,
+    default: ''
   }
 });
 
@@ -52,6 +57,9 @@ const onHide = () => (visibleRef.value = false);
             @click="onShow"
         />
       </Slide>
+      <Slide v-if="props.video.length > 0" :key="props.slider.length">
+        <YouTube :src="props.video" width="100%" height="100%" />
+      </Slide>
       <template #addons>
         <navigation v-if="isOneImage" />
       </template>
@@ -77,6 +85,9 @@ const onHide = () => (visibleRef.value = false);
             :class="{'active': currentSlide === index}"
             @click="onShow"
         />
+      </Slide>
+      <Slide v-if="props.video.length > 0" :key="props.slider.length">
+        <YouTube :src="props.video" width="100%" height="100%" />
       </Slide>
     </Carousel>
     <vue-easy-lightbox
