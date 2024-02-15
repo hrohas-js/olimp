@@ -981,13 +981,13 @@ button::-moz-focus-inner {
   ol {
     gap: rem(8);
 
-    .carousel__slide {
-      height: rem(70);
-    }
-
     img {
       height: 100%;
       object-fit: cover;
+    }
+
+    .video {
+      filter: brightness(40%);
     }
   }
 }
