@@ -64,6 +64,13 @@ const categories = computed(() => {
     return [];
   }
 });
+const video = computed(() => {
+  if (product.value.video) {
+    return product.value.video;
+  } else {
+    return '';
+  }
+});
 const callShow = computed(() => {
   let flag = false;
   if (product.value.communication) {
@@ -212,7 +219,10 @@ const openChat = () => {
       <div class="content">
         <div class="content__item content__photo">
           <div :class="{'fraction':width > 1024}">
-            <image-gallery :slider="gallery" />
+            <image-gallery
+                :slider="gallery"
+                :video="video"
+            />
           </div>
           <section
               v-if="width > 1024"

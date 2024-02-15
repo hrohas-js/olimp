@@ -57,7 +57,7 @@ const onHide = () => (visibleRef.value = false);
             @click="onShow"
         />
       </Slide>
-      <Slide v-if="props.video.length > 0" :key="props.slider.length">
+      <Slide v-show="props.video.length > 0" :key="props.slider.length">
         <YouTube :src="props.video" width="100%" height="100%" />
       </Slide>
       <template #addons>
@@ -86,7 +86,7 @@ const onHide = () => (visibleRef.value = false);
             @click="onShow"
         />
       </Slide>
-      <Slide v-if="props.video.length > 0" :key="props.slider.length">
+      <Slide v-show="props.video.length > 0" :key="props.slider.length">
         <YouTube :src="props.video" width="100%" height="100%" />
       </Slide>
     </Carousel>

@@ -200,7 +200,6 @@ export const useCatalogStore = defineStore("catalogStore", {
                 mainStore.loader = true;
                 const response = await CatalogApi.getCategories();
                 this.categories = response.result;
-                console.log(response);
                 arr = response.result.filter(elem => elem.name !== 'Поиск специалистов');
                 arr.forEach(elem => {
                     if (elem.name === 'Работа (вакансии)') {
