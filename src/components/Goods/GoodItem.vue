@@ -215,7 +215,11 @@ const setLike = () => {
     display: flex;
     justify-content: space-between;
     .textMontserrat_medium{
-      font-size: 1rem;
+      font-size: rem(16);
+
+      @media (max-width: em(440, 16)) {
+        font-size: rem(13);
+      }
     }
   }
 
@@ -229,10 +233,11 @@ const setLike = () => {
   }
 
   &__content{
-    //height: rem(120);
     padding: rem(10) rem(20) rem(10) rem(1);
     transition: all 0.3s;
-
+    @media (max-width: em(440, 16)) {
+      padding: rem(10) 0;
+    }
   }
 
   &__footer{
@@ -242,6 +247,9 @@ const setLike = () => {
     gap: rem(5);
     .textMontserrat_regular{
       font-size: rem(14);
+      @media (max-width: em(440, 16)) {
+        font-size: rem(11);
+      }
     }
   }
 
@@ -253,8 +261,6 @@ const setLike = () => {
   @media (max-width: em(1024,16)) {
     &:hover{
       .goodItem__content{
-        //padding: rem(10) rem(20) rem(10) rem(1);
-        //border: none;
         box-shadow: none;
       }
     }
