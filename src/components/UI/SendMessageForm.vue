@@ -31,6 +31,7 @@ const send = () => {
       name.value = '';
       email.value = '';
       message.value = '';
+      mainStore.popup = '';
     });
   } else {
     ElMessage({

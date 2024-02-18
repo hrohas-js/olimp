@@ -64,6 +64,11 @@ const categories = computed(() => {
     return [];
   }
 });
+const vacancyFlag = computed(() => {
+  let flag = false;
+  if (categories.value) flag = categories.value[0].id === 1;
+  return flag;
+});
 const video = computed(() => {
   if (product.value.video) {
     return product.value.video;
@@ -194,6 +199,8 @@ const openChat = () => {
     mainStore.popup = 'auth';
   }
 }
+
+const createTicket = () => mainStore.popup = 'ticket';
 </script>
 
 <template>
@@ -219,6 +226,12 @@ const openChat = () => {
       <div class="content">
         <div class="content__item content__photo">
           <div :class="{'fraction':width > 1024}">
+            <div
+                v-if="vacancyFlag && gallery.length === 0"
+                class="watermark border_subBg textMontserrat_semiBold color_colorSubBg"
+            >
+              Вакансия
+            </div>
             <image-gallery
                 :slider="gallery"
                 :video="video"
@@ -350,7 +363,7 @@ const openChat = () => {
               class="parameters"
               :class="{'fraction':width > 1024}"
           >
-            <h3 v-if="parameters.length > 0" class="textMontserrat_bold">
+            <h3 v-if="parameters.length > 0 && !vacancyFlag" class="textMontserrat_bold">
               Параметры
             </h3>
             <main class="parameters__main">
@@ -360,7 +373,7 @@ const openChat = () => {
                     :key="index"
                 >
                   <li class="textMontserrat_regular">
-                    {{ item.name }}
+                    {{ item.name !== 'Своя камера (если есть, то какая модель)' ? item.name : 'Своя камера' }}
                   </li>
                   <li class="textMontserrat_medium">
                     {{ item.value }}
@@ -369,9 +382,8 @@ const openChat = () => {
               </div>
             </main>
             <section
-                v-if="width <= 1024 && someItem === 'technics'"
+                v-if="width <= 1024"
                 class="moreInfo"
-                :class="{'fraction':width > 1024}"
             >
               <h3 class="textMontserrat_medium">
                 Дополнительная информация
@@ -386,8 +398,13 @@ const openChat = () => {
             <p class="textMontserrat_regular complain__item">
               №&nbsp;{{ product.id }}
             </p>
-            <p class="textMontserrat_regular announcementDate">{{ product.date_publish }}</p>
-            <p class="complain__item complain__button textMontserrat_medium background_mainBg">
+            <p class="textMontserrat_regular announcementDate">
+              {{ product.date_publish }}
+            </p>
+            <p
+                class="complain__item complain__button textMontserrat_medium background_mainBg"
+                @click="createTicket"
+            >
               Пожаловаться
             </p>
           </div>
@@ -632,9 +649,6 @@ const openChat = () => {
     padding: 0 0 rem(20);
 
     .button_actionButton {
-      //position: absolute;
-      //top: rem(8);
-      //left: 0;
       height: rem(28);
       max-width:rem(200);
       font-size: rem(14);
@@ -645,11 +659,16 @@ const openChat = () => {
     display: flex;
     gap: rem(32);
 
-    //&__item {
-    //  flex: 1 1 50%
-    //}
     &__photo {
       flex: 0 1 40%;
+
+      .watermark {
+        height: rem(200);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: rem(24);
+      }
     }
     &__information {
       flex: 0 1 30%;
@@ -680,6 +699,10 @@ const openChat = () => {
     display:flex;
     justify-content: space-between;
     align-items: center;
+    @media (max-width: em(768, 16)) {
+      flex-direction: column;
+      gap: rem(10);
+    }
     &__button{
       cursor:pointer;
       width:100%;
@@ -723,10 +746,6 @@ const openChat = () => {
     display: flex;
     flex-direction: column;
     gap: rem(12);
-
-    //button {
-    //  max-width: 70%;
-    //}
   }
 
   .parameters {
@@ -751,7 +770,7 @@ const openChat = () => {
       ul {
         margin-right: rem(10);
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 8fr 2fr;
         margin-bottom: rem(10);
       }
 

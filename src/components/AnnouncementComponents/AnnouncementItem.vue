@@ -140,10 +140,9 @@ const openAbout = () => mainStore.popup = 'about';
       padding-bottom: rem(15);
     }
   }
-
   @media (max-width: em(1024, 16)) {
     display: flex;
-    width: 38%;
+    width: 20%;
     .image {
       flex: 1 1 45%;
 
@@ -188,6 +187,9 @@ const openAbout = () => mainStore.popup = 'about';
         }
       }
     }
+  }
+  @media (max-width: em(768, 16)) {
+    width: 38%;
   }
 }
 </style>

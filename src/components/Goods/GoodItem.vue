@@ -42,6 +42,7 @@ const props = defineProps({
   }
 });
 
+const categories = computed(() => props.item.categories);
 const mainPhoto = computed(() => {
   const gal = JSON.parse(props.item.gallery);
   if (gal[0]?.src) {
@@ -50,7 +51,6 @@ const mainPhoto = computed(() => {
     return '';
   }
 });
-const categories = computed(() => props.item.categories);
 const categoriesTree = computed(() => {
   const cats = JSON.parse(categories.value);
   return cats[cats.length - 1].name;
@@ -80,10 +80,9 @@ const isActor = computed(() => {
   }
   return flag
 });
+const upperTitle = computed(()=> mainStore.upperCase(props.item.title));
+const isRemain = computed(() => props.item.title.toLowerCase().indexOf('требуется') !== -1);
 
-const upperTitle = computed(()=>{
-  return mainStore.upperCase(props.item.title);
-});
 const setLike = () => {
   if (isLiked.value) {
     profileStore.myLikes = [...profileStore.myLikes].filter(elem => props.item.id !== elem.id);
@@ -134,7 +133,7 @@ const setLike = () => {
         }" target="_blank"
         >
           <h2 class="textMontserrat textMontserrat_medium color_colorSubBg">
-           <span v-if="vacancyFlag">
+           <span v-if="vacancyFlag && !isRemain">
              Требуется
            </span>
             {{ upperTitle }}
@@ -165,7 +164,7 @@ const setLike = () => {
               v-if="!isActor"
               class="textMontserrat_medium color_black"
           >
-            {{ vacancyFlag ? 'Оплата' : 'Цена' }}: {{ props.item.price }} руб.
+            {{ props.item.price }} руб.
           </p>
         </main>
         <footer class="goodItem__footer">

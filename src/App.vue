@@ -22,6 +22,7 @@ import ReviewForm from "@/components/UI/Modals/ReviewForm";
 import ResetPassword from "@/components/UI/Modals/ResetPassword";
 import SiteRules from "@/components/UI/Modals/SiteRules";
 import AboutSite from "@/components/UI/Modals/AboutSite";
+import CreateTicket from "@/components/UI/Modals/CreateTicket";
 
 const mainStore = useMainStore();
 const profileStore = useProfileStore();
@@ -119,6 +120,7 @@ const closeMiniChat = () => {
     <reset-password v-if="popup === 'reset'" />
     <site-rules v-if="popup === 'rules'" />
     <about-site v-if="popup === 'about'" />
+    <create-ticket v-if="popup === 'ticket'" />
     <div
         v-if="miniChat"
         class="widget"
@@ -982,7 +984,8 @@ button::-moz-focus-inner {
     gap: rem(8);
 
     img {
-      height: 100%;
+      width: 100%;
+      height: rem(70);
       object-fit: cover;
     }
 
