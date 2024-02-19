@@ -70,8 +70,17 @@ const closeModal = () => {
     position: relative;
     border-radius: rem(5);
 
+    @media (max-width: em(768, 16)) {
+      width: 97%;
+      gap: 0;
+    }
+
     h2 {
       font-size: rem(36);
+
+      @media (max-width: em(768, 16)) {
+        font-size: rem(20);
+      }
     }
     h2, h3 {
       text-align: center;

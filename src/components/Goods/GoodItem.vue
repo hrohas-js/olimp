@@ -117,9 +117,18 @@ const setLike = () => {
             :src="mainPhoto"
             :alt="props.item.title"
         />
-        <span v-else>
-        {{ categoriesTree }}
-      </span>
+        <span
+            v-else-if="vacancyFlag"
+            class="textMontserrat_semiBold"
+        >
+          Вакансия
+        </span>
+        <span
+            v-else
+            class="textMontserrat_semiBold"
+        >
+          {{ categoriesTree }}
+        </span>
       </router-link>
     </div>
     <section class="goodItem__content">
@@ -162,7 +171,7 @@ const setLike = () => {
         <main class="goodItem__main">
           <p
               v-if="!isActor"
-              class="textMontserrat_medium color_black"
+              class="textMontserrat_semiBold color_black"
           >
             {{ props.item.price }} руб.
           </p>
@@ -200,6 +209,16 @@ const setLike = () => {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      span {
+        opacity: 0.6;
+      }
+    }
 
     img {
       height: 100%;

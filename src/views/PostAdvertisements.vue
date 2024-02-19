@@ -257,22 +257,21 @@ const create = (status) => {
     const selectChoose = elem.querySelector('.choose-box__item.active')?.innerText;
 
     const value = textInput?.value || selectInput?.value || selectChoose || '';
-
-    announcementStore.newItem.selectedParameters.push({ name, value });
+    if (route.params.mode === 'create') {
+      announcementStore.newItem.selectedParameters.push({ name, value });
+    } else if (value !== '') {
+      announcementStore.newItem.selectedParameters.forEach(elem => {
+        if (elem.name === name) {
+          elem.value = value;
+        }
+      });
+    }
   });
   announcementStore.newItem.status = status;
   if (title.value.length === 0) {
     ElMessage({
       type: 'error',
       message: 'Название объявления обязательно для заполнения',
-      duration: 6000
-    });
-    flag = true;
-  }
-  if (price.value.length === 0) {
-    ElMessage({
-      type: 'error',
-      message: 'Цена обязательна для заполнения',
       duration: 6000
     });
     flag = true;
@@ -294,11 +293,13 @@ const create = (status) => {
     flag = true;
   }
   if (!flag) {
+    const uniqueSet = new Set(announcementStore.newItem.selectedParameters.map(item => JSON.stringify(item)));
+    const uniqueArray = Array.from(uniqueSet).map(item => JSON.parse(item));
     const params = {
       title: title.value,
       gallery: JSON.stringify(announcementStore.newItem.gallery),
       description: announcementStore.newItem.description,
-      parameters: JSON.stringify(announcementStore.newItem.selectedParameters),
+      parameters: JSON.stringify(uniqueArray),
       categories: JSON.stringify(categories.value),
       location: location.value,
       price: payAgreementCheck.value ? 'оплата по договоренности' : price.value,

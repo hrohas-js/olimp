@@ -54,9 +54,19 @@ const closeModal = () => {
     position: relative;
     border-radius: rem(5);
 
+    @media (max-width: em(768, 16)) {
+      width: 97%;
+      gap: 0;
+    }
+
     h2 {
       font-size: rem(24);
       margin-bottom: rem(20);
+
+      @media (max-width: em(768, 16)) {
+        font-size: rem(18);
+        margin-bottom: rem(10);
+      }
     }
 
     .close {
