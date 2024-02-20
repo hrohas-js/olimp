@@ -23,7 +23,10 @@ const props = defineProps({
 const mainPhoto = computed(() => {
   let src = '';
   if (props.item.gallery) {
-    src = JSON.parse(props.item.gallery)[0].src;
+    const tmp = JSON.parse(props.item.gallery);
+    if (tmp.length > 0) {
+      src = tmp[0].src;
+    }
   }
   return src;
 });

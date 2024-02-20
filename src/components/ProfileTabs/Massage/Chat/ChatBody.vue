@@ -396,6 +396,6 @@ const goBack = () => {
 }
 
 .chat-profile {
-  height: rem(650);
+  height: rem(700);
 }
 </style>

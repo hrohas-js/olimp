@@ -363,9 +363,6 @@ const createTicket = () => mainStore.popup = 'ticket';
               class="parameters"
               :class="{'fraction':width > 1024}"
           >
-            <h3 v-if="parameters.length > 0 && !vacancyFlag" class="textMontserrat_bold">
-              Параметры
-            </h3>
             <main class="parameters__main">
               <div class="tableContent">
                 <ul
