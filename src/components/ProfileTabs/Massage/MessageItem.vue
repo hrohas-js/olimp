@@ -36,7 +36,8 @@ const changeContent = () => {
     profileStore.currentChat = props.item;
     profileStore.content = "chat";
     profileStore.getMessages({
-      chat_id: props.item.chat_id
+      chat_id: props.item.chat_id,
+      author_id: profileStore.user.id
     });
   } else {
     ElMessage({
@@ -65,9 +66,15 @@ const checkMessage = (e, id) => {
           @change="checkMessage($event, props.item.id)"
       />
     </div>
-    <div class="messageItem__information" @click="changeContent">
+    <div
+        class="messageItem__information"
+        @click="changeContent"
+    >
       <div class="image">
-        <img :src="mainPhoto" alt="altText"/>
+        <img
+            :src="mainPhoto"
+            alt="нет фото"
+        />
         <div
             v-if="props.item.important === 1"
             class="important-mark background_accent"

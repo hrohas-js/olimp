@@ -37,14 +37,16 @@ onMounted(() => {
     }
   });
   profileStore.getMessages({
-    chat_id: chatInfo.value.id
+    chat_id: chatInfo.value.id,
+    author_id: userID.value
   }).then(() => {
     const element = document.querySelector('.chat__main');
     element.scrollTop = element.scrollHeight;
   });
   timer = setInterval(() => {
     profileStore.getMessages({
-      chat_id: chatInfo.value.id
+      chat_id: chatInfo.value.id,
+      author_id: userID.value
     });
   }, 3000);
 });
@@ -55,7 +57,6 @@ onUnmounted(() => {
 
 watch(uploadedImage, (newValue) => {
   if (newValue.length > 0) {
-    console.log(newValue)
     send(newValue, 'image');
   }
 });
@@ -95,7 +96,8 @@ const send = (text, type = 'message') => {
   profileStore.sendMessage(message).then(() => {
     messageValue.value = '';
     profileStore.getMessages({
-      chat_id: chatInfo.value.id
+      chat_id: chatInfo.value.id,
+      author_id: userID.value
     }).then(() => {
       const element = document.querySelector('.chat__main');
       element.scrollTop = element.scrollHeight;
