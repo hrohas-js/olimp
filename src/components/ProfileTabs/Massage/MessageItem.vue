@@ -90,6 +90,9 @@ const checkMessage = (e, id) => {
         >
           {{ item.title }}
         </p>
+        <p v-if="props.item.new_messages === 1">
+          Новое сообщение!
+        </p>
 <!--        <p class="textMontserrat_light text__item">
           Арендодатель не подтвердил заявку
         </p>-->

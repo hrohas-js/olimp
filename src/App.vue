@@ -75,6 +75,11 @@ onBeforeMount(() => {
 onMounted(() => {
   if (jwt.value !== null) {
     authStore.checkAuth();
+    chatsTimer = setInterval(() => {
+      profileStore.getAllChats({
+        user_id: profileStore.user.id
+      });
+    }, 3000);
   }
   mainStore.display_width = window.innerWidth;
   window.addEventListener('resize', () => {

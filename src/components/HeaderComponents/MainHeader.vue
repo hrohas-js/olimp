@@ -277,8 +277,8 @@ const goToProfile = (mode) => {
 
       span {
         position: absolute;
-        top: 0;
-        right: 0;
+        top: rem(-3);
+        right: rem(-3);
         font-size: rem(8);
         width: rem(12);
         height: rem(12);
@@ -286,6 +286,7 @@ const goToProfile = (mode) => {
         justify-content: center;
         align-items: center;
         border-radius: 50%;
+        z-index: 999;
       }
 
       svg {

@@ -3,7 +3,6 @@ import {useMainStore} from "@/store/MainStore";
 import {ElMessage} from "element-plus";
 import {ProfileApi} from "@/api/Profile/ProfileApi";
 import {ChatsApi} from "@/api/Chats/ChatsApi";
-import {getCurrentDateTime} from "@/plugins/validator";
 
 export const useProfileStore = defineStore("profileStore", {
     state: () => ({
@@ -202,7 +201,6 @@ export const useProfileStore = defineStore("profileStore", {
                 const response = await ProfileApi.uploadAvatar(data);
                 this.user.avatar_url = response.url;
                 localStorage.setItem('user', JSON.stringify(this.user));
-                console.log(response);
             } catch (error) {
                 console.log(error)
             } finally {
@@ -227,7 +225,6 @@ export const useProfileStore = defineStore("profileStore", {
                 mainStore.loader = true;
                 const response = await ProfileApi.getLikesCategories(data);
                 this.wishCategories = response.result;
-                console.log(response)
             } catch (error) {
                 console.log(error)
             } finally {
@@ -250,36 +247,32 @@ export const useProfileStore = defineStore("profileStore", {
         },
         async addLike(data) {
             try {
-                const response = await ProfileApi.addLike(data);
-                console.log(response)
+                await ProfileApi.addLike(data);
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         },
         async removeLike(data) {
             try {
-                const response = await ProfileApi.removeLike(data);
-                console.log(response)
+                await ProfileApi.removeLike(data);
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         },
         async getAllChats(data) {
             try {
                 const response = await ChatsApi.getAllChats(data);
-                console.log(response)
                 this.myChats = response.result;
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         },
         async getChat(data) {
             try {
                 const response = await ChatsApi.getChat(data);
                 this.currentChat = response.result[0];
-                console.log(response)
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         },
         async getChatsCategories(data) {
@@ -287,24 +280,22 @@ export const useProfileStore = defineStore("profileStore", {
                 const response = await ChatsApi.getChatsCategories(data);
                 this.chatCategories = response.result;
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         },
         async getMessages(data) {
             try {
                 const response = await ChatsApi.getMessages(data);
                 this.currentChatHistory = response.result;
-                console.log(response)
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         },
         async sendMessage(data) {
             try {
-                const response = await ChatsApi.sendMessage(data);
-                console.log(response)
+                await ChatsApi.sendMessage(data);
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         },
         async getNotifications() {
@@ -315,7 +306,7 @@ export const useProfileStore = defineStore("profileStore", {
                 this.notifications = response.result;
                 if (localStorage.getItem('not_count') === null) localStorage.setItem('not_count', this.notifications.length.toString());
             } catch (error) {
-                console.log(error)
+                console.log(error);
             } finally {
                 mainStore.loader = false;
             }
@@ -329,66 +320,61 @@ export const useProfileStore = defineStore("profileStore", {
                 });
                 this.mySells = response.result;
             } catch (error) {
-                console.log(error)
+                console.log(error);
             } finally {
                 mainStore.loader = false;
             }
         },
         async setImportant() {
             try {
-                const response = await ChatsApi.setImportant({
+                await ChatsApi.setImportant({
                     query: this.selectedMessages.join(',')
                 });
-                console.log(response);
                 this.selectedMessages = [];
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         },
         async setDownImportant() {
             try {
-                const response = await ChatsApi.setDownImportant({
+                await ChatsApi.setDownImportant({
                     query: this.selectedMessages.join(',')
                 });
-                console.log(response);
                 this.selectedMessages = [];
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         },
         async setBlacklist() {
             try {
-                const response = await ChatsApi.setBlacklist({
+                await ChatsApi.setBlacklist({
                     query: this.selectedMessages.join(','),
                     creator_id: this.user.id
                 });
-                console.log(response);
                 this.selectedMessages = [];
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         },
         async setDownBlacklist() {
             try {
-                const response = await ChatsApi.setDownBlacklist({
+                await ChatsApi.setDownBlacklist({
                     query: this.selectedMessages.join(','),
                     creator_id: this.user.id
                 });
-                console.log(response);
                 this.selectedMessages = [];
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         },
         async remove() {
             try {
-                const response = await ChatsApi.remove({
+                await ChatsApi.remove({
                     query: this.selectedMessages.join(',')
                 });
-                console.log(response);
                 this.selectedMessages = [];
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         },
         async uploadChatImage(data) {
@@ -397,9 +383,8 @@ export const useProfileStore = defineStore("profileStore", {
                 mainStore.loader = true;
                 const response = await ProfileApi.uploadChatImage(data);
                 this.currentChatImageUploaded = response.url;
-                console.log(response);
             } catch (error) {
-                console.log(error)
+                console.log(error);
             } finally {
                 mainStore.loader = false;
             }
@@ -407,7 +392,6 @@ export const useProfileStore = defineStore("profileStore", {
         async addReview(data) {
             try {
                 const response = await ProfileApi.addReview(data);
-                console.log(response);
                 if (response.result) {
                     ElMessage({
                         type: 'success',
@@ -416,7 +400,7 @@ export const useProfileStore = defineStore("profileStore", {
                     });
                 }
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         },
         async getReviews() {
@@ -426,7 +410,7 @@ export const useProfileStore = defineStore("profileStore", {
                 });
                 this.myReviews = response.result;
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         }
     }
