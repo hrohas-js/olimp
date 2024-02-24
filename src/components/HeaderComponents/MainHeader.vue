@@ -136,7 +136,7 @@ const goToProfile = (mode) => {
                 stroke="black" stroke-linejoin="round"/>
           </svg>
         </div>
-        <div
+<!--        <div
             class="image"
             @click="goToProfile('messages')"
         >
@@ -153,7 +153,7 @@ const goToProfile = (mode) => {
 	                    C40.029,34.5,40.5,34.061,40.5,31.5z M40.471,9.971c0-1.821-0.531-2.471-2.971-2.471h-34c-2.51,0-3,0.78-3,2.6l0.03,0.28
 	                    c0,0,18.069,12.44,20,13.12C22.57,22.71,40.5,10.1,40.5,10.1L40.471,9.971z"/>
           </svg>
-        </div>
+        </div>-->
         <!--        <div class="image">-->
         <!--          <svg width="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" @click="routerPush('/profile')">-->
         <!--            <g data-name="Layer 2" id="Layer_2">-->

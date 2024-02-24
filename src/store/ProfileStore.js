@@ -286,6 +286,7 @@ export const useProfileStore = defineStore("profileStore", {
         async getMessages(data) {
             try {
                 const response = await ChatsApi.getMessages(data);
+                console.log(response);
                 this.currentChatHistory = response.result;
             } catch (error) {
                 console.log(error);

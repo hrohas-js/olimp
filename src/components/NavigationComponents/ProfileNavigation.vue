@@ -39,12 +39,12 @@ const exit = () => {
       >
         Мои объявления
       </li>
-      <li
+<!--      <li
           :class="{'active':content === 'messages'}"
           @click="changeContent('messages')"
       >
         Мои сообщения
-      </li>
+      </li>-->
       <li
           :class="{'active':content === 'orders'}"
           @click="changeContent('orders')"
@@ -95,7 +95,7 @@ const exit = () => {
 
 <style scoped lang="scss">
 nav {
-  //padding: 0 0 rem(87) rem(75);
+  margin: rem(10) 0;
   border-radius: 10px;
 
   .fraction {

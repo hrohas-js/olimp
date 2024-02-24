@@ -25,13 +25,13 @@ const changeContent = (value) => {
               Мои объявления
             </p>
           </li>
-          <li
+<!--          <li
               @click="changeContent('messages')"
           >
             <p class="textMontserrat_semiBold">
               Мои сообщения
             </p>
-          </li>
+          </li>-->
           <li
               @click="changeContent('orders')"
           >

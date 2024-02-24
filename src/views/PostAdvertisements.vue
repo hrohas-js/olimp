@@ -512,7 +512,7 @@ const setPayAgreement = (e) => {
                   value="call+message"
               />
               <label for="111">
-                Звонки и сообщения
+                Звонки и Email
               </label>
             </li>
             <li>
@@ -538,7 +538,7 @@ const setPayAgreement = (e) => {
                   value="message"
               />
               <label for="333">
-                Только сообщения
+                Только Email
               </label>
             </li>
           </ul>

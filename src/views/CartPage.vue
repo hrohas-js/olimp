@@ -33,6 +33,7 @@ const someItem = computed(() => mainStore.someItem);
 const isAuth = computed(() => authStore.jwt !== null);
 const chat = computed(() => profileStore.currentChat);
 const isMyAnnouncement = computed(() => parseInt(profileStore.user.id) === parseInt(productStore.author.id));
+const authorEmail = computed(() => productStore.author.email);
 
 const product = computed(() => {
   let prod = {};
@@ -285,10 +286,11 @@ const createTicket = () => mainStore.popup = 'ticket';
               />
               <main-button
                   v-if="messageShow && !isMyAnnouncement"
-                  button-text="Написать сообщение"
+                  button-text="Показать Email"
                   color="blue"
                   size="big"
-                  @click="openChat"
+                  :id="product.id"
+                  :phone="authorEmail"
               />
             </div>
           </div>
@@ -437,10 +439,11 @@ const createTicket = () => mainStore.popup = 'ticket';
             />
             <main-button
                 v-if="messageShow && !isMyAnnouncement"
-                button-text="Написать сообщение"
+                button-text="Показать Email"
                 color="blue"
                 size="big"
-                @click="openChat"
+                :id="product.id"
+                :phone="authorEmail"
             />
           </div>
           <SaleInformation v-if="!isActor && isAuth" />

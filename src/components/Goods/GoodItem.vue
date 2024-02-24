@@ -200,6 +200,7 @@ const setLike = () => {
   transition: all 0.2s;
 
   a {
+    width: 100%;
     height: 100%;
   }
 
@@ -221,6 +222,7 @@ const setLike = () => {
     }
 
     img {
+      width: 100%;
       height: 100%;
       object-fit: cover;
     }
