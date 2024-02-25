@@ -155,14 +155,10 @@ export const useAnnouncementStore = defineStore("announcementStore", {
             }
         },
         async setAnnouncementContacts(data) {
-            const mainStore = useMainStore();
             try {
-                mainStore.loader = true;
                 await AnnouncementApi.setAnnouncementContacts(data);
             } catch (error) {
                 console.log(error)
-            } finally {
-                mainStore.loader = false;
             }
         },
         async changeAnnouncementStatus(data) {

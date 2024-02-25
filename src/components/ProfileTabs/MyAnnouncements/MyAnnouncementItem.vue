@@ -3,7 +3,7 @@ import ActionButton from "@/components/UI/Button/ActionButton";
 import {useMainStore} from "@/store/MainStore";
 import {useAnnouncementStore} from "@/store/AnnouncementStore";
 import {useProfileStore} from "@/store/ProfileStore";
-import {computed, ref, onMounted} from "vue";
+import {computed, ref, onMounted, watch} from "vue";
 import {useRouter} from "vue-router";
 
 const router = useRouter();
@@ -60,6 +60,16 @@ const mainImage = computed(() => {
     return gal[0].src;
   } else {
     return '';
+  }
+});
+
+watch(daysLeft, (newValue) => {
+  if (newValue === 0) {
+    announcementStore.changeAnnouncementStatus({
+      id: props.item.id,
+      status: 'archive',
+      user_id: profileStore.user.id
+    });
   }
 });
 
@@ -155,11 +165,18 @@ const announcementAction = (id) => {
 
 <template>
   <article class="myAnnouncements__element profileGoods">
-    <div class="image">
+    <div
+        class="image image_main"
+        :class="{'border_subBg': !mainImage}"
+    >
       <img
+          v-if="mainImage"
           :src="mainImage"
           :alt="item.title"
       />
+      <span v-else>
+        {{ item.title }}
+      </span>
     </div>
     <div class="content">
       <div
@@ -456,8 +473,15 @@ const announcementAction = (id) => {
     justify-content: center;
 
     img {
+      width: 100%;
       height: rem(137);
       object-fit: cover;
+    }
+
+    &_main {
+      align-items: center;
+      min-width: rem(150);
+      text-align: center;
     }
   }
 

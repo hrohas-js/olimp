@@ -86,11 +86,11 @@ const phoneShowTrigger = () => {
         'background_subBg': props.color === 'blue',
         'bugSize': props.size === 'big'
       }"
+      @click="phoneShowTrigger"
   >
     <p
         v-if="phone.length > 0"
         class="phone-change"
-        @click="phoneShowTrigger"
     >
       <span :class="{'cover': phoneShow, 'uncover': !phoneShow}">
           {{ props.buttonText }}

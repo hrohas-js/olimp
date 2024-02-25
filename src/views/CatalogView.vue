@@ -114,10 +114,17 @@ const showFilters = () => {
         class="catalogView_mobile"
     >
       <div
-          class="showSubCategoriesButton background_blackLight color_colorBg"
+          class="showSubCategoriesButton background_mainBg"
           @click="showSubcategories"
       >
-        Категории
+        <svg width="20px" height="20px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" id="Editable-line" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
+          <line fill="none" id="XMLID_103_" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" x1="7" x2="25" y1="16" y2="16"/>
+          <line fill="none" id="XMLID_102_" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" x1="7" x2="25" y1="25" y2="25"/>
+          <line fill="none" id="XMLID_101_" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" x1="7" x2="25" y1="7" y2="7"/>
+        </svg>
+        <span>
+          Категории
+        </span>
       </div>
       <main
           class="catalogView__main-mobile"
@@ -222,12 +229,15 @@ const showFilters = () => {
   @media (max-width: em(1024, 16)) {
     .catalogView_mobile{
       .showSubCategoriesButton{
+        padding: rem(10);
         cursor:pointer;
-        max-width: rem(100);
+        max-width: rem(150);
         border-radius: 5px;
         display: flex;
         justify-content: center;
         align-items: center;
+        margin-bottom: rem(20);
+        gap: rem(5);
       }
     }
   }

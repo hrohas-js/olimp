@@ -63,13 +63,13 @@ const exit = () => {
       >
         Уведомления
       </li>
-      <li
+<!--      <li
           v-if="props.position !== 'header'"
           :class="{'active':content === 'resume'}"
           @click="changeContent('resume')"
       >
         Резюме
-      </li>
+      </li>-->
     </ul>
     <ul class="fraction">
       <li

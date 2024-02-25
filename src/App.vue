@@ -658,6 +658,7 @@ button::-moz-focus-inner {
   }
   @media (max-width: em(768, 16)) {
     grid-template-columns: repeat(2, 1fr);
+    padding: 0;
   }
 
   &.mainCatalog {

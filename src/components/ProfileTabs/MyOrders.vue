@@ -62,6 +62,7 @@ const changeTab = (tab) => {
             v-for="item in active"
             :key="item.id"
             :item="item"
+            mode="sell"
         />
       </div>
       <div
@@ -72,6 +73,7 @@ const changeTab = (tab) => {
             v-for="item in archive"
             :key="item.id"
             :item="item"
+            mode="sell"
         />
       </div>
     </main>
