@@ -205,7 +205,7 @@ export const useMainStore = defineStore("mainStore", {
                 console.log(response)
                 ElMessage({
                     type: 'success',
-                    message: 'Ваше обращение зарегистрировано. Ожидайте ответа на указанный вами Email. Если сообщения не будет в принятых - проверьте в спаме.',
+                    message: 'Ваше обращение зарегистрировано. Ожидайте ответа на указанный вами Email.',
                     duration: 6000
                 });
             } catch (error) {

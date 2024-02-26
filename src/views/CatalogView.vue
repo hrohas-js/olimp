@@ -34,7 +34,7 @@ onMounted(() => {
 const checkPageTitle = () => {
   categories.value.forEach(elem => {
     if (elem.id === parseInt(route.params.category)) {
-      title.value = elem.name;
+      title.value = elem.name === 'Работа' ? 'Работа (вакансии)' : elem.name;
     }
   });
   catalogStore.getSubCategories(route.params.category);

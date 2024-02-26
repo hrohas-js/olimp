@@ -66,6 +66,9 @@ const send = () => {
     >
       Отправить
     </button>
+    <div class="notice">
+      (если ответа не будет в принятых, проверьте в Спаме)
+    </div>
   </form>
 </template>
 
@@ -73,5 +76,12 @@ const send = () => {
 button {
   max-width: 50%;
   margin: 0 auto;
+}
+
+.notice {
+  max-width: 50%;
+  margin: rem(5) auto;
+  font-size: rem(14);
+  text-align: center;
 }
 </style>
