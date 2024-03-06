@@ -80,8 +80,7 @@ export function validateField(type, value) {
                 }
             }
             // Форматирование первой буквы
-            const cleanedValue = stripTags(value.trim());
-            final = cleanedValue.charAt(0).toUpperCase() + cleanedValue.slice(1).toLowerCase();
+            final = stripTags(value.trim());
             break;
         }
         case "email": {
