@@ -69,7 +69,7 @@ const onHide = () => (visibleRef.value = false);
         v-if="isOneImage"
         id="thumbnails"
         :items-to-show="6"
-        :wrap-around="false"
+        :wrap-around="true"
         snap-align="start"
         v-model="currentSlide"
         ref="carousel"

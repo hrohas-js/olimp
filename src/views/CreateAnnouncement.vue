@@ -169,11 +169,10 @@ const getCategoriesTree = (slug, category, filter = null) => {
               <li
                   v-for="item in category.subs"
                   :key="item.id"
+                  v-html="item.title"
                   :class="{'active': item.id === newItemCategories[0]?.id}"
                   @click.stop="getCategoriesTree('category', item)"
-              >
-                {{ item.title }}
-              </li>
+              />
             </ul>
           </li>
         </ul>

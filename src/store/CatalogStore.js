@@ -212,7 +212,7 @@ export const useCatalogStore = defineStore("catalogStore", {
                             },
                             {
                                 id: 2,
-                                title: 'Соискатель',
+                                title: 'Соискатель<br>Предложение услуг',
                                 name: 'Поиск специалистов'
                             }
                         ];
