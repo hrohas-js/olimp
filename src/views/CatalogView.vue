@@ -20,7 +20,7 @@ const title = ref('');
 const width = computed(() => mainStore.display_width);
 const categories = computed(() => catalogStore.categories);
 const subCategories = computed(() => catalogStore.subCategories);
-const catalog = computed(() => catalogStore.filteredCatalog);
+const catalog = computed(() => [...catalogStore.filteredCatalog].slice().sort(() => Math.random() - 0.5));
 
 watch(route, () => {
   checkPageTitle();

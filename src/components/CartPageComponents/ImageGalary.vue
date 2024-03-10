@@ -111,6 +111,8 @@ const onHide = () => (visibleRef.value = false);
         :visible="visibleRef"
         :imgs="props.slider"
         :index="currentSlide"
+        :esc-disabled="true"
+        :move-disabled="true"
         @hide="onHide"
     />
   </div>

@@ -29,7 +29,7 @@ onMounted(() => {
       title.value = elem.name
     }
   });
-  if (width.value > 768) {
+  if (width.value > 1024) {
     dynamicHeightLi();
   }
 })
@@ -39,7 +39,7 @@ const closeModal = () => {
 }
 
 const changeSubCategory = () => {
-  if (width.value <= 768) {
+  if (width.value <= 1024) {
     closeModal();
   }
 };
@@ -61,12 +61,12 @@ const dynamicHeightLi = () => {
 <template>
   <nav
       :class="{
-        'catalogSubCategories':width > 768,
-        'catalogSubCategories_mobile': width <= 768
+        'catalogSubCategories':width > 1024,
+        'catalogSubCategories_mobile': width <= 1024
       }"
   >
     <div
-        v-if="width <= 768"
+        v-if="width <= 1024"
         class="close"
         @click="closeModal"
     >
@@ -77,15 +77,15 @@ const dynamicHeightLi = () => {
       </svg>
     </div>
     <header
-        v-if="width <= 768"
+        v-if="width <= 1024"
         class="catalogSubCategories_mobile__header color_black textMontserrat_bold"
     >
       {{ title }}
     </header>
-    <ul :class="{'background_elements categoriesContainer': width <= 768}">
+    <ul :class="{'background_elements categoriesContainer': width <= 1024}">
       <li
           class="catalogSubCategories__category"
-          :class="{'color_black':width <= 768}"
+          :class="{'color_black':width <= 1024}"
           v-for="category in categoryItems"
           :key="category.id"
           @click="changeSubCategory"
@@ -113,6 +113,7 @@ const dynamicHeightLi = () => {
 <style scoped lang="scss">
 .catalogSubCategories {
   padding-top: rem(20);
+  position: relative;
   ul {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -141,15 +142,15 @@ const dynamicHeightLi = () => {
   }
 }
 
-@media (max-width: em(768, 16)) {
+@media (max-width: em(1024, 16)) {
   .categoriesContainer {
     padding: 7% 3%;
     position: relative;
   }
   .close {
     position: absolute;
-    top: 10px;
-    right: 20px;
+    top: 5px;
+    right: 5px;
   }
   .catalogSubCategories_mobile__header {
     text-align: center;

@@ -833,6 +833,7 @@ button::-moz-focus-inner {
     justify-content: center;
     flex-direction: column;
     background: $color_bg;
+    position: relative;
 
     ul {
       display: flex;
