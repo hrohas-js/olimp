@@ -23,6 +23,7 @@ import ResetPassword from "@/components/UI/Modals/ResetPassword";
 import SiteRules from "@/components/UI/Modals/SiteRules";
 import AboutSite from "@/components/UI/Modals/AboutSite";
 import CreateTicket from "@/components/UI/Modals/CreateTicket";
+import DeleteConfirm from "@/components/UI/Modals/DeleteConfirm";
 
 const mainStore = useMainStore();
 const profileStore = useProfileStore();
@@ -126,6 +127,7 @@ const closeMiniChat = () => {
     <site-rules v-if="popup === 'rules'" />
     <about-site v-if="popup === 'about'" />
     <create-ticket v-if="popup === 'ticket'" />
+    <delete-confirm v-if="popup === 'delete'" />
     <div
         v-if="miniChat"
         class="widget"

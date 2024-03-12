@@ -53,7 +53,7 @@ const daysLeftWords = computed(() => {
       return 'дней';
   }
 });
-const daysLeftPercent = computed(() => (daysLeft.value / 30) * 100);
+const daysLeftPercent = computed(() => (daysLeft.value / 365) * 100);
 const mainImage = computed(() => {
   if (props.item.gallery !== '[]') {
     const gal = JSON.parse(props.item.gallery);
@@ -137,13 +137,8 @@ const announcementAction = (id) => {
       router.push('/postAdvertisements/edit')
       break;
     case 2:
-      announcementStore.removeAnnouncement({
-        id: props.item.id
-      }).then(() => {
-        profileStore.getAnnouncementOfUser({
-          user_id: profileStore.user.id
-        })
-      });
+      profileStore.idForDelete = props.item.id;
+      mainStore.popup = 'delete';
       break;
     case 3:
       announcementStore.changeAnnouncementStatus({
@@ -194,7 +189,7 @@ const announcementAction = (id) => {
           </div>
         </div>
         <div
-            v-if="width > 1230"
+            v-if="width > 1230 && props.item.status === 'publish'"
             class="actionsContainer">
           <div class="dateBar">
             <p class="textMontserrat_regular">
@@ -452,6 +447,33 @@ const announcementAction = (id) => {
           </div>
         </div>
       </div>
+      <div
+
+          class="buttons"
+      >
+        <action-button
+            :text="mainButton.name"
+            @click="announcementAction(mainButton.id)"
+        />
+        <div
+            class="actionItem border_subBg"
+            @click.stop="openActionMenu"
+        >
+          ...
+        </div>
+        <div
+            v-if="actionItem"
+            class="actionsMenu textMontserrat_regular background_elements"
+        >
+          <p
+              v-for="button in secondaryButtons"
+              :key="button.id"
+              @click="announcementAction(button.id)"
+          >
+            {{ button.name }}
+          </p>
+        </div>
+      </div>
     </div>
   </article>
 </template>
@@ -562,6 +584,10 @@ const announcementAction = (id) => {
     top: 45%;
     box-shadow: 0 10px 10px 5px rgb(221, 221, 221);
 
+    @media (max-width: em(768, 16)) {
+      top: 100%;
+    }
+
     p {
       padding: rem(10);
       cursor: pointer;
@@ -579,7 +605,6 @@ const announcementAction = (id) => {
   .likeInfo {
     margin-top: rem(10);
     display: flex;
-    //justify-content: center;
     gap: rem(12);
 
     &__item {
@@ -645,22 +670,11 @@ const announcementAction = (id) => {
       &__item {
         .image {
           width: calc(18rem / 16 + (25 - 18) * ((100vw - 390rem / 16) / (1920 - 390)));
-          //svg{
-          //  path:first-child{
-          //    color
-          //  }
-          //}
         }
       }
     }
   }
 }
-
-//@media (max-width: em(1920, 16)) and (min-width: em(1024, 16)) {
-//  &__element {
-//    gap: calc(11rem / 16 + (40 - 11) * ((100vw - 1024rem / 16) / (1920 - 1024)));
-//  }
-//}
 
 @media (max-width: em(1024, 16)) {
   .myAnnouncements__element {

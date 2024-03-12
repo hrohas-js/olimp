@@ -35,15 +35,14 @@ const profileRouter = (to, param = '') => {
   <nav class="actionMenu background_elements">
     <main-search v-if="searchShow" />
     <ul class="wrapper">
-      <li @click="changeSearchShow">
+      <li @click="profileRouter('/')">
         <div class="image">
-          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
-            <path d="M19 19L25 25" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M1 11.2857C1 16.9663 5.60507 21.5714 11.2857 21.5714C14.1309 21.5714 16.7065 20.4162 18.5685 18.5491C20.4242 16.6886 21.5714 14.1211 21.5714 11.2857C21.5714 5.60507 16.9663 1 11.2857 1C5.60507 1 1 5.60507 1 11.2857Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+          <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="27" height="27" viewBox="0 0 50 50">
+            <path d="M 24.962891 1.0546875 A 1.0001 1.0001 0 0 0 24.384766 1.2636719 L 1.3847656 19.210938 A 1.0005659 1.0005659 0 0 0 2.6152344 20.789062 L 4 19.708984 L 4 46 A 1.0001 1.0001 0 0 0 5 47 L 18.832031 47 A 1.0001 1.0001 0 0 0 19.158203 47 L 30.832031 47 A 1.0001 1.0001 0 0 0 31.158203 47 L 45 47 A 1.0001 1.0001 0 0 0 46 46 L 46 19.708984 L 47.384766 20.789062 A 1.0005657 1.0005657 0 1 0 48.615234 19.210938 L 41 13.269531 L 41 6 L 35 6 L 35 8.5859375 L 25.615234 1.2636719 A 1.0001 1.0001 0 0 0 24.962891 1.0546875 z M 25 3.3222656 L 44 18.148438 L 44 45 L 32 45 L 32 26 L 18 26 L 18 45 L 6 45 L 6 18.148438 L 25 3.3222656 z M 37 8 L 39 8 L 39 11.708984 L 37 10.146484 L 37 8 z M 20 28 L 30 28 L 30 45 L 20 45 L 20 28 z" stroke="#2963a4"></path>
           </svg>
         </div>
         <p class=" textMontserrat_medium color_colorSubBg">
-          Поиск
+          Главная
         </p>
       </li>
       <li @click="profileRouter('/profile', 'wishList')">
@@ -67,7 +66,18 @@ const profileRouter = (to, param = '') => {
           Объявления
         </p>
       </li>
-      <li @click="profileRouter('/profile', 'messages')">
+      <li @click="changeSearchShow">
+        <div class="image">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <path d="M19 19L25 25" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M1 11.2857C1 16.9663 5.60507 21.5714 11.2857 21.5714C14.1309 21.5714 16.7065 20.4162 18.5685 18.5491C20.4242 16.6886 21.5714 14.1211 21.5714 11.2857C21.5714 5.60507 16.9663 1 11.2857 1C5.60507 1 1 5.60507 1 11.2857Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <p class=" textMontserrat_medium color_colorSubBg">
+          Поиск
+        </p>
+      </li>
+<!--      <li @click="profileRouter('/profile', 'messages')">
         <div class="image">
           <svg xmlns="http://www.w3.org/2000/svg" width="31" height="22" viewBox="0 0 31 22" fill="none">
             <path d="M8.25 6.7998L15.5 11.8748L22.75 6.7998" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
@@ -77,7 +87,7 @@ const profileRouter = (to, param = '') => {
         <p class="textMontserrat textMontserrat_medium color_colorSubBg">
           Сообщения
         </p>
-      </li>
+      </li>-->
       <li @click="profileRouter('/profile')">
         <div class="image">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="27" viewBox="0 0 24 27" fill="none">

@@ -52,6 +52,9 @@ const width = computed(() => mainStore.display_width);
     <!--        <path d="M1 14.8887H25.9997" stroke="black" stroke-opacity="0.8" stroke-linecap="round"/>-->
     <!--      </svg>-->
     <!--    </div>-->
+    <svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 12H6.5M20 12L14 6M20 12L14 18M20 12H9.5" stroke="#2963a4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
   </div>
 </template>
 

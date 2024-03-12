@@ -284,6 +284,14 @@ const create = (status) => {
     });
     flag = true;
   }
+  if (phoneValue.value.length === 0 && communication.value.indexOf('message') !== -1) {
+    ElMessage({
+      type: 'error',
+      message: 'Телефон обязателен для заполнения!',
+      duration: 6000
+    });
+    flag = true;
+  }
   if (communication.value.length === 0) {
     ElMessage({
       type: 'error',
@@ -756,6 +764,10 @@ const setPayAgreement = (e) => {
 
       .price {
         width: 20%;
+
+        @media (max-width: em(768, 16)) {
+          width: 50%;
+        }
       }
 
       .priceModal {
@@ -808,6 +820,10 @@ const setPayAgreement = (e) => {
 
       input {
         width: 30%;
+
+        @media (max-width: em(768, 16)) {
+          width: 60%;
+        }
       }
     }
   }

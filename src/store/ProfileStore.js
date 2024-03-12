@@ -44,7 +44,8 @@ export const useProfileStore = defineStore("profileStore", {
         sellsRelevance: 'active',
         selectedMessages: [],
         currentChatImageUploaded: '',
-        myReviews: []
+        myReviews: [],
+        idForDelete: 0
     }),
     getters: {
         userMainLetter: (state) => {
@@ -117,7 +118,7 @@ export const useProfileStore = defineStore("profileStore", {
     actions: {
         clearStore() {
             // Обновление простых свойств
-            this.content = "profileInfo";
+            this.content = "myAnnouncements";
             this.navigationMobile = false;
             // Сброс объекта user
             this.user = {
@@ -159,6 +160,7 @@ export const useProfileStore = defineStore("profileStore", {
             this.selectedMessages = [];
             this.currentChatImageUploaded = '';
             this.myReviews = [];
+            this.idForDelete = 0;
         },
         async editProfileInfo() {
             const mainStore = useMainStore();
