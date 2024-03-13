@@ -62,10 +62,10 @@ const searchValue = computed({
         v-model="searchValue"
         class="textMontserrat textMontserrat_medium"
         :class="{'centerPlaceholder': props.centerPlaceholder}"
-        type="search"
+        type="text"
         inputmode="text"
         :placeholder="props.placeholderText"
-    >
+    />
   </div>
 </template>
 

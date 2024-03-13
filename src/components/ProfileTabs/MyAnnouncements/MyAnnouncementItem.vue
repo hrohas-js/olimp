@@ -386,9 +386,6 @@ const announcementAction = (id) => {
           v-if="width <= 768"
           class="header"
       >
-        <!--              <div class="activeMenu border_subBg">-->
-        <!--                ...-->
-        <!--              </div>-->
         <h2 class="textMontserrat_medium">
           {{ item.title }}
         </h2>
@@ -448,7 +445,7 @@ const announcementAction = (id) => {
         </div>
       </div>
       <div
-
+          v-if="width <= 768"
           class="buttons"
       >
         <action-button

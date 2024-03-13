@@ -765,7 +765,7 @@ const setPayAgreement = (e) => {
       .price {
         width: 20%;
 
-        @media (max-width: em(768, 16)) {
+        @media (max-width: em(1024, 16)) {
           width: 50%;
         }
       }
@@ -821,7 +821,7 @@ const setPayAgreement = (e) => {
       input {
         width: 30%;
 
-        @media (max-width: em(768, 16)) {
+        @media (max-width: em(1024, 16)) {
           width: 60%;
         }
       }
