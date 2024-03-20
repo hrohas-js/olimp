@@ -174,9 +174,7 @@ const openGeo = () => {
             class="right"
             v-if="width > 1024"
         >
-          <section class="advertising">
-            <advertising-item/>
-          </section>
+          <advertising-item/>
         </aside>
       </main>
     </div>

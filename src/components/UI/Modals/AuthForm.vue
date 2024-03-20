@@ -166,7 +166,7 @@ const closeModal = () => {
             <input-border
                 id="city"
                 input-type="text"
-                validate-i-d="city"
+                validate-i-d="title"
             />
           </div>
           <div class="form-group color_black">
