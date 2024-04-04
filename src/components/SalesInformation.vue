@@ -46,7 +46,7 @@ const mainLetter = computed(() => {
             3 отзыва
           </p>
         </div>-->
-        <p class="textMontserrat_regular contactPerson">Частное лицо</p>
+<!--        <p class="textMontserrat_regular contactPerson">Частное лицо</p>-->
       </div>
       <div class="circle background_subBg color_colorBg">
         {{ mainLetter }}
