@@ -230,8 +230,6 @@ const goToProfile = (mode) => {
   margin-bottom: rem(1);
 }
 .background_subBg {
-  background-image: url("@/assets/svg/snow.svg");
-  background-position-y: rem(-45);
 
   svg path {
     //stroke: $color_bg;
