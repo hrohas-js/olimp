@@ -39,6 +39,7 @@ const price = computed(() => newItem.value.price);
 const location = computed(() => newItem.value.location);
 const user = computed(() => profileStore.user);
 const communication = computed(() => newItem.value.communication);
+const gallery = computed(() => announcementStore.newItem.gallery);
 const marker = computed(() => newItem.value.marker);
 const video = computed(() => newItem.value.video);
 const editID = computed(() => announcementStore.editID);
@@ -296,6 +297,14 @@ const create = (status) => {
     ElMessage({
       type: 'error',
       message: 'Выберете способ связи!',
+      duration: 6000
+    });
+    flag = true;
+  }
+  if (gallery.value.length === 0) {
+    ElMessage({
+      type: 'error',
+      message: 'Загрузите хотя бы одну фотографию!',
       duration: 6000
     });
     flag = true;
