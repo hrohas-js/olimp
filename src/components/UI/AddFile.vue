@@ -26,7 +26,15 @@ const checkFileCount = (e) => {
   } else {
     const formData = new FormData();
     for (let i = 0; i < files.length; i++) {
-      formData.append('photos' + i, files[i]);
+      if (files[i].size <= 15000) {
+        formData.append('photos' + i, files[i]);
+      } else {
+        ElMessage({
+          type: 'error',
+          message: 'Одно из фото превышает допустимый размер в 1.5 Мб!',
+          duration: 6000
+        });
+      }
     }
     announcementStore.uploadGallery(formData);
   }
@@ -40,7 +48,8 @@ const checkFileCount = (e) => {
         Фотографии
       </p>
       <p class="color_blackLight">
-        не более {{ 10 - gallery.length }}
+        не более {{ 10 - gallery.length }}<br>
+        (допусутимые форматы: jpg, png)
       </p>
     </div>
     <div
@@ -50,6 +59,7 @@ const checkFileCount = (e) => {
       <input
           type="file"
           multiple
+          accept="image/png, image/jpeg"
           class="addFileInput"
           @change="checkFileCount"
       />
