@@ -26,10 +26,10 @@ const checkFileCount = (e) => {
   } else {
     const formData = new FormData();
     for (let i = 0; i < files.length; i++) {
-      if (files[i].size <= 15000 && (files[i].name.indexOf('.jpg') !== -1 || files[i].name.indexOf('.png') !== -1)) {
+      if (files[i].size <= 15000000 && (files[i].name.indexOf('.jpg') !== -1 || files[i].name.indexOf('.png') !== -1)) {
         formData.append('photos' + i, files[i]);
       } else {
-        if (files[i].size > 15000) {
+        if (files[i].size > 15000000) {
           ElMessage({
             type: 'error',
             message: 'Одно из фото превышает допустимый размер в 1.5 Мб!',
