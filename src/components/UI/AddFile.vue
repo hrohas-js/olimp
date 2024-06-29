@@ -26,14 +26,23 @@ const checkFileCount = (e) => {
   } else {
     const formData = new FormData();
     for (let i = 0; i < files.length; i++) {
-      if (files[i].size <= 15000) {
+      if (files[i].size <= 15000 && (files[i].name.indexOf('.jpg') !== -1 || files[i].name.indexOf('.png') !== -1)) {
         formData.append('photos' + i, files[i]);
       } else {
-        ElMessage({
-          type: 'error',
-          message: 'Одно из фото превышает допустимый размер в 1.5 Мб!',
-          duration: 6000
-        });
+        if (files[i].size > 15000) {
+          ElMessage({
+            type: 'error',
+            message: 'Одно из фото превышает допустимый размер в 1.5 Мб!',
+            duration: 6000
+          });
+        }
+        if (files[i].name.indexOf('.jpg') === -1 && files[i].name.indexOf('.png') === -1) {
+          ElMessage({
+            type: 'error',
+            message: 'Использован недопустимый формат изображения!',
+            duration: 6000
+          });
+        }
       }
     }
     announcementStore.uploadGallery(formData);
