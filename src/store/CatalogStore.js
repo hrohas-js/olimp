@@ -101,10 +101,11 @@ export const useCatalogStore = defineStore("catalogStore", {
                 });
             }
             if (state.filterParams.selectedInstruments.length > 0) {
+                console.log(state.filterParams.selectedInstruments)
                 res = res.filter(elem => {
                     let tmp = false;
-                    JSON.parse(elem.parameters).forEach(elem => {
-                        if (state.filterParams.selectedInstruments.some(item => item.name === elem.name)) {
+                    JSON.parse(elem.parameters).forEach(element => {
+                        if (state.filterParams.selectedInstruments.some(item => item.name === element.value)) {
                             tmp = true;
                         }
                     });
@@ -243,7 +244,6 @@ export const useCatalogStore = defineStore("catalogStore", {
             try {
                 mainStore.loader = true;
                 const response = await CatalogApi.getFilters(id);
-                console.log(response)
                 response.result.forEach(elem => {
                     if (elem.id === 108 || elem.id === 109 || elem.id === 42 || elem.id === 63) {
                         this.filterParams.sex = {
