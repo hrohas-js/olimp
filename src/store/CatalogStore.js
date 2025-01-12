@@ -92,8 +92,8 @@ export const useCatalogStore = defineStore("catalogStore", {
             if (state.filterParams.selectedSex.length > 0) {
                 res = res.filter(elem => {
                     let tmp = false;
-                    JSON.parse(elem.parameters).forEach(elem => {
-                        if (state.filterParams.selectedSex.some(item => item.name === elem.name)) {
+                    JSON.parse(elem.parameters).forEach(element => {
+                        if (state.filterParams.selectedSex.some(item => item.name === element.value)) {
                             tmp = true;
                         }
                     });
@@ -115,8 +115,8 @@ export const useCatalogStore = defineStore("catalogStore", {
             if (state.filterParams.selectedStyle.length > 0) {
                 res = res.filter(elem => {
                     let tmp = false;
-                    JSON.parse(elem.parameters).forEach(elem => {
-                        if (state.filterParams.selectedStyle.some(item => item.name === elem.name)) {
+                    JSON.parse(elem.parameters).forEach(element => {
+                        if (state.filterParams.selectedStyle.some(item => item.name === element.value)) {
                             tmp = true;
                         }
                     });
@@ -126,8 +126,8 @@ export const useCatalogStore = defineStore("catalogStore", {
             if (state.filterParams.selectedOptic.length > 0) {
                 res = res.filter(elem => {
                     let tmp = false;
-                    JSON.parse(elem.parameters).forEach(elem => {
-                        if (state.filterParams.selectedOptic.some(item => item.name === elem.name)) {
+                    JSON.parse(elem.parameters).forEach(element => {
+                        if (state.filterParams.selectedOptic.some(item => item.name === elem.value)) {
                             tmp = true;
                         }
                     });
@@ -137,8 +137,8 @@ export const useCatalogStore = defineStore("catalogStore", {
             if (state.filterParams.age.from > 0) {
                 res = res.filter(elem => {
                     let tmp = false;
-                    JSON.parse(elem.parameters).forEach(elem => {
-                        if (elem.name === 'Возраст' && state.filterParams.age.from > parseInt(elem.value)) {
+                    JSON.parse(elem.parameters).forEach(element => {
+                        if (element.name === 'Возраст' && state.filterParams.age.from > parseInt(element.value)) {
                             tmp = true;
                         }
                     });
@@ -148,8 +148,8 @@ export const useCatalogStore = defineStore("catalogStore", {
             if (state.filterParams.age.to > 0) {
                 res = res.filter(elem => {
                     let tmp = false;
-                    JSON.parse(elem.parameters).forEach(elem => {
-                        if (elem.name === 'Возраст' && state.filterParams.age.to < parseInt(elem.value)) {
+                    JSON.parse(elem.parameters).forEach(element => {
+                        if (element.name === 'Возраст' && state.filterParams.age.to < parseInt(element.value)) {
                             tmp = true;
                         }
                     });
