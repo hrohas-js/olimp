@@ -100,8 +100,18 @@ export const useCatalogStore = defineStore("catalogStore", {
                     return tmp;
                 });
             }
+            if (state.filterParams.selectedType.length > 0) {
+                res = res.filter(elem => {
+                    let tmp = false;
+                    JSON.parse(elem.parameters).forEach(element => {
+                        if (state.filterParams.selectedType.some(item => item.name === element.value)) {
+                            tmp = true;
+                        }
+                    });
+                    return tmp;
+                });
+            }
             if (state.filterParams.selectedInstruments.length > 0) {
-                console.log(state.filterParams.selectedInstruments)
                 res = res.filter(elem => {
                     let tmp = false;
                     JSON.parse(elem.parameters).forEach(element => {
@@ -127,7 +137,7 @@ export const useCatalogStore = defineStore("catalogStore", {
                 res = res.filter(elem => {
                     let tmp = false;
                     JSON.parse(elem.parameters).forEach(element => {
-                        if (state.filterParams.selectedOptic.some(item => item.name === elem.value)) {
+                        if (state.filterParams.selectedOptic.some(item => item.name === element.value)) {
                             tmp = true;
                         }
                     });
@@ -314,5 +324,31 @@ export const useCatalogStore = defineStore("catalogStore", {
                 mainStore.loader = false;
             }
         },
+        clearFilters() {
+            this.filterID = [];
+            this.filterContentID = [];
+            this.filterParams = {
+                age: {
+                    from: '',
+                    to: ''
+                },
+                height: {
+                    from: '',
+                    to: ''
+                },
+                sex: {},
+                type: {},
+                instruments: {},
+                photo: {},
+                style: {},
+                optic: {},
+                selectedSex: [],
+                selectedType: [],
+                selectedInstruments: [],
+                selectedPhoto: [],
+                selectedStyle: [],
+                selectedOptic: []
+            }
+        }
     }
 })

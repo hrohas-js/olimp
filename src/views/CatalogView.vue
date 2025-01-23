@@ -23,10 +23,12 @@ const subCategories = computed(() => catalogStore.subCategories);
 const catalog = computed(() => [...catalogStore.filteredCatalog].slice().sort(() => Math.random() - 0.5));
 
 watch(route, () => {
+  catalogStore.clearFilters();
   checkPageTitle();
 });
 
 onMounted(() => {
+  catalogStore.clearFilters();
   checkPageTitle();
 });
 
