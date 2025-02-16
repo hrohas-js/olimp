@@ -143,7 +143,7 @@ const isActor = computed(() => {
   let flag = false;
   if (categories.value.length > 0) {
     const arr = categories.value;
-    if ((arr[2].id === 30 || arr[2].id === 51) && (arr[3].id === 1 || arr[3].id === 2 || arr[3].id === 2 || arr[3].id === 6)) {
+    if ((arr[2].id === 30 || arr[2].id === 51) && (arr[3].id === 1 || arr[3].id === 2 || arr[3].id === 3 || arr[3].id === 6)) {
       flag = true;
     }
   }
