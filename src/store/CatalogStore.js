@@ -148,7 +148,7 @@ export const useCatalogStore = defineStore("catalogStore", {
                 res = res.filter(elem => {
                     let tmp = false;
                     JSON.parse(elem.parameters).forEach(element => {
-                        if (element.name === 'Возраст' && state.filterParams.age.from > parseInt(element.value)) {
+                        if (element.name === 'Возраст' && parseInt(state.filterParams.age.from) <= parseInt(element.value)) {
                             tmp = true;
                         }
                     });
@@ -159,7 +159,7 @@ export const useCatalogStore = defineStore("catalogStore", {
                 res = res.filter(elem => {
                     let tmp = false;
                     JSON.parse(elem.parameters).forEach(element => {
-                        if (element.name === 'Возраст' && state.filterParams.age.to < parseInt(element.value)) {
+                        if (element.name === 'Возраст' && parseInt(state.filterParams.age.to) >= parseInt(element.value)) {
                             tmp = true;
                         }
                     });
@@ -170,7 +170,7 @@ export const useCatalogStore = defineStore("catalogStore", {
                 res = res.filter(elem => {
                     let tmp = false;
                     JSON.parse(elem.parameters).forEach(elem => {
-                        if (elem.name === 'Рост' && state.filterParams.age.from > parseInt(elem.value)) {
+                        if (elem.name === 'Рост' && parseInt(state.filterParams.height.from) > parseInt(elem.value)) {
                             tmp = true;
                         }
                     });
@@ -181,7 +181,7 @@ export const useCatalogStore = defineStore("catalogStore", {
                 res = res.filter(elem => {
                     let tmp = false;
                     JSON.parse(elem.parameters).forEach(elem => {
-                        if (elem.name === 'Рост' && state.filterParams.age.to < parseInt(elem.value)) {
+                        if (elem.name === 'Рост' && parseInt(state.filterParams.height.to) < parseInt(elem.value)) {
                             tmp = true;
                         }
                     });
