@@ -86,6 +86,18 @@ const categories = computed(() => catalogStore.categories);
               </router-link>
             </li>
           </ul>
+          <ul>
+            <li class="textMontserrat">
+              <router-link to="/policy" class="textMontserrat_regular color_colorBg">
+                Политика конфиденциальности
+              </router-link>
+            </li>
+            <li class="textMontserrat">
+              <router-link to="/agree" class="textMontserrat_regular color_colorBg">
+                Пользовательское соглашение
+              </router-link>
+            </li>
+          </ul>
         </div>
       </main>
       <div class="copy textMontserrat textMontserrat_medium color_colorBg">

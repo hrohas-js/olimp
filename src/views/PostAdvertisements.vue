@@ -572,7 +572,11 @@ const setPayAgreement = (e) => {
             @click="openRules"
         >
           правилами сайта Production City
-        </span>.
+        </span>, даете свое согласие на размещение объявления и информации в нем в общей сети интернет, так же на обработку персональных данных в соответствии с
+
+        <router-link to="/policy" target="_blank">
+          Политикой конфиденциальности
+        </router-link>
       </p>
     </footer>
     <footer v-else class="postAdvertisements__footer">
