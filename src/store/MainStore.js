@@ -3,8 +3,8 @@ import { validateField } from "@/plugins/validator";
 import { AnotherServicesApi } from "@/api/AnotherServices/AnotherServicesApi";
 import { useCatalogStore } from "@/store/CatalogStore";
 import jsonp from 'jsonp';
-import {SendMessageApi} from "@/api/SendMessage/SendMessageApi";
-import {ElMessage} from "element-plus";
+import { SendMessageApi } from "@/api/SendMessage/SendMessageApi";
+import { ElMessage } from "element-plus";
 
 export const useMainStore = defineStore("mainStore", {
     state: () => ({
@@ -104,7 +104,8 @@ export const useMainStore = defineStore("mainStore", {
         marker: {
             coordinates: localStorage.getItem('coords') !== null ? localStorage.getItem('coords').split(',').map(Number) : [37.617644, 55.755819]
         },
-        CLADR: []
+        CLADR: [],
+        cookiesAccept: localStorage.getItem('cookiesAccept') !== null ? localStorage.getItem('cookiesAccept') : ''
     }),
     actions: {
         clearInputs() {

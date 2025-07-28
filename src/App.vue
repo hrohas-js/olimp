@@ -12,7 +12,7 @@ import {useProfileStore} from "@/store/ProfileStore";
 import {useCatalogStore} from "@/store/CatalogStore";
 import {useAuthStore} from "@/store/AuthStore";
 import {useRouter} from "vue-router";
-import {onMounted, onBeforeMount, computed, watch, nextTick} from "vue";
+import {onMounted, onBeforeMount, computed, watch, nextTick, ref} from "vue";
 import GeoForm from "@/components/UI/Modals/GeoForm";
 import GeoAnnouncementForm from "@/components/UI/Modals/GeoAnnouncementForm";
 import ChatBody from "@/components/ProfileTabs/Massage/Chat/ChatBody";
@@ -31,8 +31,11 @@ const catalogStore = useCatalogStore();
 const authStore = useAuthStore();
 const router = useRouter();
 
+const showCookiesAccept = ref(false);
+
 const width = computed(() => mainStore.display_width);
 const popup = computed(() => mainStore.popup);
+const cookiesAccept = computed(() => mainStore.cookiesAccept);
 const navigation = computed(() => profileStore.navigationMobile);
 const subCategories = computed(() => catalogStore.subCategories);
 const showModalSubCategories = computed(() => catalogStore.showModalSubCategories);
@@ -86,10 +89,21 @@ onMounted(() => {
   window.addEventListener('resize', () => {
     mainStore.display_width = window.innerWidth;
   });
+  if (cookiesAccept.value.length === 0) {
+    setTimeout(() => {
+      showCookiesAccept.value = true;
+    }, 5000)
+  }
 });
 
 const closeMiniChat = () => {
   mainStore.miniChat = false;
+}
+
+const closeCookiesAccept = () => {
+  showCookiesAccept.value = false;
+  mainStore.cookiesAccept = 'true';
+  localStorage.setItem('cookiesAccept', 'true');
 }
 </script>
 
@@ -150,6 +164,21 @@ const closeMiniChat = () => {
           mini
       />
     </div>
+    <transition>
+      <div
+          v-if="showCookiesAccept"
+          class="coockies-accept"
+      >
+        Мы используем файлы cookies. Продолжив работу с сайтом, вы соглашаетесь с
+        <router-link to="/policy">Политикой конфиденциальности</router-link> и правилами
+        <router-link to="/agree">Пользовательского соглашения</router-link>
+        <svg @click="closeCookiesAccept" width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="24" height="24" fill="white"/>
+          <path d="M7 17L16.8995 7.10051" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M7 7.00001L16.8995 16.8995" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </transition>
   </section>
 </template>
 
@@ -1010,5 +1039,33 @@ button::-moz-focus-inner {
 
 .vel-btns-wrapper .btn__prev {
   left: 10% !important;
+}
+
+.coockies-accept {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  max-width: 400px;
+  width: 100%;
+  background-color: #ffffff;
+  padding: 20px;
+  box-shadow: 4px 4px 8px 0 rgba(34, 60, 80, 0.2);
+
+  svg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+  }
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>
