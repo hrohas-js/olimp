@@ -166,12 +166,12 @@ const closeCookiesAccept = () => {
     </div>
     <transition>
       <div
-          v-if="showCookiesAccept"
+          v-if="true"
           class="coockies-accept"
       >
         Мы используем файлы cookies. Продолжив работу с сайтом, вы соглашаетесь с
-        <router-link to="/policy">Политикой конфиденциальности</router-link> и правилами
-        <router-link to="/agree">Пользовательского соглашения</router-link>
+        <router-link to="/policy">Политикой конфиденциальности</router-link> и
+        <router-link to="/agree">Правилами пользования сайтом</router-link>
         <svg @click="closeCookiesAccept" width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="24" height="24" fill="white"/>
           <path d="M7 17L16.8995 7.10051" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1045,16 +1045,18 @@ button::-moz-focus-inner {
   position: fixed;
   bottom: 20px;
   left: 20px;
-  max-width: 400px;
+  max-width: 500px;
   width: 100%;
   background-color: #ffffff;
   padding: 20px;
-  box-shadow: 4px 4px 8px 0 rgba(34, 60, 80, 0.2);
+  border: 1px solid green;
+  border-radius: 20px;
+  font-size: 12px;
 
   svg {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 10px;
+    right: 10px;
     cursor: pointer;
   }
 }
