@@ -166,7 +166,7 @@ const closeCookiesAccept = () => {
     </div>
     <transition>
       <div
-          v-if="true"
+          v-if="showCookiesAccept"
           class="coockies-accept"
       >
         Мы используем файлы cookies. Продолжив работу с сайтом, вы соглашаетесь с
