@@ -68,6 +68,11 @@ const routes = [
     component: () => import("@/views/UserAgree")
   },
   {
+    path: '/cookie',
+    name: 'Cookie',
+    component: () => import("@/views/Cookie")
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: () => import("@/views/NotFound"),

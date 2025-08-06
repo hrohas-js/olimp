@@ -24,6 +24,7 @@ import SiteRules from "@/components/UI/Modals/SiteRules";
 import AboutSite from "@/components/UI/Modals/AboutSite";
 import CreateTicket from "@/components/UI/Modals/CreateTicket";
 import DeleteConfirm from "@/components/UI/Modals/DeleteConfirm";
+import MainButton from "@/components/UI/Button/MainButton";
 
 const mainStore = useMainStore();
 const profileStore = useProfileStore();
@@ -169,9 +170,11 @@ const closeCookiesAccept = () => {
           v-if="showCookiesAccept"
           class="coockies-accept"
       >
-        Мы используем файлы cookies. Продолжив работу с сайтом, вы соглашаетесь с
-        <router-link to="/policy">Политикой конфиденциальности</router-link> и
-        <router-link to="/agree">Правилами пользования сайтом</router-link>
+        Мы используем файлы cookies. <router-link to="/cookie">Подробнее</router-link>
+        <MainButton
+            button-text="Хорошо"
+            @click="closeCookiesAccept"
+        />
         <svg @click="closeCookiesAccept" width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="24" height="24" fill="white"/>
           <path d="M7 17L16.8995 7.10051" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1042,6 +1045,8 @@ button::-moz-focus-inner {
 }
 
 .coockies-accept {
+  display: flex;
+  align-items: center;
   position: fixed;
   bottom: 20px;
   left: 20px;
@@ -1052,6 +1057,15 @@ button::-moz-focus-inner {
   border: 1px solid green;
   border-radius: 20px;
   font-size: 12px;
+
+  button {
+    max-width: 30%;
+    padding: 5px 0;
+  }
+
+  a {
+    margin-right: 10px;
+  }
 
   svg {
     position: absolute;
