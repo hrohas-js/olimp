@@ -105,7 +105,7 @@ const categories = computed(() => catalogStore.categories);
           Production City - центр творчества
         </span>
         <span>
-          &copy;ООО "Возможно все! продакшен" 2022-2025
+          &copy;ООО "Возможно все! продакшен" 2025
         </span>
       </div>
     </div>
