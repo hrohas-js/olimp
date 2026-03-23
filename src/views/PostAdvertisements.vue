@@ -458,7 +458,7 @@ const setPayAgreement = (e) => {
         </div>
         <div class="postAdvertisements__item param video">
           <p class="textMontserrat_regular">
-            Ссылка на видео (YouTube)
+            Ссылка на видео (Рутюб, Яндекс Дзен, ВКонтакте)
           </p>
           <input-announcement v-model="videoValue" />
         </div>
