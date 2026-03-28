@@ -3,7 +3,7 @@ import { Carousel, Slide, Navigation } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
 import {useProductStore} from "@/store/ProductStore";
 import {ref, computed} from "vue";
-import YouTubeVideo from "@/components/UI/YouTubeVideo";
+import SocialVideo from "@/components/UI/SocialVideo";
 
 const productStore = useProductStore();
 
@@ -58,7 +58,7 @@ const onHide = () => (visibleRef.value = false);
         />
       </Slide>
       <Slide v-if="props.video.length > 0" :key="props.slider.length">
-        <YouTubeVideo :video-link="props.video" />
+        <SocialVideo :video-link="props.video" />
       </Slide>
       <template #addons>
         <navigation v-if="isOneImage" />
