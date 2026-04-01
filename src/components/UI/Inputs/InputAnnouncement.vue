@@ -38,7 +38,7 @@ const deactivateFocusFlag = () => {
         'border_subBg': focusFlag,
         'border_gray': !focusFlag
       }"
-      maxlength="50"
+      maxlength="80"
       :value="modelValue"
       :placeholder="props.inputPlaceholder"
       @input="updateValue"

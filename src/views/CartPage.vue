@@ -67,7 +67,7 @@ const categories = computed(() => {
 });
 const vacancyFlag = computed(() => {
   let flag = false;
-  if (categories.value) flag = categories.value[0].id === 1;
+  if (categories.value) flag = categories.value[0]?.id === 1;
   return flag;
 });
 const video = computed(() => {
