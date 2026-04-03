@@ -21,7 +21,7 @@ const props = defineProps({
   }
 });
 
-const isOneImage = computed(() => props.slider.length > 1);
+const isOneImage = computed(() => props.slider.length > 1 || props.video.length > 0);
 
 const slideTo = (val) => {
   currentSlide.value = val;
@@ -69,7 +69,7 @@ const onHide = () => (visibleRef.value = false);
         v-if="isOneImage"
         id="thumbnails"
         :items-to-show="6"
-        :wrap-around="true"
+        :wrap-around="false"
         snap-align="start"
         v-model="currentSlide"
         ref="carousel"
@@ -86,7 +86,7 @@ const onHide = () => (visibleRef.value = false);
         />
       </Slide>
       <Slide
-          v-show="props.video.length > 0"
+          v-if="props.video.length > 0"
           :key="props.slider.length"
           @click="slideTo(props.slider.length)"
       >
